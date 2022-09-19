@@ -10,8 +10,15 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 public class Wallet extends PanacheEntity {
 
     public String address;
-
     public Long balance;
+
+    public String getAddress(){
+        return this.address;
+    }
+
+    public Long getBalance(){
+        return this.balance;
+    }
 
     public static List<Wallet> findByAddress(String address) {
         return find("address", address).list();
