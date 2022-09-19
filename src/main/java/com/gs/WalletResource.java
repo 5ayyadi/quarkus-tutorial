@@ -42,9 +42,15 @@ public class WalletResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(Wallet wallet) {
-        wallet.id = null;
-        wallet.persist();
-        return Response.status(Status.CREATED).entity(wallet).build();
+//        TODO - Check if userId has wallet
+        Wallet resWallet = Wallet.findByUserId(wallet.userId);
+        if (resWallet == null) {
+            wallet.id = null;
+            wallet.persist();
+            System.out.println(wallet);
+            resWallet = wallet;
+        }
+        return Response.status(Status.CREATED).entity(resWallet).build();
     }
     
 

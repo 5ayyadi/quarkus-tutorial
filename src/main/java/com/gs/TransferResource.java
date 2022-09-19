@@ -22,8 +22,11 @@ public class TransferResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public void transfer(Transfer transfer) {
+//        TODO - Check balance before hand ...
         Wallet from = walletRepository.findByAddress(transfer.getFrom()).get(0);
         Wallet to = walletRepository.findByAddress(transfer.getTo()).get(0);
+        System.out.println(to);
+        System.out.println(from);
         to.balance += transfer.getAmount();
         from.balance -= transfer.getAmount(); 
     }

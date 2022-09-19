@@ -29,6 +29,21 @@
   </dependencyManagement>
   <dependencies>
     <dependency>
+      <groupId>org.web3j</groupId>
+      <artifactId>core</artifactId>
+      <version>5.0.0</version>
+
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.bitcoinj/bitcoinj-core -->
+    <dependency>
+      <groupId>org.bitcoinj</groupId>
+      <artifactId>bitcoinj-core</artifactId>
+      <version>0.16.1</version>
+    </dependency>
+
+
+    <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy</artifactId>
     </dependency>
@@ -60,6 +75,7 @@
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
+      <version>5.2.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
