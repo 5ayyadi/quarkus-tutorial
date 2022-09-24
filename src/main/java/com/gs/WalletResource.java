@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.core.models.Wallet;
 import io.quarkus.logging.Log;
 
 @Path("/wallet")
@@ -43,9 +44,10 @@ public class WalletResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(Wallet wallet) {
 //        TODO - Check if userId has wallet
+        System.out.println(wallet.userId);
         Wallet resWallet = Wallet.findByUserId(wallet.userId);
         if (resWallet == null) {
-            wallet.id = null;
+//            wallet.id = null;
             wallet.persist();
             System.out.println(wallet);
             resWallet = wallet;
@@ -59,10 +61,11 @@ public class WalletResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
 	public Response update(Wallet wallet) {
-		Wallet entity = walletRepository.findById(wallet.id);
-		entity.address = wallet.getAddress();
-		entity.balance = wallet.getBalance();
-        return Response.status(Status.OK).entity(entity).build();
+//		Wallet entity = walletRepository.findById(wallet.id);
+//		entity.address = wallet.getAddress();
+//		entity.balance = wallet.getBalance();
+        return Response.status(Status.OK).entity("ASD").build();
+//        return  Response().stat;
 	}
 	
 

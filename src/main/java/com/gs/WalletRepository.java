@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 
+import com.core.models.Wallet;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 @ApplicationScoped

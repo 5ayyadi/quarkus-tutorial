@@ -1,6 +1,9 @@
 package com.gs;
 
 
+import com.core.models.Wallet;
+import com.core.wallet.WalletInternalTransactions;
+
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -33,11 +36,9 @@ public class TransferResource {
         Wallet to = walletRepository.findByAddress(transfer.getTo()).get(0);
         System.out.println(to);
         System.out.println(from);
-        to.balance += transfer.getAmount();
-        from.balance -= transfer.getAmount(); 
-        return Response.status(Status.OK).entity(transfer).build();
-
-
+        WalletInternalTransactions x  = new WalletInternalTransactions(from);
+//        to.balance += transfer.getAmount();
+//        from.balance -= transfer.getAmount();
     }
 
 }

@@ -1,0 +1,16 @@
+package com.core.wallet;
+
+import com.core.models.Wallet;
+
+public class WalletInternalTransactions  extends WalletTransactions{
+    public WalletInternalTransactions(Wallet wallet) {
+        super(wallet);
+    }
+
+    @Override
+    public boolean transfer(Wallet toWallet) {
+        return false;
+    }
+
+
+}
