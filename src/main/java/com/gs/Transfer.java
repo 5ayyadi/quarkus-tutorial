@@ -8,6 +8,8 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 @Entity
 public class Transfer extends PanacheEntity {
 
+    // TODO: add another assets.
+
     private String from;
     private String to;
     private Long amount;

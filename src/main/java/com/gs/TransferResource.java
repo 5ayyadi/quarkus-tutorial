@@ -30,13 +30,15 @@ public class TransferResource {
     public Response transfer(Transfer transfer) {
 //        TODO - Add custom responses
         Wallet from = walletRepository.findByAddress(transfer.getFrom()).get(0);
-        if(from.balance > transfer.getAmount()){
-            return Response.status(Status.BAD_REQUEST).entity(transfer).build();
-        }
+        // if(from.balance > transfer.getAmount()){
+        //     return Response.status(Status.BAD_REQUEST).entity(transfer).build();
+        // }
         Wallet to = walletRepository.findByAddress(transfer.getTo()).get(0);
         System.out.println(to);
         System.out.println(from);
         WalletInternalTransactions x  = new WalletInternalTransactions(from);
+        return Response.status(Status.OK).entity(transfer).build();
+
 //        to.balance += transfer.getAmount();
 //        from.balance -= transfer.getAmount();
     }
