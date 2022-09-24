@@ -7,6 +7,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;;
+
 
 @Path("/transfer")
 public class TransferResource {
@@ -21,14 +24,20 @@ public class TransferResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public void transfer(Transfer transfer) {
-//        TODO - Check balance before hand ...
+    public Response transfer(Transfer transfer) {
+//        TODO - Add custom responses
         Wallet from = walletRepository.findByAddress(transfer.getFrom()).get(0);
+        if(from.balance > transfer.getAmount()){
+            return Response.status(Status.BAD_REQUEST).entity(transfer).build();
+        }
         Wallet to = walletRepository.findByAddress(transfer.getTo()).get(0);
         System.out.println(to);
         System.out.println(from);
         to.balance += transfer.getAmount();
         from.balance -= transfer.getAmount(); 
+        return Response.status(Status.OK).entity(transfer).build();
+
+
     }
 
 }
