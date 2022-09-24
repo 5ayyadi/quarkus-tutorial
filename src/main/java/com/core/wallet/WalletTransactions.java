@@ -1,5 +1,6 @@
 package com.core.wallet;
 
+import com.core.math.Decimal;
 import com.core.models.Wallet;
 import com.gs.Token;
 
@@ -25,13 +26,14 @@ public abstract class WalletTransactions {
         this(null, token, wallet);
     }
 
+    // TODO: to create a token instance
     protected WalletTransactions(Logger logger, Token token, Wallet wallet){
-        logger=logger;
-        wallet=wallet;
-        token=token;
+        this.logger=logger;
+        this.wallet=wallet;
+        this.token=token;
     }
 
-    public abstract boolean transfer(Wallet toWallet);
+    public abstract boolean transfer(Wallet toWallet, Decimal value);
 
     @Override
     public boolean equals(Object o) {
