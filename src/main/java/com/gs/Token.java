@@ -21,7 +21,7 @@ public class Token extends PanacheEntity {
     public Token(String address, String RPC, String PK) {
 
         this.address = address;
-        Web3j web3j = Web3j.build(new HttpService());
+        Web3j web3j = Web3j.build(new HttpService(RPC));
         Credentials creds = Credentials.create(PK);
         contract = ERC20.load(address, web3j, creds, new DefaultGasProvider());
         try {
