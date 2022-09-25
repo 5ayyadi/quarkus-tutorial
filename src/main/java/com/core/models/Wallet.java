@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import org.bitcoinj.wallet.UnreadableWalletException;
@@ -35,6 +36,8 @@ public class Wallet extends PanacheEntity {
     // Amount of Network Value in the wallet (Transfer Only)
     @Column(length = 80)
     public String ValueBalance;
+
+
 
     @Override
     public void persist() {
