@@ -23,8 +23,8 @@ import io.quarkus.logging.Log;
 public class ContractCallResource {
 
     final public String privateKey = "22d78e2e73a25be105d1ee5c050070c14bd9819fea5faab76bb26674a7d2a8309a8a7d0ede63c7cf5ec2acc96040ea34e4313e0001ace91295838871ded7995d";
-    final public String tokenAddress = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2";
-    final public String rpc = "https://bsc-dataseed1.binance.org";
+    final public String tokenAddress = "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d";
+    final public String rpc = "https://bsc-dataseed1.binance.org/";
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

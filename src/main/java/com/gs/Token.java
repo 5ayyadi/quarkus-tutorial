@@ -30,7 +30,7 @@ public class Token extends PanacheEntity {
             this.decimals = contract.decimals().send().intValue();
             System.out.println(String.format("%s %d %s %s ", address, decimals, name, symbol));
         } catch (Exception e) {
-            Log.errorf("Error at line 35. Exception: ", e);
+            Log.errorf("Error at line 35. Exception: ", e.getStackTrace());
         }
 
     }
