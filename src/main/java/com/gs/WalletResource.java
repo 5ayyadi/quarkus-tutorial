@@ -49,7 +49,7 @@ public class WalletResource {
         if (resWallet == null) {
 //            wallet.id = null;
             wallet.persist();
-            System.out.println(wallet);
+            // System.out.println(wallet);
             resWallet = wallet;
         }
         return Response.status(Status.CREATED).entity(resWallet).build();
