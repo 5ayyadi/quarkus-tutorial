@@ -1,20 +1,25 @@
 package test;
 
-import org.web3j.crypto.ECKeyPair;
-import org.web3j.crypto.WalletUtils;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.methods.response.Web3ClientVersion;
+import org.web3j.protocol.http.HttpService;
 
-
-import java.math.BigInteger;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.KeyPairGeneratorSpi;
+import java.io.IOException;
 
 public class main {
 
-    public static void main(String[] args) {
-//        KeyPairGeneratorSpi
-//        KeyPairGenerator x  = new KeyPairGenerator();
+    private static Web3j web3j;
 
-        System.out.println("hi");
+    public static void main(String[] args) {
+        web3j = Web3j.build(new HttpService("http://localhost:8545/"));
+
+        Web3ClientVersion web3ClientVersion = null;
+        try {
+            web3ClientVersion = web3j.web3ClientVersion().send();
+            String clientVersion = web3ClientVersion.getWeb3ClientVersion();
+            System.out.println("clientVersion " + clientVersion);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -17,6 +17,9 @@
     <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
   </properties>
   <dependencyManagement>
+
+
+  
     <dependencies>
       <dependency>
         <groupId>${quarkus.platform.group-id}</groupId>
@@ -28,12 +31,14 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
-    <dependency>
-      <groupId>org.web3j</groupId>
-      <artifactId>core</artifactId>
-      <version>5.0.0</version>
+<dependency>
+		<groupId>org.web3j</groupId>
+		<artifactId>core</artifactId>
+		<version>3.6.0</version>
+	</dependency>
+  
 
-    </dependency>
+  
 
     <!-- https://mvnrepository.com/artifact/org.bitcoinj/bitcoinj-core -->
     <dependency>
