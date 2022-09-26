@@ -37,8 +37,6 @@ public class Wallet extends PanacheEntity {
     @Column(length = 80)
     public String ValueBalance;
 
-
-
     @Override
     public void persist() {
         // TODO - Make Sure UserIds are long and not overflowing
@@ -59,7 +57,7 @@ public class Wallet extends PanacheEntity {
     public void updateKeys() {
         if (privateKey == null) {
             try {
-                WalletKeyPair keyPair = HDWallet.Create(Network.BSCTestNet, Math.toIntExact(this.userId));
+                WalletKeyPair keyPair = HDWallet.Create(Network.Ethereum, Math.toIntExact(this.userId));
                 this.privateKey = keyPair.getPrivateKeyString();
                 this.publicKey = keyPair.getPrivateKeyString();
             } catch (UnreadableWalletException e) {
