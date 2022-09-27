@@ -1,45 +1,30 @@
 package com.core.models;
 
 import javax.persistence.*;
-import java.lang.annotation.Annotation;
+
+import com.core.math.Decimal;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 @Entity
-public class TokenBalances  implements ManyToMany{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false)
-    private Long id;
+public class TokenBalances extends PanacheEntity {
 
-    public Long getId() {
-        return id;
+    public TokenBalances(Token token, Wallet wallet, Decimal balance){
+        this.token = token;
+        this.wallet = wallet;
+        this.balance = balance;
     }
+    
+    @OneToMany
+    @JoinColumn(name = "wallet")
+    public Wallet wallet;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @OneToMany
+    @Column(name = "token")
+    public Token token;
 
-    @Override
-    public Class targetEntity() {
-        return null;
-    }
+    
+    @Column(name = "balance")
+    public Decimal balance;
 
-    @Override
-    public CascadeType[] cascade() {
-        return new CascadeType[0];
-    }
-
-    @Override
-    public FetchType fetch() {
-        return null;
-    }
-
-    @Override
-    public String mappedBy() {
-        return null;
-    }
-
-    @Override
-    public Class<? extends Annotation> annotationType() {
-        return null;
-    }
 }

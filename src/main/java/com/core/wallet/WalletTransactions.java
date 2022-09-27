@@ -4,15 +4,19 @@ import com.core.math.Decimal;
 import com.core.models.Token;
 import com.core.models.Wallet;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+
 import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.logging.MemoryHandler;
 
+import javax.persistence.Entity;
+
 class TransactionHistoryHandler extends MemoryHandler {
     // TODO - rabbit massage + db record ...
 }
-
-public abstract class WalletTransactions {
+@Entity
+public abstract class WalletTransactions extends PanacheEntity{
     Token token;
     Wallet wallet;
     Logger logger;
