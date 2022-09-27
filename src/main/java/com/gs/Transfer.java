@@ -9,18 +9,18 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 public class Transfer extends PanacheEntity {
 
     @Column()
-    public String from;
+    public String fromWallet;
     @Column()
-    public String to;
+    public String toWallet;
     @Column()
     public int amount;
 
     public void setFrom(String from) {
-        this.from = from;
+        this.fromWallet = from;
     }
 
     public void setTo(String to) {
-        this.to = to;
+        this.toWallet = to;
     }
 
     public void setAmount(int amount) {
@@ -28,11 +28,11 @@ public class Transfer extends PanacheEntity {
     }
 
     public String getFrom() {
-        return this.from;
+        return this.fromWallet;
     }
 
     public String getTo() {
-        return this.to;
+        return this.toWallet;
     }
 
     public int getAmount() {
