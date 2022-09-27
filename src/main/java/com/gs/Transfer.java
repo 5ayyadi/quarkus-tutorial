@@ -1,6 +1,6 @@
 package com.gs;
 
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -8,34 +8,35 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 @Entity
 public class Transfer extends PanacheEntity {
 
-    // TODO: add another assets.
+    @Column()
+    public String fromWallet;
+    @Column()
+    public String toWallet;
+    @Column()
+    public int amount;
 
-    private String from;
-    private String to;
-    private Long amount;
-
-    public void setFrom(String from){
-        this.from = from;
+    public void setFrom(String from) {
+        this.fromWallet = from;
     }
 
-    public void setTo(String to){
-        this.to = to;
+    public void setTo(String to) {
+        this.toWallet = to;
     }
 
-    public void setAmount(Long amount){
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
-    public String getFrom(){
-        return this.from;
+    public String getFrom() {
+        return this.fromWallet;
     }
 
-    public String getTo(){
-        return this.to;
+    public String getTo() {
+        return this.toWallet;
     }
 
-    public Long getAmount(){
+    public int getAmount() {
         return this.amount;
     }
-    
+
 }

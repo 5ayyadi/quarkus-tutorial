@@ -1,0 +1,36 @@
+2022-09-25 16:03:24 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table Transfer (id bigint not null, amount integer, [*]from varchar(255), to varchar(255), primary key (id))"; expected "identifier"; SQL statement:
+create table Transfer (id bigint not null, amount integer, from varchar(255), to varchar(255), primary key (id)) [42001-214]
+2022-09-25 16:03:24 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO Wallet(         id,         address,         ValueBalance,         userId,         privateKey,         publicKey,     [*]) VALUES (         nextval('hibernate_sequence'),         '0x1',         '100',         ""10002"",         ""asdkjsa"",         ""kasdkjsh""     )"; expected "identifier"; SQL statement:
+INSERT INTO Wallet(         id,         address,         ValueBalance,         userId,         privateKey,         publicKey,     ) VALUES (         nextval('hibernate_sequence'),         '0x1',         '100',         "10002",         "asdkjsa",         "kasdkjsh"     ) [42001-214]
+2022-09-25 16:04:27 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table Transfer (id bigint not null, amount integer, [*]from varchar(255), to varchar(255), primary key (id))"; expected "identifier"; SQL statement:
+create table Transfer (id bigint not null, amount integer, from varchar(255), to varchar(255), primary key (id)) [42001-214]
+2022-09-25 16:04:27 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO Wallet(         id,         address,         ValueBalance,         userId,         privateKey,         publicKey,     [*]) VALUES (         nextval('hibernate_sequence'),         '0x1',         '100',         ""10002"",         ""asdkjsa"",         ""kasdkjsh""     )"; expected "identifier"; SQL statement:
+INSERT INTO Wallet(         id,         address,         ValueBalance,         userId,         privateKey,         publicKey,     ) VALUES (         nextval('hibernate_sequence'),         '0x1',         '100',         "10002",         "asdkjsa",         "kasdkjsh"     ) [42001-214]
+2022-09-25 16:05:01 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table Transfer (id bigint not null, amount integer, [*]from varchar(255), to varchar(255), primary key (id))"; expected "identifier"; SQL statement:
+create table Transfer (id bigint not null, amount integer, from varchar(255), to varchar(255), primary key (id)) [42001-214]
+2022-09-25 16:05:01 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO Wallet(         id,         address,         ValueBalance,         userId,         privateKey,         publicKey,     [*]) VALUES (         nextval('hibernate_sequence'),         '0x1',         '100',         ""10002"",         ""asdkjsa"",         ""kasdkjsh""     )"; expected "identifier"; SQL statement:
+INSERT INTO Wallet(         id,         address,         ValueBalance,         userId,         privateKey,         publicKey,     ) VALUES (         nextval('hibernate_sequence'),         '0x1',         '100',         "10002",         "asdkjsa",         "kasdkjsh"     ) [42001-214]
+2022-09-25 16:06:02 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table Transfer (id bigint not null, amount integer, [*]from varchar(255), to varchar(255), primary key (id))"; expected "identifier"; SQL statement:
+create table Transfer (id bigint not null, amount integer, from varchar(255), to varchar(255), primary key (id)) [42001-214]
+2022-09-25 16:06:02 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO Wallet(         id,         address,         ValueBalance,         userId,         privateKey,         publicKey,     [*]) VALUES (         nextval('hibernate_sequence'),         '0x1',         '100',         ""10002"",         ""asdkjsa"",         ""kasdkjsh""     )"; expected "identifier"; SQL statement:
+INSERT INTO Wallet(         id,         address,         ValueBalance,         userId,         privateKey,         publicKey,     ) VALUES (         nextval('hibernate_sequence'),         '0x1',         '100',         "10002",         "asdkjsa",         "kasdkjsh"     ) [42001-214]
+2022-09-25 16:06:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table Transfer (id bigint not null, amount integer, [*]from varchar(255), to varchar(255), primary key (id))"; expected "identifier"; SQL statement:
+create table Transfer (id bigint not null, amount integer, from varchar(255), to varchar(255), primary key (id)) [42001-214]
+2022-09-25 16:10:12 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table Transfer (id bigint not null, amount integer, [*]from varchar(255), to varchar(255), primary key (id))"; expected "identifier"; SQL statement:
+create table Transfer (id bigint not null, amount integer, from varchar(255), to varchar(255), primary key (id)) [42001-214]
+2022-09-25 16:16:51 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table Transfer (id bigint not null, amount integer, [*]from varchar(255), to varchar(255), primary key (id))"; expected "identifier"; SQL statement:
+create table Transfer (id bigint not null, amount integer, from varchar(255), to varchar(255), primary key (id)) [42001-214]
+2022-09-25 16:19:26 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table Transfer (id bigint not null, amount integer, [*]from varchar(255), to varchar(255), primary key (id))"; expected "identifier"; SQL statement:
+create table Transfer (id bigint not null, amount integer, from varchar(255), to varchar(255), primary key (id)) [42001-214]

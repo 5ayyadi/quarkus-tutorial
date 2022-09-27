@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import org.bitcoinj.wallet.UnreadableWalletException;
@@ -41,6 +42,9 @@ public class Wallet extends PanacheEntity {
         // TODO - Make Sure UserIds are long and not overflowing
         this.updateKeys();
         this.address = this.publicKey;
+        if (this.ValueBalance == null) {
+            this.ValueBalance = "0";
+        }
         super.persist();
     }
 
@@ -56,9 +60,9 @@ public class Wallet extends PanacheEntity {
     public void updateKeys() {
         if (privateKey == null) {
             try {
-                WalletKeyPair keyPair = HDWallet.Create(Network.BSCTestNet, Math.toIntExact(this.userId));
+                WalletKeyPair keyPair = HDWallet.Create(Network.Ethereum, Math.toIntExact(this.userId));
                 this.privateKey = keyPair.getPrivateKeyString();
-                this.publicKey = keyPair.getPrivateKeyString();
+                this.publicKey = keyPair.getPublicKeyString();
             } catch (UnreadableWalletException e) {
                 throw new RuntimeException(e);
             }

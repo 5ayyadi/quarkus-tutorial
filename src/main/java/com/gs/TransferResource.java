@@ -28,7 +28,7 @@ public class TransferResource {
     public Response transfer(Transfer transfer) {
         // TODO - Add custom responses
         Wallet from = walletRepository.findByAddress(transfer.getFrom()).get(0);
-        // if(from.balance > transfer.getAmount()){
+        // if(from.ValueBalance > transfer.getAmount()){
         // return Response.status(Status.BAD_REQUEST).entity(transfer).build();
         // }
         Wallet to = walletRepository.findByAddress(transfer.getTo()).get(0);
