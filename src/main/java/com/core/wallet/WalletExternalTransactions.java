@@ -9,7 +9,7 @@ public class WalletExternalTransactions extends WalletTransactions{
             super(wallet);
         }
 
-    @Override
+    // @Override
     public boolean transfer(Wallet toWallet, Decimal value) {
         try{
             // token.contract.transfer(toWallet.publicKey, value.toBigInteger()).send();

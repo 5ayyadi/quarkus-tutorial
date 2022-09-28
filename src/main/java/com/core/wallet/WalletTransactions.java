@@ -2,6 +2,8 @@ package com.core.wallet;
 
 import com.core.math.Decimal;
 import com.core.models.Token;
+import com.core.models.TransactionStatus;
+import com.core.models.TransactionType;
 import com.core.models.Wallet;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -15,10 +17,12 @@ class TransactionHistoryHandler extends MemoryHandler {
     // TODO - rabbit massage + db record ...
 }
 // @Entity
-public abstract class WalletTransactions extends PanacheEntity{
-    Token token;
-    Wallet wallet;
-    Logger logger;
+public class WalletTransactions extends PanacheEntity{
+    public Token token;
+    public Wallet wallet;
+    public Logger logger;
+    public TransactionStatus trxStatus;
+    public TransactionType trxType;
 
     protected WalletTransactions(Wallet wallet) {
         this(null, null, wallet);
@@ -34,7 +38,7 @@ public abstract class WalletTransactions extends PanacheEntity{
         this.token = token;
     }
 
-    public abstract boolean transfer(Wallet toWallet, Decimal amount);
+    // public abstract boolean transfer(Wallet toWallet, Decimal amount);
 
     @Override
     public boolean equals(Object o) {
