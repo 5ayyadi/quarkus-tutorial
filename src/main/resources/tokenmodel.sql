@@ -1,0 +1,18 @@
+create table Token (token_id int8 not null, address varchar(255), decimals int4 not null, name varchar(255), symbol varchar(255), primary key (token_id));
+create table token_balances (wallet_id int8 not null, token_id int8 not null, primary key (wallet_id, token_id));
+create table TokenBalances (id int8 not null, balance bytea, token_token_id int8 not null, wallet_wallet_id int8 not null, primary key (id));
+create table Transfer (id int8 not null, amount int4, fromWallet varchar(255), toWallet varchar(255), primary key (id));
+create table Wallet (wallet_id int8 not null, ValueBalance varchar(80), address varchar(255), privateKey varchar(255), publicKey varchar(255), user_id int8, primary key (wallet_id));
+alter table if exists Token drop constraint if exists UK_23agk1qspc72py96cjpt7u5hw;
+alter table if exists Token add constraint UK_23agk1qspc72py96cjpt7u5hw unique (address);
+alter table if exists Wallet drop constraint if exists UK_6r2mtjv7h5euc0y3oid2ah5uw;
+alter table if exists Wallet add constraint UK_6r2mtjv7h5euc0y3oid2ah5uw unique (address);
+alter table if exists Wallet drop constraint if exists UK_g5la9kwmovsv9okt00od465pj;
+alter table if exists Wallet add constraint UK_g5la9kwmovsv9okt00od465pj unique (publicKey);
+alter table if exists Wallet drop constraint if exists UK_h1jubb1flepu4hf03me7fmkej;
+alter table if exists Wallet add constraint UK_h1jubb1flepu4hf03me7fmkej unique (user_id);
+create sequence hibernate_sequence start 1 increment 1;
+alter table if exists token_balances add constraint FKi3ywjmfpi81i39iqmk1kpuha2 foreign key (token_id) references Wallet;
+alter table if exists token_balances add constraint FKsga518m9d6qkys14pxa67h9jl foreign key (wallet_id) references Token;
+alter table if exists TokenBalances add constraint FK8tqtv5lm051vvy43h1w04lfd1 foreign key (token_token_id) references Token;
+alter table if exists TokenBalances add constraint FKo005ce8bs9pov5m8iv0n1oe40 foreign key (wallet_wallet_id) references Wallet;

@@ -45,12 +45,14 @@ public class TokenResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response transfer(String sAddress) {
         Address address = new Address(sAddress);
-        NetworkConfig config = new NetworkConfig();
+        // NetworkConfig config = new NetworkConfig();
+        NetworkConfig config = new NetworkConfig("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2","https://rpc.ftm.tools/");
         Token token = Token.tokenFromAddress(config, address);
+
         // Token _token = tokenRepository.findByAddress(token.address);
         // if (_token == null) {
         // }
-        // token.persist();
+        token.persist();
         //
         return Response.status(Status.CREATED).entity(token).build();
 

@@ -2,6 +2,7 @@ package com.core.models;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.logging.Log;
 
 import java.math.BigInteger;
 import java.util.HashSet;
@@ -66,6 +67,7 @@ public class Token extends PanacheEntityBase {
 
         ERC20 erc20TokenContract = ERC20.load(address.toString(), config.w3);
         try {
+            Log.infof(" ERC20 contract validation %b", erc20TokenContract.isValid());
             token.decimals = erc20TokenContract.decimals().send().intValue();
             token.name = erc20TokenContract.name().send();
             token.address = address.toString();
