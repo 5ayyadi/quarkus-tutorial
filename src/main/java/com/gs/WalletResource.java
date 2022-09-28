@@ -1,5 +1,6 @@
 package com.gs;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -35,7 +36,13 @@ public class WalletResource {
             Log.infof("Searching for %s", address);
             return walletRepository.findByAddress(address);
         }
-        return Wallet.listAll();
+        try{
+            return Wallet.listAll();
+        }
+        catch(Exception e){
+            Log.errorf("Error at wallet resource, get request: %s", e);
+            return Collections.emptyList();
+        }
     }
 
     // TODO: Request body should be controlled to have the specified fields.

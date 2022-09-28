@@ -1,12 +1,22 @@
 package com.core.models;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+
 import org.bitcoinj.wallet.UnreadableWalletException;
 
 import com.core.wallet.WalletKeyPair;
@@ -15,16 +25,19 @@ import com.core.math.Decimal;
 import com.core.network.Network;
 
 @Entity
-public class Wallet extends PanacheEntity {
+public class Wallet extends PanacheEntityBase {
 
     // TODO: add setter to this class
 
-    // public int id;
+    @Id
+    @GeneratedValue
+    @Column(name = "wallet_id")
+    private Long id;
 
     @Column(updatable = false, unique = true)
     public String address;
 
-    @Column(unique = true)
+    @Column(unique = true, name = "user_id")
     public long userId;
 
     @Column(updatable = false)
@@ -36,6 +49,10 @@ public class Wallet extends PanacheEntity {
     // Amount of Network Value in the wallet (Transfer Only)
     @Column(length = 80)
     public String ValueBalance;
+
+    @OneToMany(mappedBy = "balance")
+    private Set<TokenBalances> tokenBalances = new HashSet<>();
+
 
     @Override
     public void persist() {
@@ -90,12 +107,17 @@ public class Wallet extends PanacheEntity {
                 '}';
     }
 
-    public static List<Wallet> findByAddress(String address) {
-        return find("address", address).list();
+    public static Wallet findByAddress(String address) {
+        return find("address", address).firstResult();
     }
 
     public static Wallet findByUserId(long userId) {
         return find("userId", userId).firstResult();
     }
+
+    public Set<TokenBalances> getTokenBalances() {
+        return tokenBalances;
+    }
+
 
 }

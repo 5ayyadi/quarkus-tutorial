@@ -10,12 +10,11 @@ import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.logging.MemoryHandler;
 
-import javax.persistence.Entity;
 
 class TransactionHistoryHandler extends MemoryHandler {
     // TODO - rabbit massage + db record ...
 }
-@Entity
+// @Entity
 public abstract class WalletTransactions extends PanacheEntity{
     Token token;
     Wallet wallet;
