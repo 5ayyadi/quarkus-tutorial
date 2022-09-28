@@ -1,4 +1,4 @@
-package com.gs;
+package com.core.network;
 
 //import io.reactivex.Flowable;
 import java.math.BigInteger;
@@ -25,6 +25,7 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tx.Contract;
 import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.tx.gas.DefaultGasProvider;
 
 /**
  * <p>
@@ -42,6 +43,9 @@ import org.web3j.tx.gas.ContractGasProvider;
  * Generated with web3j version 4.1.1.
  */
 public class ERC20 extends Contract {
+
+    private static final String DefaultPriavteKey = "22d78e2e73a25be105d1ee5c050070c14bd9819fea5faab76bb26674a7d2a8309a8a7d0ede63c7cf5ec2acc96040ea34e4313e0001ace91295838871ded7995d";
+
     private static final String BINARY = "Bin file was not provided";
 
     public static final String FUNC_NAME = "name";
@@ -209,6 +213,16 @@ public class ERC20 extends Contract {
         return new ERC20(contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
+    public static ERC20 load(String contractAddress, Web3j w3, ContractGasProvider gasProvider) {
+        Credentials credentials = Credentials.create(DefaultPriavteKey);
+        return new ERC20(contractAddress, w3, credentials, gasProvider);
+    }
+
+    public static ERC20 load(String contractAddress, Web3j w3) {
+        Credentials credentials = Credentials.create(DefaultPriavteKey);
+        return new ERC20(contractAddress, w3, credentials, new DefaultGasProvider());
+    }
+
     public static class TransferEventResponse {
         public Log log;
 
@@ -228,4 +242,5 @@ public class ERC20 extends Contract {
 
         public BigInteger _value;
     }
+
 }
