@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -50,8 +51,10 @@ public class Wallet extends PanacheEntityBase {
     @Column(length = 80)
     public String ValueBalance;
 
-    @OneToMany(mappedBy = "balance")
-    private Set<TokenBalances> tokenBalances = new HashSet<>();
+
+    @ElementCollection
+    @JoinTable(name = "token_balances",joinColumns=@JoinColumn(name="wallet_id"))
+    private Set<TokenBalances> tokenBalances = new HashSet<TokenBalances>();
 
 
     @Override

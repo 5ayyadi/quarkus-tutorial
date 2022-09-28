@@ -7,17 +7,18 @@ import com.core.math.Decimal;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 @Entity
+@Table(name = "token_balances")
 public class TokenBalances extends PanacheEntity {
  
     @EmbeddedId
     private TokenBalancesId id = new TokenBalancesId();
  
-    @ManyToOne
-    @MapsId("tokenId")
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="token_id", insertable=false, updatable=false)
     private Token token;
  
-    @ManyToOne
-    @MapsId("walletId")
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="wallet_id", insertable=false, updatable=false)
     private Wallet wallet;
 
     @Column(name = "balance")

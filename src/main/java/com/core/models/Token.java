@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -40,14 +41,12 @@ public class Token extends PanacheEntityBase {
 
     public int decimals;
 
-    @ManyToMany
-    @JoinTable(name = "token_balances", 
-            joinColumns = { @JoinColumn(name = "wallet_id") }, 
-            inverseJoinColumns = { @JoinColumn(name = "token_id") })
-    private Set<Wallet> wallets = new HashSet<Wallet>();
 
-    @OneToMany(mappedBy = "balance")
-    private Set<TokenBalances> tokenBalances = new HashSet<>();
+    @ElementCollection
+    @JoinTable(name = "token_balances",joinColumns=@JoinColumn(name="token_id"))
+    private Set<TokenBalances> tokenBalances = new HashSet<TokenBalances>();
+
+    
 
     // public Token(String name, String symbol, String address, int decimals) {
     // this.name = name;
