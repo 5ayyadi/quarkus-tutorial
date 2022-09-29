@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.web3j.abi.datatypes.Address;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +35,9 @@ public class TokenResource {
     public List<Token> wallets(@QueryParam("address") String address) {
         if (address != null) {
             Log.infof("Searching for %s", address);
-            return tokenRepository.findByAddress(address);
+            ArrayList<Token> tokens = new ArrayList<>();
+            tokens.add(tokenRepository.findByAddress(address));
+            return tokens;
         }
         return Token.listAll();
     }

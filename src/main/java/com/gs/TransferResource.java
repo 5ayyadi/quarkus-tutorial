@@ -27,11 +27,11 @@ public class TransferResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response transfer(Transfer transfer) {
         // TODO - Add custom responses
-        Wallet from = walletRepository.findByAddress(transfer.getFrom()).get(0);
+        Wallet from = walletRepository.findByAddress(transfer.getFrom());
         // if(from.ValueBalance > transfer.getAmount()){
         // return Response.status(Status.BAD_REQUEST).entity(transfer).build();
         // }
-        Wallet to = walletRepository.findByAddress(transfer.getTo()).get(0);
+        Wallet to = walletRepository.findByAddress(transfer.getTo());
         System.out.println(to);
         System.out.println(from);
         // WalletInternalTransactions x = new WalletInternalTransactions(from);

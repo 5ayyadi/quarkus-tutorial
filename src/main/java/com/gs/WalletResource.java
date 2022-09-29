@@ -1,5 +1,6 @@
 package com.gs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -36,7 +37,9 @@ public class WalletResource {
     public List<Wallet> wallets(@QueryParam("address") String address) {
         if (address != null) {
             Log.infof("Searching for %s", address);
-            return walletRepository.findByAddress(address);
+            ArrayList<Wallet> wallets = new ArrayList<>();
+            wallets.add(walletRepository.findByAddress(address));
+            return wallets;
         }
         return Wallet.listAll();
     }
