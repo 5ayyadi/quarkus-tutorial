@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.core.models.TransactionStatus;
 import com.core.models.TransactionType;
+import com.core.models.Wallet;
 import com.core.wallet.WalletInternalTransactions;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -16,6 +17,9 @@ public class InternalTransaction extends PanacheEntity {
         for(WalletInternalTransactions trx: confirmedTransactions){
             switch(trx.trxType){
                 case TRANSFER:
+                Wallet source = trx.fromWallet;
+                Wallet destination = trx.toWallet;
+                // get source and destination token balance
                 // add balance to destination
                 // subtract from source
                 break;

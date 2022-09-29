@@ -8,6 +8,7 @@ import com.core.models.Wallet;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
+import java.math.BigInteger;
 import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.logging.MemoryHandler;
@@ -19,7 +20,9 @@ class TransactionHistoryHandler extends MemoryHandler {
 // @Entity
 public class WalletTransactions extends PanacheEntity{
     public Token token;
-    public Wallet wallet;
+    public Wallet fromWallet;
+    public Wallet toWallet;
+    public BigInteger amount;
     public Logger logger;
     public TransactionStatus trxStatus;
     public TransactionType trxType;
