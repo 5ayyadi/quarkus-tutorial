@@ -43,16 +43,16 @@ public class TokenResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response transfer(String sAddress) {
+    public void transfer(String sAddress) {
         Address address = new Address(sAddress);
         NetworkConfig config = new NetworkConfig();
-        Token token = Token.tokenFromAddress(config, address);
+        // Token token = Token.tokenFromAddress(config, address);
         // Token _token = tokenRepository.findByAddress(token.address);
         // if (_token == null) {
         // }
         // token.persist();
         //
-        return Response.status(Status.CREATED).entity(token).build();
+        // return Response.status(Status.CREATED).entity(token).build();
 
     }
 

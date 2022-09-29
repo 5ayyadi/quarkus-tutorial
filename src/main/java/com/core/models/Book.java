@@ -24,12 +24,6 @@ public class Book extends PanacheEntity {
     @Column()
     public String title;
 
-    @ManyToMany
-    @JoinTable(name = "book_publisher", joinColumns = {
-            @JoinColumn(name = "book_id", referencedColumnName = "id") }, inverseJoinColumns = {
-                    @JoinColumn(name = "publisher_id", referencedColumnName = "id") })
-    private Set<Publisher> publishers = new HashSet<Publisher>();
-
     @OneToMany(mappedBy = "book")
     private Set<BookPublisher> bookPublishers = new HashSet<BookPublisher>();
 

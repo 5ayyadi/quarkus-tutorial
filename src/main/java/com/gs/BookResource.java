@@ -70,7 +70,7 @@ public class BookResource {
         b2.persist();
 
         Publisher p = new Publisher();
-        p.setName("Thorben Janssen 2");
+        // p.setName("Thorben Janssen 2");
         p.persist();
 
         BookPublisher bp1 = new BookPublisher();
@@ -85,8 +85,8 @@ public class BookResource {
 
         b.getBookPublishers().add(bp1);
         b2.getBookPublishers().add(bp2);
-        p.getBookPublishers().add(bp1);
-        p.getBookPublishers().add(bp2);
+        // p.getBookPublishers().add(bp1);
+        // p.getBookPublishers().add(bp2);
 
         // BookPublisher bp2 = new BookPublisher();
         // bp2.format = "asdkjhajksh";

@@ -12,7 +12,7 @@ public class Decimal extends BigDecimal {
 
     protected static final MathContext DECIMAL_WITH_256_PRECISION = new MathContext(precision, roundingMode);
 
-    // public static final ONE =
+    // Instances
     public Decimal(BigInteger val) {
         super(val, DECIMAL_WITH_256_PRECISION);
     }
@@ -44,6 +44,8 @@ public class Decimal extends BigDecimal {
     public static final Decimal NINE = new Decimal(9);
     public static final Decimal TEN = new Decimal(10);
     public static final Decimal EIGHTEEN = new Decimal(18);
+
+    // public Dec
 
     @Override
     public String toString() {

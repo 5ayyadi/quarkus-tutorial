@@ -27,17 +27,6 @@ public class Publisher extends PanacheEntity {
     // @OneToMany(mappedBy = "publisher")
     // private Set<BookPublisher> bookPublishers = new HashSet<>();
 
-    @OneToMany(mappedBy = "publisher")
-    private Set<BookPublisher> bookPublishers = new HashSet<BookPublisher>();
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<BookPublisher> getBookPublishers() {
-        return bookPublishers;
-    }
-
     // public Set<BookPublisher> getBookPublishers() {
     // return bookPublishers;
     // }

@@ -1,10 +1,14 @@
 package com.core.models;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import org.bitcoinj.wallet.UnreadableWalletException;
@@ -14,6 +18,7 @@ import com.core.wallet.HDWallet;
 import com.core.math.Decimal;
 import com.core.network.Network;
 
+@Table(name = "wallet")
 @Entity
 public class Wallet extends PanacheEntity {
 
@@ -32,6 +37,9 @@ public class Wallet extends PanacheEntity {
 
     @Column(updatable = false, unique = true)
     public String publicKey;
+
+    @OneToMany(mappedBy = "wallet")
+    private Set<TokenBalances> tokenBalances = new HashSet<TokenBalances>();
 
     // Amount of Network Value in the wallet (Transfer Only)
     @Column(length = 80)
@@ -56,6 +64,9 @@ public class Wallet extends PanacheEntity {
     public void setValueBalance(Decimal valueBalance) {
         ValueBalance = valueBalance.toString();
     }
+    public Set<TokenBalances> getTokenBalances() {
+        return tokenBalances;
+    }
 
     public void updateKeys() {
         if (privateKey == null) {
@@ -77,6 +88,10 @@ public class Wallet extends PanacheEntity {
     // public Long getBalance(TokenAddress address) {
     // return this.balance;
     // }
+
+    public void setTokenBalances(Set<TokenBalances> tokenBalances) {
+        this.tokenBalances = tokenBalances;
+    }
 
     @Override
     public String toString() {

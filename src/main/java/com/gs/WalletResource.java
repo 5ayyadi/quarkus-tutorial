@@ -17,6 +17,9 @@ import javax.ws.rs.core.Response.Status;
 
 import com.core.models.Token;
 import com.core.models.Wallet;
+import com.core.wallet.WalletInternalTransactions;
+import com.core.wallet.WalletTransactions;
+
 import io.quarkus.logging.Log;
 
 @Path("/wallet")
@@ -45,17 +48,15 @@ public class WalletResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(Wallet wallet) {
         // TODO - Check if userId has wallet
-        System.out.println(wallet.userId);
         Wallet resWallet = Wallet.findByUserId(wallet.userId);
         if (resWallet == null) {
-            // wallet.id = null;
             wallet.persist();
-            // System.out.println(wallet);
             resWallet = wallet;
-
-            //
-
+            wallet.ValueBalance = "1000";
+            WalletInternalTransactions walletTransactions = new WalletInternalTransactions(wallet, "1000");
+            walletTransactions.persist();
         }
+
         return Response.status(Status.CREATED).entity(resWallet).build();
     }
 
@@ -68,7 +69,6 @@ public class WalletResource {
         // entity.address = wallet.getAddress();
         // entity.balance = wallet.getBalance();
         return Response.status(Status.OK).entity("ASD").build();
-        // return Response().stat;
     }
 
     // TODO: The request should be as a json, not a number.

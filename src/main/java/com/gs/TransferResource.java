@@ -34,7 +34,7 @@ public class TransferResource {
         Wallet to = walletRepository.findByAddress(transfer.getTo()).get(0);
         System.out.println(to);
         System.out.println(from);
-        WalletInternalTransactions x = new WalletInternalTransactions(from);
+        // WalletInternalTransactions x = new WalletInternalTransactions(from);
 
         return Response.status(Status.OK).entity(transfer).build();
 

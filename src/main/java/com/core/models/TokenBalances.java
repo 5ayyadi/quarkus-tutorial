@@ -1,45 +1,33 @@
 package com.core.models;
 
 import javax.persistence.*;
-import java.lang.annotation.Annotation;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+
+@Table(name = "token_balance")
 @Entity
-public class TokenBalances  implements ManyToMany{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false)
-    private Long id;
+public class TokenBalances extends PanacheEntity {
 
-    public Long getId() {
-        return id;
+    @ManyToOne
+    @JoinColumn(name = "wallet_id", nullable = false)
+    private Wallet wallet;
+
+    @ManyToOne
+    @JoinColumn(name = "token_id", nullable = false)
+    private Token token;
+
+    @Column(length = 255)
+    private String Balance;
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setToken(Token token) {
+        this.token = token;
     }
 
-    @Override
-    public Class targetEntity() {
-        return null;
-    }
-
-    @Override
-    public CascadeType[] cascade() {
-        return new CascadeType[0];
-    }
-
-    @Override
-    public FetchType fetch() {
-        return null;
-    }
-
-    @Override
-    public String mappedBy() {
-        return null;
-    }
-
-    @Override
-    public Class<? extends Annotation> annotationType() {
-        return null;
+    public void setBalance(String balance) {
+        Balance = balance;
     }
 }

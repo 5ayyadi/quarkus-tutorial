@@ -10,8 +10,8 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 @ApplicationScoped
 public class WalletRepository implements PanacheRepository<Wallet> {
 
-    public List<Wallet> findByAddress(String address) {
-        return find("lower(address)", address.toLowerCase()).list();
+    public Wallet findByAddress(String address) {
+        return find("lower(address)", address.toLowerCase()).firstResult();
     }
 
 }
