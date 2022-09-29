@@ -41,6 +41,16 @@ public class BookPublisher extends PanacheEntity {
     @Column(length = 255)
     public String format;
 
+    public void setBook(Book book) {
+        this.book = book;
+        // this.id.setBookId(book.id);
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+        // this.getId().setPublisherId(publisher.id);
+    }
+
     // public void setBcartook(Book book) {
     // this.book = book;
     // }

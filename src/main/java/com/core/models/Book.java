@@ -22,23 +22,23 @@ public class Book extends PanacheEntity {
     // private Long id;
 
     @Column()
-    private String title;
+    public String title;
 
-    // @ManyToMany
-    // @JoinTable(name = "book_publisher", joinColumns = { @JoinColumn(name =
-    // "book_id") }, inverseJoinColumns = {
-    // @JoinColumn(name = "publisher_id") })
-    // private Set<BookPublisher> bookPublishers = new HashSet<BookPublisher>();
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    @ManyToMany
+    @JoinTable(name = "book_publisher", joinColumns = {
+            @JoinColumn(name = "book_id", referencedColumnName = "id") }, inverseJoinColumns = {
+                    @JoinColumn(name = "publisher_id", referencedColumnName = "id") })
+    private Set<Publisher> publishers = new HashSet<Publisher>();
 
     @OneToMany(mappedBy = "book")
     private Set<BookPublisher> bookPublishers = new HashSet<BookPublisher>();
 
     public Set<BookPublisher> getBookPublishers() {
         return bookPublishers;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     // public Set<BookPublisher> getPublishers() {

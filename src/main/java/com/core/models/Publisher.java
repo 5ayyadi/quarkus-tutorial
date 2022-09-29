@@ -19,7 +19,7 @@ public class Publisher extends PanacheEntity {
     // private Long id;
 
     @Column()
-    private String name;
+    public String name;
 
     // @OneToMany(mappedBy = "publisher")
     // private Set<BookPublisher> books = new HashSet<>();

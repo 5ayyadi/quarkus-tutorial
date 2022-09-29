@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Id;
 
 @Embeddable
 public final class BookPublisherId implements Serializable {
@@ -14,11 +15,14 @@ public final class BookPublisherId implements Serializable {
     private Long publisherId;
 
     public BookPublisherId() {
-
+        System.out.print("Constructor ... ");
+        System.out.print(this.bookId);
+        System.out.println(this.publisherId);
     }
 
     public BookPublisherId(Long bookId, Long publisherId) {
         super();
+        System.out.println("HERE!");
         this.bookId = bookId;
         this.publisherId = publisherId;
     }
@@ -27,11 +31,14 @@ public final class BookPublisherId implements Serializable {
         return bookId;
     }
 
-    public void setBookId(Long bookId) {
-        this.bookId = bookId;
+    public void setBookId(Long id) {
+        this.bookId = id;
+        System.out.println(id);
     }
 
     public Long getPublisherId() {
+        // System.out.println("HERE!");
+
         return publisherId;
     }
 
