@@ -14,4 +14,8 @@ public class WalletRepository implements PanacheRepository<Wallet> {
         return find("lower(address)", address.toLowerCase()).firstResult();
     }
 
+    public Wallet findByUserId(Long userId) {
+        return find("userId", userId).firstResult();
+    }
+
 }

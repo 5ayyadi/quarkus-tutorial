@@ -8,19 +8,26 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 @Entity
 public class TokenBalances extends PanacheEntity {
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "token_id", nullable = false)
     private Token token;
 
-    @Column(length = 255)
+    @Column(length = 255, nullable = false)
     private String Balance;
 
     public void setWallet(Wallet wallet) {
         this.wallet = wallet;
+    }
+
+    @PrePersist
+    private void balanceNotNullCheck() {
+        if (Balance == null) {
+            Balance = "0";
+        }
     }
 
     public void setToken(Token token) {
@@ -30,4 +37,18 @@ public class TokenBalances extends PanacheEntity {
     public void setBalance(String balance) {
         Balance = balance;
     }
+
+    public String getBalance() {
+        return Balance;
+    }
+
+    public Token getToken() {
+        return token;
+    }
+
+    @Override
+    public String toString() {
+        return "TokenBalances [Balance=" + Balance + ", token=" + token + ", wallet=" + wallet + "]";
+    }
+
 }

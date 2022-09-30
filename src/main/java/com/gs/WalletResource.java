@@ -41,7 +41,7 @@ public class WalletResource {
             wallets.add(walletRepository.findByAddress(address));
             return wallets;
         }
-        return Wallet.listAll();
+        return walletRepository.listAll();
     }
 
     // TODO: Request body should be controlled to have the specified fields.
@@ -51,15 +51,16 @@ public class WalletResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(Wallet wallet) {
         // TODO - Check if userId has wallet
-        Wallet resWallet = Wallet.findByUserId(wallet.userId);
+        Wallet resWallet = walletRepository.findByUserId(wallet.userId);
         if (resWallet == null) {
             wallet.persist();
             resWallet = wallet;
-            wallet.ValueBalance = "1000";
-            WalletInternalTransactions walletTransactions = new WalletInternalTransactions(wallet, "1000");
+            wallet.setValueBalance("150000");
+            WalletInternalTransactions walletTransactions = new WalletInternalTransactions(wallet,
+                    "1000");
             walletTransactions.persist();
         }
-
+        resWallet.setValueBalance(resWallet.getValueBalance() + "10");
         return Response.status(Status.CREATED).entity(resWallet).build();
     }
 

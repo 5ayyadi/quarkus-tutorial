@@ -35,12 +35,16 @@ public class Token extends PanacheEntity {
         this.name = name;
     }
 
+    public void addTokenBalances(TokenBalances tb) {
+        tokenBalances.add(tb);
+    }
+
     // public void setTokenBalances(Set<TokenBalances> tokenBalances) {
     // this.tokenBalances = tokenBalances;
     // }
-    public Set<TokenBalances> getTokenBalances() {
-        return tokenBalances;
-    }
+    // public Set<TokenBalances> getTokenBalances() {
+    // return tokenBalances;
+    // }
 
     // public Token(String name, String symbol, String address, int decimals) {
     // this.name = name;

@@ -37,8 +37,6 @@ public class TokenBalanceResource {
     public String balance(
             @QueryParam("token_address") String token_address,
             @QueryParam("wallet_address") String wallet_address) {
-        // Long wallet_id = walletRepository.findByAddress(wallet_address).id;
-        // Long token_id = tokenRepository.findByAddress(token_address).id;
         return tokenBalanceRepository.getTokenBalance(wallet_address, token_address);
     }
 
@@ -49,7 +47,6 @@ public class TokenBalanceResource {
     public void transfer(List<String> sAddress, @QueryParam("wallet_address") String walletAddress) {
         Wallet wallet = walletRepository.findByAddress(walletAddress);
         if (wallet != null) {
-
             for (String address : sAddress) {
                 // TODO - Check if token balance record exist then create it
                 TokenBalances tb = new TokenBalances();
@@ -63,7 +60,7 @@ public class TokenBalanceResource {
                     token.symbol = address;
                     token.name = address;
                 }
-                token.getTokenBalances().add(tb);
+                token.addTokenBalances(tb);
                 wallet.getTokenBalances().add(tb);
                 token.persist();
                 tb.setToken(token);
