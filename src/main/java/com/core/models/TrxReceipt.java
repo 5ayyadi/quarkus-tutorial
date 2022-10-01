@@ -26,6 +26,7 @@ public class TrxReceipt extends PanacheEntity {
     public String fromAddress;
     public String toAddress;
     public String logsBloom;
+    public BigInteger requestedBlockNumber;
 
     public TrxReceipt() {
     }

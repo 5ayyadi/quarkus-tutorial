@@ -2,7 +2,10 @@ package com.gs;
 
 import com.core.models.Token;
 import com.core.models.Wallet;
+import com.core.network.Network;
 import com.core.network.NetworkConfig;
+import com.core.network.TransactionGeneration;
+import com.core.network.TransactionGeneration.RawTransactionAndExtraInfo;
 import com.core.wallet.WalletInternalTransactions;
 import io.quarkus.logging.Log;
 
@@ -14,6 +17,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.web3j.abi.datatypes.Address;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +29,11 @@ import java.util.List;
 public class TokenResource {
 
     TokenRepository tokenRepository;
+    WalletRepository walletRepository;
 
-    public TokenResource(TokenRepository tokenRepository) {
+    public TokenResource(TokenRepository tokenRepository, WalletRepository walletRepository) {
         this.tokenRepository = tokenRepository;
+        this.walletRepository = walletRepository;
     }
 
     @GET
@@ -46,9 +52,26 @@ public class TokenResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public void transfer(String sAddress) {
-        Address address = new Address(sAddress);
-        NetworkConfig config = new NetworkConfig();
+    public void transfer(String walletAddress) {
+        Token t = new Token("name", "symbol", "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d", 18, Network.EthereumLocal);
+        Wallet wallet = walletRepository.findByAddress(walletAddress);
+        t.persist();
+        try {
+            RawTransactionAndExtraInfo trx = TransactionGeneration.transferToken(
+                    Network.EthereumLocal,
+                    t,
+                    walletAddress,
+                    walletAddress,
+                    new BigInteger("156000000000000000000"),
+                    null);
+            System.out.println(trx.rawTransaction);
+            System.out.println(trx.requestedBlockNumber);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        // Address address = new Address(sAddress);
+        // NetworkConfig config = new NetworkConfig();
         // Token token = Token.tokenFromAddress(config, address);
         // Token _token = tokenRepository.findByAddress(token.address);
         // if (_token == null) {
