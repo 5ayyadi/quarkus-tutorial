@@ -2,11 +2,11 @@ package com.core.models;
 
 import javax.persistence.*;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import com.core.models.wallet.Wallet;
 
 @Table(name = "token_balance")
 @Entity
-public class TokenBalances extends PanacheEntity {
+public class TokenBalances extends PanacheEntityWithTime {
 
     @ManyToOne()
     @JoinColumn(name = "wallet_id", nullable = false)
@@ -19,6 +19,9 @@ public class TokenBalances extends PanacheEntity {
     @Column(length = 255, nullable = false)
     private String Balance;
 
+    @Column(length = 255, nullable = false)
+    private String ContractBalance;
+
     public void setWallet(Wallet wallet) {
         this.wallet = wallet;
     }
@@ -27,6 +30,9 @@ public class TokenBalances extends PanacheEntity {
     private void balanceNotNullCheck() {
         if (Balance == null) {
             Balance = "0";
+        }
+        if (ContractBalance == null) {
+            ContractBalance = "0";
         }
     }
 

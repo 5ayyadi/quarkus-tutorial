@@ -4,13 +4,15 @@ import java.math.BigInteger;
 import java.util.Optional;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
+@Table(name = "TrxReceipt")
 @Entity
-public class TrxReceipt extends PanacheEntity {
+public class TrxReceipt extends PanacheEntityWithTime {
 
     public String transactionHash;
     public Long transactionIndex;
@@ -26,6 +28,7 @@ public class TrxReceipt extends PanacheEntity {
     public String fromAddress;
     public String toAddress;
     public String logsBloom;
+    public String data;
     public BigInteger requestedBlockNumber;
 
     public TrxReceipt() {
@@ -34,7 +37,7 @@ public class TrxReceipt extends PanacheEntity {
     public TrxReceipt(String transactionHash, Long transactionIndex,
             String blockHash, Long blockNumber, BigInteger cumulativeGasUsed,
             BigInteger gasUsed, String contractAddress, String root, String status,
-            String from, String to, String logsBloom) {
+            String from, String to, String logsBloom, String data) {
         this.transactionHash = transactionHash;
         this.transactionIndex = transactionIndex;
         this.blockHash = blockHash;
@@ -47,6 +50,7 @@ public class TrxReceipt extends PanacheEntity {
         this.fromAddress = from;
         this.toAddress = to;
         this.logsBloom = logsBloom;
+        this.data = data;
     }
 
     public static TrxReceipt fromTransaction(Optional<TransactionReceipt> trx) {
@@ -58,6 +62,7 @@ public class TrxReceipt extends PanacheEntity {
     }
 
     public static TrxReceipt fromTransaction(TransactionReceipt trx) {
+        // TODO - Transaction Data
         return new TrxReceipt(
                 trx.getTransactionHash(),
                 trx.getTransactionIndex().longValue(),
@@ -70,7 +75,8 @@ public class TrxReceipt extends PanacheEntity {
                 trx.getStatus(),
                 trx.getFrom(),
                 trx.getTo(),
-                trx.getLogsBloom());
+                trx.getLogsBloom(),
+                "0x");
     }
 
 }

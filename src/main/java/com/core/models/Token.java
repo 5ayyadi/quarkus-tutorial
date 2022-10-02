@@ -17,7 +17,7 @@ import com.core.network.Network;
 import com.core.network.NetworkConfig;
 
 @Entity
-public class Token extends PanacheEntity {
+public class Token extends PanacheEntityWithTime {
 
     public String name;
 
@@ -25,6 +25,7 @@ public class Token extends PanacheEntity {
 
     @Column(updatable = false, unique = true)
     public String address;
+
     // tOdO - Should later be unique with constraint of network and address
     @Column(nullable = true)
     public Network network;

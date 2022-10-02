@@ -6,9 +6,14 @@ import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.DefaultBlockParameterNumber;
+import org.web3j.protocol.core.methods.response.EthBlock;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.core.methods.response.Web3ClientVersion;
+import org.web3j.protocol.core.methods.response.EthBlock.Block;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.Contract;
 import org.web3j.utils.Numeric;
@@ -19,69 +24,30 @@ import com.core.network.TransactionGeneration;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-class A<T, G> {
-    public A(T a, G b) {
-
-    }
-}
-
 public class main {
 
-    private static Web3j web3j;
-
     public static void main(String[] args) {
-        web3j = Web3j.build(new HttpService("http://localhost:8545/"));
+        Web3j w3 = Network.EthereumLocal.value.w3;
 
-        Web3ClientVersion web3ClientVersion = null;
         try {
-            Address address = new Address("8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d");
-            System.out.println(address);
-            System.out.println(address.getValue().substring(2));
-            String refiendAddress = address.getValue().substring(2);
-            int zerosNeeded = 64 - refiendAddress.length();
-            // new CharArange
-            // char zero = char;
-
-            System.out.println((Strings.zeros(zerosNeeded) + refiendAddress));
-
-            BigInteger number = new BigInteger("150");
-            String refiendNumber = number.toString(16);
-            int numberZerosNeeded = 64 - refiendNumber.length();
-
-            System.out.println(number);
-            System.out.println((Strings.zeros(numberZerosNeeded) + refiendNumber));
-            // String fromWallet = "0xcd3B766CCDd6AE721141F452C550Ca635964ce71";
-            // RawTransaction rawTransaction =
-            // TransactionGeneration.sendETH(Network.EthereumLocal,
-            // fromWallet,
-            // "0x2546BcD3c84621e976D8185a91A922aE77ECEc30",
-            // new BigInteger("999999914922203320700"));
-            // // Web3j w3 =
-
-            // System.out.println(trx_obj);
-
-            // Credentials credentials = Credentials
-            // .create("8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61");
-            // // loadCredentials("password", "/path/to/walletfile");
-
-            // // sign & send our transaction
-            // byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction,
-            // credentials);
-            // String hexValue = Numeric.toHexString(signedMessage);
-            // EthSendTransaction ethSendTransaction =
-            // web3j.ethSendRawTransaction(hexValue).send();
-            // String trxHash = ethSendTransaction.getResult();
-            // Optional<TransactionReceipt> trx =
-            // web3j.ethGetTransactionReceipt(trxHash).send().getTransactionReceipt();
-            // System.out.println(trx);
+            // TODO - ADD block scanner
+            DefaultBlockParameterNumber blockNumber = new DefaultBlockParameterNumber(15260005);
+            Block b = w3.ethGetBlockByNumber(blockNumber, true).send().getBlock();
+            // System.out.println(b);
+            // System.out.println(b.getTransactions());
+            Date d = new Date();
+            System.out.println(d);
+            System.out.println();
 
         } catch (Exception e) {
-            System.err.println(e.getStackTrace());
+            e.printStackTrace();
         }
     }
 }

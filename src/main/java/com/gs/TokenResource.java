@@ -1,21 +1,15 @@
 package com.gs;
 
 import com.core.models.Token;
-import com.core.models.Wallet;
+import com.core.models.wallet.Wallet;
 import com.core.network.Network;
-import com.core.network.NetworkConfig;
 import com.core.network.TransactionGeneration;
 import com.core.network.TransactionGeneration.RawTransactionAndExtraInfo;
-import com.core.wallet.WalletInternalTransactions;
 import io.quarkus.logging.Log;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
-import org.web3j.abi.datatypes.Address;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

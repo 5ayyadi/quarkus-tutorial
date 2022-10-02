@@ -1,7 +1,6 @@
 package com.gs;
 
-import com.core.models.Wallet;
-import com.core.wallet.WalletInternalTransactions;
+import com.core.models.wallet.Wallet;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;

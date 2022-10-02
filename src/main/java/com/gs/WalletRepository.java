@@ -1,10 +1,8 @@
 package com.gs;
 
-import java.util.List;
-
 import javax.enterprise.context.ApplicationScoped;
 
-import com.core.models.Wallet;
+import com.core.models.wallet.Wallet;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 @ApplicationScoped

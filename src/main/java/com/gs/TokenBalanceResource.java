@@ -2,19 +2,11 @@ package com.gs;
 
 import com.core.models.Token;
 import com.core.models.TokenBalances;
-import com.core.models.Wallet;
-import com.core.network.Network;
-import com.core.network.NetworkConfig;
-import com.core.wallet.WalletInternalTransactions;
-import io.quarkus.logging.Log;
+import com.core.models.wallet.Wallet;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
-import org.web3j.abi.datatypes.Address;
 
 import java.util.List;
 

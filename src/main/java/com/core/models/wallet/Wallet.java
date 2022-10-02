@@ -1,4 +1,4 @@
-package com.core.models;
+package com.core.models.wallet;
 
 // import java.sql.Date;
 import java.util.Date;
@@ -15,6 +15,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import com.core.models.PanacheEntityWithTime;
+import com.core.models.TokenBalances;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import org.bitcoinj.wallet.UnreadableWalletException;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,7 +28,7 @@ import com.core.network.Network;
 
 @Table(name = "wallet")
 @Entity
-public class Wallet extends PanacheEntity {
+public class Wallet extends PanacheEntityWithTime {
 
     // TODO: add setter to this class
 

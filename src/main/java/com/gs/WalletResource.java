@@ -16,10 +16,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.core.models.Token;
-import com.core.models.Wallet;
-import com.core.wallet.WalletInternalTransactions;
-import com.core.wallet.WalletTransactions;
+import com.core.models.wallet.Wallet;
+import com.core.models.wallet.WalletInternalTransactions;
 
 import io.quarkus.logging.Log;
 
