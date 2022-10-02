@@ -1,83 +1,120 @@
 package com.core.models;
 
+import java.math.BigInteger;
+// import java.sql.Date;
+import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.JoinColumn;
-
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-
 import org.bitcoinj.wallet.UnreadableWalletException;
-
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import com.core.wallet.WalletKeyPair;
 import com.core.wallet.HDWallet;
-import com.core.math.Decimal;
 import com.core.network.Network;
 
+@Table(name = "wallet")
 @Entity
-public class Wallet extends PanacheEntityBase {
+public class Wallet extends PanacheEntity {
 
     // TODO: add setter to this class
 
-    @Id
-    @GeneratedValue
-    @Column(name = "wallet_id")
-    private Long id;
+    // public int id;
 
     @Column(updatable = false, unique = true)
     public String address;
 
-    @Column(unique = true, name = "user_id")
+    @Column(unique = true)
     public long userId;
 
     @Column(updatable = false)
-    public String privateKey;
+    private String privateKey;
 
     @Column(updatable = false, unique = true)
-    public String publicKey;
+    private String publicKey;
+
+    @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<TokenBalances> tokenBalances = new HashSet<TokenBalances>();
 
     // Amount of Network Value in the wallet (Transfer Only)
     @Column(length = 80)
-    public String ValueBalance;
+    private String valueBalance;
 
-    @OneToMany(mappedBy = "balance")
-    private Set<TokenBalances> tokenBalances = new HashSet<>();
+    @Column
+    @CreationTimestamp
+    private Date createdAt;
 
+    @Column
+    @UpdateTimestamp
+    private Date modifiedAt;
 
     @Override
     public void persist() {
         // TODO - Make Sure UserIds are long and not overflowing
-        this.updateKeys();
+        this.populateKeyPair(this.userId);
         this.address = this.publicKey;
-        if (this.ValueBalance == null) {
-            this.ValueBalance = "0";
+        if (this.valueBalance == null) {
+            this.valueBalance = "0";
         }
         super.persist();
     }
 
-    // public Decimal getValueBalance
-    public Decimal getValueBalance() {
-        return new Decimal(ValueBalance);
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) {
+            createdAt = new Date();
+            System.out.println(createdAt);
+        }
+        System.out.println(this.id);
     }
 
-    public void setValueBalance(Decimal valueBalance) {
-        ValueBalance = valueBalance.toString();
+    // @PreUpdate
+
+    public String getValueBalance() {
+        return valueBalance;
     }
 
-    public void updateKeys() {
+    public void setValueBalance(String valueBalance) {
+        this.valueBalance = valueBalance;
+    }
+
+    public Set<TokenBalances> getTokenBalances() {
+        return tokenBalances;
+    }
+
+    public TokenBalances getTokenBalances(Token token) {
+        Set<TokenBalances> allBalances = this.getTokenBalances();
+        for(TokenBalances tb: allBalances){
+            if(tb.getToken().equals(token)){
+                return tb;
+            }
+        }
+        return null;
+    }
+
+    public void updateTokenBalances(Token token, String balance){
+        TokenBalances tb = this.getTokenBalances(token);
+        tb.setBalance(balance);
+        tb.persist();
+    }
+
+    public void addTokenBalance(TokenBalances tb) {
+        tokenBalances.add(tb);
+    }
+
+    public void populateKeyPair(Long accountIdentifier) {
         if (privateKey == null) {
             try {
-                WalletKeyPair keyPair = HDWallet.Create(Network.Ethereum, Math.toIntExact(this.userId));
+                WalletKeyPair keyPair = HDWallet.Create(Network.Ethereum, Math.toIntExact(accountIdentifier));
                 this.privateKey = keyPair.getPrivateKeyString();
                 this.publicKey = keyPair.getPublicKeyString();
             } catch (UnreadableWalletException e) {
@@ -90,11 +127,6 @@ public class Wallet extends PanacheEntityBase {
         return this.address;
     }
 
-    // TODO - Token based Balance another table
-    // public Long getBalance(TokenAddress address) {
-    // return this.balance;
-    // }
-
     @Override
     public String toString() {
         return "Wallet{" +
@@ -106,18 +138,5 @@ public class Wallet extends PanacheEntityBase {
                 ", id=" + id +
                 '}';
     }
-
-    public static Wallet findByAddress(String address) {
-        return find("address", address).firstResult();
-    }
-
-    public static Wallet findByUserId(long userId) {
-        return find("userId", userId).firstResult();
-    }
-
-    public Set<TokenBalances> getTokenBalances() {
-        return tokenBalances;
-    }
-
 
 }

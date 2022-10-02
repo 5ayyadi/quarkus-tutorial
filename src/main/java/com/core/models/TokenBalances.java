@@ -2,57 +2,53 @@ package com.core.models;
 
 import javax.persistence.*;
 
-import com.core.math.Decimal;
-
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
+@Table(name = "token_balance")
 @Entity
 public class TokenBalances extends PanacheEntity {
- 
-    @EmbeddedId
-    private TokenBalancesId id = new TokenBalancesId();
- 
-    @ManyToOne
-    @MapsId("tokenId")
-    private Token token;
- 
-    @ManyToOne
-    @MapsId("walletId")
+
+    @ManyToOne()
+    @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
 
-    @Column(name = "balance")
-    public Decimal balance;
+    @ManyToOne()
+    @JoinColumn(name = "token_id", nullable = false)
+    private Token token;
 
-    public void setId(TokenBalancesId id) {
-        this.id = id;
+    @Column(length = 255, nullable = false)
+    private String Balance;
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
+    @PrePersist
+    private void balanceNotNullCheck() {
+        if (Balance == null) {
+            Balance = "0";
+        }
     }
 
     public void setToken(Token token) {
         this.token = token;
     }
 
-    public void setWallet(Wallet wallet) {
-        this.wallet = wallet;
+    public void setBalance(String balance) {
+        Balance = balance;
     }
 
-    public void setBalance(Decimal balance) {
-        this.balance = balance;
-    }
-
-    public TokenBalancesId getId() {
-        return id;
+    public String getBalance() {
+        return Balance;
     }
 
     public Token getToken() {
         return token;
     }
 
-    public Wallet getWallet() {
-        return wallet;
+    @Override
+    public String toString() {
+        return "TokenBalances [Balance=" + Balance + ", token=" + token + ", wallet=" + wallet + "]";
     }
 
-    public Decimal getBalance() {
-        return balance;
-    } 
-    
 }

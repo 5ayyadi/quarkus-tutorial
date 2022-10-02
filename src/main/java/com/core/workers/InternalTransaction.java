@@ -1,9 +1,10 @@
 package com.core.workers;
 
+import java.math.BigInteger;
 import java.util.List;
 
+import com.core.models.TokenBalances;
 import com.core.models.TransactionStatus;
-import com.core.models.TransactionType;
 import com.core.models.Wallet;
 import com.core.wallet.WalletInternalTransactions;
 
@@ -19,17 +20,27 @@ public class InternalTransaction extends PanacheEntity {
                 case TRANSFER:
                 Wallet source = trx.fromWallet;
                 Wallet destination = trx.toWallet;
-                // get source and destination token balance
-                // add balance to destination
-                // subtract from source
+                TokenBalances sourceBalance = source.getTokenBalances(trx.token);
+                TokenBalances destinationBalance = destination.getTokenBalances(trx.token);
+                BigInteger sb = new BigInteger(sourceBalance.getBalance());
+                BigInteger db = new BigInteger(destinationBalance.getBalance());           
+                db.add(trx.amount);
+                sb.subtract(trx.amount);
                 break;
                 case DEPOSIT:
-                // add balance to destination
+                destination = trx.toWallet;
+                destinationBalance = destination.getTokenBalances(trx.token);
+                db = new BigInteger(destinationBalance.getBalance());
+                db.add(trx.amount);
                 break;
                 case WITHDRAW:
-                // subtract balance from source
+                source = trx.fromWallet;
+                sourceBalance = source.getTokenBalances(trx.token);
+                sb = new BigInteger(sourceBalance.getBalance());
+                sb.subtract(trx.amount);
             }
-            // change status to success
+            trx.trxStatus = TransactionStatus.SUCCESS;
+            trx.persist();
         }
 
     }
