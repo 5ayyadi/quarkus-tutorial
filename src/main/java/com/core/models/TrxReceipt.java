@@ -3,10 +3,16 @@ package com.core.models;
 import java.math.BigInteger;
 import java.util.Optional;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
+
+import com.core.models.block.ScannedBlocks;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
@@ -18,6 +24,10 @@ public class TrxReceipt extends PanacheEntityWithTime {
     public Long transactionIndex;
     public String blockHash;
     public Long blockNumber;
+
+    @ManyToOne
+    public ScannedBlocks blockNumberId;
+
     public BigInteger cumulativeGasUsed;
     public BigInteger gasUsed;
     public String contractAddress;

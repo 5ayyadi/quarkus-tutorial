@@ -14,31 +14,10 @@ import com.core.models.TrxReceipt;
 @Entity
 public class WalletExternalTransactions extends WalletTransactionsBasicModel {
 
-    @ManyToOne
-    @JoinColumn(name = "token_id", nullable = true)
-    Token token;
-
-    @ManyToOne
-    @JoinColumn(name = "wallet_id")
-    Wallet wallet;
-
     @OneToOne
     @JoinColumn(name = "TrxReceipt_id")
     // @Column(nullable = true)
     private TrxReceipt trxReceipt;
-
-    @Column(name = "amount")
-    public String amount;
-
-    // @CreationTimestamp
-    // @Temporal(TemporalType.TIMESTAMP)
-    // @Column(name = "create_date")
-    // private Date createDate;
-
-    // @UpdateTimestamp
-    // @Temporal(TemporalType.TIMESTAMP)
-    // @Column(name = "modify_date")
-    // private Date modifyDate;
 
     public WalletExternalTransactions() {
     }

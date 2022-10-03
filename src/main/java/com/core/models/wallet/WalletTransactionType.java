@@ -5,5 +5,6 @@ public enum WalletTransactionType {
     DEPOSIT,
     TRANSFER,
     ERC20TRANSFER,
-    ETH_TRANSFER;
+    ETH_TRANSFER,
+    CONTRACT_CALL;
 }

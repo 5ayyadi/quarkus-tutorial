@@ -2,6 +2,7 @@ package com.core.models.wallet;
 
 import com.core.models.PanacheEntityWithTime;
 import com.core.models.Token;
+import com.google.inject.internal.MoreTypes.WildcardTypeImpl;
 
 import java.math.BigInteger;
 import java.util.Objects;
@@ -32,6 +33,7 @@ public abstract class WalletTransactionsBasicModel extends PanacheEntityWithTime
     public String amount;
 
     public WalletTransactionStatus status;
+    public WalletTransactionType type;
 
     public WalletTransactionsBasicModel() {
     }

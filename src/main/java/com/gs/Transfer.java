@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
-@Entity
+// @Entity
 public class Transfer extends PanacheEntity {
 
     @Column()
