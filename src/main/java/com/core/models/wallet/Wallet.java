@@ -16,6 +16,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import com.core.models.PanacheEntityWithTime;
+import com.core.models.Token;
 import com.core.models.TokenBalances;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import org.bitcoinj.wallet.UnreadableWalletException;
@@ -97,6 +98,22 @@ public class Wallet extends PanacheEntityWithTime {
 
     public void addTokenBalance(TokenBalances tb) {
         tokenBalances.add(tb);
+    }
+
+    public TokenBalances getTokenBalances(Token token) {
+        Set<TokenBalances> allBalances = this.getTokenBalances();
+        for (TokenBalances tb : allBalances) {
+            if (tb.getToken().equals(token)) {
+                return tb;
+            }
+        }
+        return null;
+    }
+
+    public void updateTokenBalances(Token token, String balance) {
+        TokenBalances tb = this.getTokenBalances(token);
+        tb.setBalance(balance);
+        tb.persist();
     }
 
     public void populateKeyPair(Long accountIdentifier) {

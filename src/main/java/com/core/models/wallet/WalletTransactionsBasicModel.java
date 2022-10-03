@@ -23,14 +23,14 @@ public abstract class WalletTransactionsBasicModel extends PanacheEntityWithTime
 
     @ManyToOne
     @JoinColumn(name = "token_id", nullable = true)
-    Token token;
+    public Token token;
 
     @ManyToOne
     @JoinColumn(name = "wallet_id")
-    Wallet wallet;
+    public Wallet wallet;
 
     @Column(name = "amount")
-    public String amount;
+    public BigInteger amount;
 
     public WalletTransactionStatus status;
     public WalletTransactionType type;
@@ -47,6 +47,10 @@ public abstract class WalletTransactionsBasicModel extends PanacheEntityWithTime
     }
 
     public WalletTransactionsBasicModel(Logger logger, Token token, Wallet wallet, String amount) {
+        this(logger, token, wallet, new BigInteger(amount));
+    }
+
+    public WalletTransactionsBasicModel(Logger logger, Token token, Wallet wallet, BigInteger amount) {
         this.amount = amount;
         // this.logger = logger;
         this.wallet = wallet;

@@ -6,5 +6,5 @@ public enum WalletTransactionStatus {
     SUBMITTED,
     FINISHED,
     PENDING,
-    STARTED;
+    STARTED, SUCCESS;
 }
