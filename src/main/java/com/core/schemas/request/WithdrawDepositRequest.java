@@ -14,4 +14,7 @@ public class WithdrawDepositRequest {
     public TransactionStatus status = TransactionStatus.RECEIVED;
     public String trxHash;
 
+    public void changeStatus(TransactionStatus status){
+        this.status = status;
+    }
 }

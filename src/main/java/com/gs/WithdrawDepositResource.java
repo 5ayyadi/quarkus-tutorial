@@ -32,7 +32,7 @@ public class WithdrawDepositResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response depositAddress(@QueryParam("user_id") Long userId){
         Wallet resWallet = walletRepository.findByUserId(userId);
-        return Response.status(Status.OK).entity(resWallet.address).build();
+        return Response.status(Status.OK).entity(resWallet).build();
     }
 
     @Path("/deposit")
@@ -40,10 +40,10 @@ public class WithdrawDepositResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deposit(WithdrawDepositRequest request){
-        request.status = TransactionStatus.PENDING;
+        request.changeStatus(TransactionStatus.PENDING);
         Wallet resWallet = walletRepository.findByUserId(request.userId);
         if(Deposit.isValid(request, resWallet)){
-            request.status = TransactionStatus.CONFIRMED;
+            request.changeStatus(TransactionStatus.CONFIRMED);
             resWallet.deposit(request, tokenBalanceRepository);
         };
         return Response.status(Status.OK).entity(resWallet).build();
@@ -54,11 +54,12 @@ public class WithdrawDepositResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response withdraw(WithdrawDepositRequest request) {
-        // create a transaction
-        // add transaction to database
-        // change status to pending
-        request.status = TransactionStatus.PENDING;
-        return Response.status(Status.OK)/* .entity(transaction)*/.build();
+        request.changeStatus(TransactionStatus.PENDING);
+        Wallet resWallet = walletRepository.findByUserId(request.userId);
+        // withdraw in blockchain
+        // blockchain.withdraw(request);
+        resWallet.withdraw(request, tokenBalanceRepository);
+        return Response.status(Status.OK).entity(request).build();
     }
     
 }
