@@ -1,15 +1,20 @@
-version: "3"
+version: '3.7'
 services:
   db:
     image: postgres:12
     restart: always
-    container_name: postgres-db
-    # env_file:
-    #   - .env
+    container_name: postgres_db_new
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    ports:
-      - '5432:5432' 
-    volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+      - POSTGRES_DB=evm_wallet_manager
+
+
+volumes:
+  postgres_data:
+
+  

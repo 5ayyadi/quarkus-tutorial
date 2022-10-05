@@ -1,5 +1,6 @@
 package com.core.models.wallet;
 
+import java.math.BigInteger;
 // import java.sql.Date;
 import java.util.Date;
 import java.util.HashSet;
@@ -18,14 +19,20 @@ import javax.persistence.Table;
 import com.core.models.PanacheEntityWithTime;
 import com.core.models.Token;
 import com.core.models.TokenBalances;
+import com.core.models.TransactionStatus;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import org.bitcoinj.wallet.UnreadableWalletException;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.web3j.abi.datatypes.Address;
+
 import com.core.wallet.WalletKeyPair;
+import com.gs.TokenBalanceRepository;
 import com.core.wallet.HDWallet;
 import com.core.math.Decimal;
 import com.core.network.Network;
+import com.core.schemas.request.WithdrawDepositRequest;
 
 @Table(name = "wallet")
 @Entity
@@ -130,6 +137,13 @@ public class Wallet extends PanacheEntityWithTime {
 
     public String getAddress() {
         return this.address;
+    }
+
+    public void deposit(WithdrawDepositRequest request, TokenBalanceRepository tbRepo){
+        BigInteger balance = new BigInteger(tbRepo.getTokenBalance(request.walletAddress, request.tokenAddress));
+        balance.add(request.amount);
+        this.updateTokenBalances(Token.tokenFromAddress(request.network, new Address(request.tokenAddress)), balance.toString());
+        request.status = TransactionStatus.SUCCESS; 
     }
 
     @Override
