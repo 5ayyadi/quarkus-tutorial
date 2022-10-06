@@ -153,6 +153,12 @@ public class Wallet extends PanacheEntityWithTime {
         request.changeStatus(TransactionStatus.SUCCESS); 
     }
 
+    public boolean hasBalance(WithdrawDepositRequest request, TokenBalanceRepository tbRepo){
+        BigInteger balance = new BigInteger(tbRepo.getTokenBalance(request.walletAddress, request.tokenAddress));
+        // returns 0 if equals and -1 if balance is less than amount
+        return balance.compareTo(request.amount) == 1 ? true : false;
+    }
+
     @Override
     public String toString() {
         return "Wallet{" +

@@ -56,10 +56,14 @@ public class WithdrawDepositResource {
     public Response withdraw(WithdrawDepositRequest request) {
         request.changeStatus(TransactionStatus.PENDING);
         Wallet resWallet = walletRepository.findByUserId(request.userId);
-        // withdraw in blockchain
-        // blockchain.withdraw(request);
-        resWallet.withdraw(request, tokenBalanceRepository);
-        return Response.status(Status.OK).entity(request).build();
+        if(resWallet.hasBalance(request,tokenBalanceRepository)){
+            // withdraw in blockchain
+            // blockchain.withdraw(request);
+            resWallet.withdraw(request, tokenBalanceRepository);
+            return Response.status(Status.OK).entity(request).build();
+
+        }
+        return Response.status(Status.NOT_ACCEPTABLE).entity(request).build();
     }
     
 }
