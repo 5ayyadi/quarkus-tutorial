@@ -23,8 +23,9 @@ public class WithdrawDepositResource {
     public TokenBalanceRepository tokenBalanceRepository;
 
 
-    public WithdrawDepositResource(WalletRepository walletRepository) {
+    public WithdrawDepositResource(WalletRepository walletRepository, TokenBalanceRepository tokenBalanceRepository) {
         this.walletRepository = walletRepository;
+        this.tokenBalanceRepository = tokenBalanceRepository;
     }
 
     @Path("/deposit")

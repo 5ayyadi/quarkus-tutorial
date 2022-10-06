@@ -1,6 +1,8 @@
 package com.gs;
 
+import com.core.models.TransactionStatus;
 import com.core.models.wallet.Wallet;
+import com.core.schemas.request.TransferRequest;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
@@ -14,31 +16,33 @@ import javax.ws.rs.core.Response.Status;;
 @Path("/transfer")
 public class TransferResource {
 
-    WalletRepository walletRepository;
+    public WalletRepository walletRepository;
+    public TokenBalanceRepository tokenBalanceRepository;
 
-    public TransferResource(WalletRepository walletRepository) {
+
+    public TransferResource(WalletRepository walletRepository, TokenBalanceRepository tokenBalanceRepository) {
         this.walletRepository = walletRepository;
+        this.tokenBalanceRepository = tokenBalanceRepository;
     }
+
 
     @Transactional
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response transfer(Transfer transfer) {
-        // TODO - Add custom responses
-        Wallet from = walletRepository.findByAddress(transfer.getFrom());
-        // if(from.ValueBalance > transfer.getAmount()){
-        // return Response.status(Status.BAD_REQUEST).entity(transfer).build();
-        // }
-        Wallet to = walletRepository.findByAddress(transfer.getTo());
-        System.out.println(to);
-        System.out.println(from);
-        // WalletInternalTransactions x = new WalletInternalTransactions(from);
-
-        return Response.status(Status.OK).entity(transfer).build();
-
-        // to.balance += transfer.getAmount();
-        // from.balance -= transfer.getAmount();
+    public Response transfer(TransferRequest request) {
+        request.changeStatus(TransactionStatus.PENDING);
+        Wallet fromWallet = walletRepository.findByUserId(request.fromUID);
+        Wallet toWallet = walletRepository.findByUserId(request.toUID);
+        if(fromWallet.hasBalance(request,tokenBalanceRepository)){
+            // withdraw in blockchain
+            // blockchain.withdraw(request);
+            fromWallet.withdraw(request, tokenBalanceRepository);
+            toWallet.deposit(request, tokenBalanceRepository);
+            request.changeStatus(TransactionStatus.SUCCESS); 
+            return Response.status(Status.OK).entity(request).build();
+        }
+        return Response.status(Status.NOT_ACCEPTABLE).entity(request).build();
     }
 
 }
