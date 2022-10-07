@@ -1,10 +1,7 @@
 package com.core.models.wallet;
 
 import java.math.BigInteger;
-// import java.sql.Date;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,31 +10,22 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import org.bitcoinj.wallet.UnreadableWalletException;
+import org.web3j.abi.datatypes.Address;
+
+import com.core.errors.ReachedMaxUserId;
 import com.core.models.PanacheEntityWithTime;
 import com.core.models.Token;
 import com.core.models.TokenBalances;
 import com.core.models.TransactionStatus;
-
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import org.bitcoinj.wallet.UnreadableWalletException;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import com.core.wallet.WalletKeyPair;
-import com.core.wallet.HDWallet;
-import com.core.math.Decimal;
-import com.core.network.Network;
-import org.web3j.abi.datatypes.Address;
-
-import com.core.wallet.WalletKeyPair;
-import com.gs.TokenBalanceRepository;
-import com.core.wallet.HDWallet;
-import com.core.math.Decimal;
 import com.core.network.Network;
 import com.core.schemas.request.TransferRequest;
 import com.core.schemas.request.WithdrawDepositRequest;
+import com.core.wallet.HDWallet;
+import com.core.wallet.WalletKeyPair;
+import com.gs.TokenBalanceRepository;
 
 @Table(name = "wallet")
 @Entity
@@ -66,35 +54,26 @@ public class Wallet extends PanacheEntityWithTime {
     @Column(length = 80)
     private String valueBalance;
 
-    @Column
-    @CreationTimestamp
-    private Date createdAt;
+    public Wallet() {
+    }
 
-    @Column
-    @UpdateTimestamp
-    private Date modifiedAt;
+    public Wallet(Long userId) {
+        this.userId = userId;
+    }
 
-    @Override
-    public void persist() {
+    @PrePersist
+    public void populateKeysUsingUID() throws ReachedMaxUserId {
         // TODO - Make Sure UserIds are long and not overflowing
+        if (this.userId > ReachedMaxUserId.MAX_USER_ID) {
+            throw new ReachedMaxUserId();
+        }
+        ;
         this.populateKeyPair(this.userId);
         this.address = this.publicKey;
         if (this.valueBalance == null) {
             this.valueBalance = "0";
         }
-        super.persist();
     }
-
-    @PrePersist
-    public void prePersist() {
-        if (createdAt == null) {
-            createdAt = new Date();
-            System.out.println(createdAt);
-        }
-        System.out.println(this.id);
-    }
-
-    // @PreUpdate
 
     public String getValueBalance() {
         return valueBalance;
@@ -176,7 +155,8 @@ public class Wallet extends PanacheEntityWithTime {
     }
 
     public boolean hasBalance(WithdrawDepositRequest request, TokenBalanceRepository tbRepo) {
-        BigInteger balance = new BigInteger(tbRepo.getTokenBalance(request.walletAddress, request.tokenAddress));
+        BigInteger balance = new BigInteger(
+                tbRepo.getTokenBalance(request.walletAddress, request.tokenAddress));
         // returns 0 if equals and -1 if balance is less than amount
         return balance.compareTo(request.amount) == 1 ? true : false;
     }

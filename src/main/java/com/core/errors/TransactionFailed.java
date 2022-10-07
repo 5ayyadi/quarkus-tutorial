@@ -1,9 +1,11 @@
 package com.core.errors;
 
-public class TransactionFailed extends Exception {
-    String msg;
+import javax.ws.rs.core.Response.Status;
+
+public class TransactionFailed extends BaseCustomError {
 
     public TransactionFailed(String msg) {
-        this.msg = msg;
+        this.errorMsg = msg;
+        this.statusCode = Status.EXPECTATION_FAILED;
     }
 }

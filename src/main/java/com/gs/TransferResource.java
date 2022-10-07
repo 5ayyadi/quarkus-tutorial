@@ -29,8 +29,12 @@ public class TransferResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response transfer(TransferRequest request) {
+
         request.changeStatus(TransactionStatus.PENDING);
         Wallet fromWallet = walletRepository.findByUserId(request.fromUID);
+        // TEST ....
+        tokenBalanceRepository.changeTokenBalance(request.tokenId, fromWallet.id, "10000");
+
         Wallet toWallet = walletRepository.findByUserId(request.toUID);
         if (fromWallet.hasBalance(request, tokenBalanceRepository)) {
             // withdraw in blockchain

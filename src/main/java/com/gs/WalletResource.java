@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response.Status;
 
 import com.core.models.wallet.Wallet;
 import com.core.models.wallet.WalletInternalTransactions;
+import com.core.schemas.request.WalletCreationRequest;
 
 import io.quarkus.logging.Log;
 
@@ -25,9 +26,12 @@ import io.quarkus.logging.Log;
 public class WalletResource {
 
     WalletRepository walletRepository;
+    WalletInternalTransactionRepository walletInternalTransactionRepository;
 
-    public WalletResource(WalletRepository walletRepository) {
+    public WalletResource(WalletRepository walletRepository,
+            WalletInternalTransactionRepository walletInternalTransactionRepository) {
         this.walletRepository = walletRepository;
+        this.walletInternalTransactionRepository = walletInternalTransactionRepository;
     }
 
     @GET
@@ -47,18 +51,19 @@ public class WalletResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Wallet wallet) {
+    public Response create(WalletCreationRequest walletReq) {
         // TODO - Check if userId has wallet
-        Wallet resWallet = walletRepository.findByUserId(wallet.userId);
+        Wallet resWallet = walletRepository.findByUserId(walletReq.userId);
+        Wallet wallet;
         if (resWallet == null) {
-            wallet.persist();
+            wallet = new Wallet(walletReq.userId);
+            walletRepository.persist(wallet);
             resWallet = wallet;
             wallet.setValueBalance("150000");
             WalletInternalTransactions walletTransactions = new WalletInternalTransactions(wallet,
                     "1000");
-            walletTransactions.persist();
+            walletInternalTransactionRepository.persist(walletTransactions);
         }
-        resWallet.setValueBalance(resWallet.getValueBalance() + "10");
         return Response.status(Status.CREATED).entity(resWallet).build();
     }
 
