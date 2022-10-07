@@ -37,6 +37,16 @@ public class InternalTransaction extends PanacheEntity {
                     sourceBalance = source.getTokenBalances(trx.token);
                     sb = new BigInteger(sourceBalance.getBalance());
                     sb.subtract(trx.amount);
+                case CONTRACT_CALL:
+                    break;
+                case ERC20TRANSFER:
+                    break;
+                case ETH_TRANSFER:
+                    break;
+                case WITHDRAWAL:
+                    break;
+                default:
+                    break;
             }
             trx.status = WalletTransactionStatus.SUCCESS;
             trx.persist();

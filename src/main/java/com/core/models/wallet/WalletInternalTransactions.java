@@ -13,7 +13,7 @@ import com.core.models.Token;
 public class WalletInternalTransactions extends WalletTransactionsBasicModel {
 
     @ManyToOne
-    @JoinColumn(name = "wallet_id")
+    @JoinColumn(name = "to_wallet")
     public Wallet toWallet;
 
     public WalletInternalTransactions() {
