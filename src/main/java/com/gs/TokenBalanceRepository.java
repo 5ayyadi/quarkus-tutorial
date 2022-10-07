@@ -43,6 +43,18 @@ public class TokenBalanceRepository implements PanacheRepository<TokenBalances> 
                 Query query = this.getEntityManager().createNativeQuery(q);
                 String r = (String) query.getSingleResult();
                 return true;
+        }
+
+        public boolean changeTokenBalance(String wallet_address, String token_address, String newBalance) {
+                String q = String.format(
+                                "SELECT balance from token" +
+                                                " JOIN token_balance tb on token.id = tb.token_id " +
+                                                "join wallet w on w.id = tb.wallet_id" +
+                                                " where w.address = '%s' and token.address = '%s'",
+                                wallet_address, token_address);
+                Query query = this.getEntityManager().createNativeQuery(q);
+                String r = (String) query.getSingleResult();
+                return true;
 
         }
 }

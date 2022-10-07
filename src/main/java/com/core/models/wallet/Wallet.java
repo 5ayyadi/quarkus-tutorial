@@ -13,7 +13,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.bitcoinj.wallet.UnreadableWalletException;
-import org.web3j.abi.datatypes.Address;
 
 import com.core.errors.ReachedMaxUserId;
 import com.core.models.PanacheEntityWithTime;
@@ -26,6 +25,7 @@ import com.core.schemas.request.WithdrawDepositRequest;
 import com.core.wallet.HDWallet;
 import com.core.wallet.WalletKeyPair;
 import com.gs.TokenBalanceRepository;
+import com.gs.TokenRepository;
 
 @Table(name = "wallet")
 @Entity
@@ -126,32 +126,28 @@ public class Wallet extends PanacheEntityWithTime {
     public void deposit(WithdrawDepositRequest request, TokenBalanceRepository tbRepo) {
         BigInteger balance = new BigInteger(tbRepo.getTokenBalance(request.walletAddress, request.tokenAddress));
         balance.add(request.amount);
-        this.updateTokenBalances(Token.tokenFromAddress(request.network, new Address(request.tokenAddress)),
-                balance.toString());
+        tbRepo.changeTokenBalance(request.walletAddress, request.tokenAddress, balance.toString());
         request.changeStatus(TransactionStatus.SUCCESS);
     }
 
     public void withdraw(WithdrawDepositRequest request, TokenBalanceRepository tbRepo) {
         BigInteger balance = new BigInteger(tbRepo.getTokenBalance(request.walletAddress, request.tokenAddress));
         balance.subtract(request.amount);
-        this.updateTokenBalances(Token.tokenFromAddress(request.network, new Address(request.tokenAddress)),
-                balance.toString());
+        tbRepo.changeTokenBalance(request.walletAddress, request.tokenAddress, balance.toString());
         request.changeStatus(TransactionStatus.SUCCESS);
     }
 
     public void deposit(TransferRequest request, TokenBalanceRepository tbRepo) {
         BigInteger balance = new BigInteger(tbRepo.getTokenBalance(this.userId, request.tokenId));
         balance.add(request.amount);
+        tbRepo.changeTokenBalance(this.userId, request.tokenId, balance.toString());
         // TODO: add token repository here and in withdraw
-        // this.updateTokenBalances(Token.tokenFromAddress(request.network, new
-        // Address(request.tokenAddress)), balance.toString());
     }
 
     public void withdraw(TransferRequest request, TokenBalanceRepository tbRepo) {
         BigInteger balance = new BigInteger(tbRepo.getTokenBalance(this.userId, request.tokenId));
         balance.subtract(request.amount);
-        // this.updateTokenBalances(Token.tokenFromAddress(request.network, new
-        // Address(request.tokenAddress)), balance.toString());
+        tbRepo.changeTokenBalance(this.userId, request.tokenId, balance.toString());
     }
 
     public boolean hasBalance(WithdrawDepositRequest request, TokenBalanceRepository tbRepo) {
