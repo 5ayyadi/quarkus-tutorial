@@ -17,9 +17,6 @@
     <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
   </properties>
   <dependencyManagement>
-
-
-  
     <dependencies>
       <dependency>
         <groupId>${quarkus.platform.group-id}</groupId>
@@ -31,22 +28,16 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
-<dependency>
-		<groupId>org.web3j</groupId>
-		<artifactId>core</artifactId>
-		<version>3.6.0</version>
-	</dependency>
-  
-
-  
-
-    <!-- https://mvnrepository.com/artifact/org.bitcoinj/bitcoinj-core -->
+    <dependency>
+      <groupId>org.web3j</groupId>
+      <artifactId>core</artifactId>
+      <version>3.6.0</version>
+    </dependency>
     <dependency>
       <groupId>org.bitcoinj</groupId>
       <artifactId>bitcoinj-core</artifactId>
       <version>0.16.1</version>
     </dependency>
-
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy</artifactId>
@@ -78,6 +69,10 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-jdbc-postgresql</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-scheduler</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>

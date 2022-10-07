@@ -2,6 +2,8 @@ package com.core.network;
 
 import java.util.logging.Logger;
 
+import org.web3j.protocol.Web3j;
+
 public enum Network {
 
         // BSCTestNet(new NetworkDetail("Binance Smart Chain testnet", "BSC", 60, 97,
@@ -24,15 +26,18 @@ public enum Network {
 
         public final NetworkDetail value;
         public final Logger logger;
+        public final Web3j w3;
 
         Network(NetworkDetail value) {
                 this.value = value;
+                this.w3 = value.w3;
                 String loggerName = String.format("NetworkLogger:%s", value.name);
                 this.logger = Logger.getLogger(loggerName);
         }
 
         Network(NetworkDetail value, Logger logger) {
                 this.value = value;
+                this.w3 = value.w3;
                 this.logger = logger;
         }
 
