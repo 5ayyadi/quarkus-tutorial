@@ -44,9 +44,9 @@ public class WithdrawDepositResource {
         if (Deposit.isValid(request, resWallet)) {
             request.changeStatus(TransactionStatus.CONFIRMED);
             resWallet.deposit(request, tokenBalanceRepository);
+            return Response.status(Status.OK).entity(resWallet).build();
         }
-        ;
-        return Response.status(Status.OK).entity(resWallet).build();
+        return Response.status(Status.BAD_REQUEST).entity(resWallet).build();
     }
 
     @Path("/withdraw")

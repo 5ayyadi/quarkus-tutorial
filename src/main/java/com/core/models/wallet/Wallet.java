@@ -124,29 +124,34 @@ public class Wallet extends PanacheEntityWithTime {
     }
 
     public void deposit(WithdrawDepositRequest request, TokenBalanceRepository tbRepo) {
-        BigInteger balance = new BigInteger(tbRepo.getTokenBalance(request.walletAddress, request.tokenAddress));
-        balance.add(request.amount);
+        String balanceString = tbRepo.getTokenBalance(request.walletAddress, request.tokenAddress);
+        if(balanceString == null){
+            TokenBalances tb = new TokenBalances();
+            this.addTokenBalance(null);
+        }
+        BigInteger balance = new BigInteger(balanceString);
+        balance = balance.add(request.amount);
         tbRepo.changeTokenBalance(request.walletAddress, request.tokenAddress, balance.toString());
         request.changeStatus(TransactionStatus.SUCCESS);
     }
 
     public void withdraw(WithdrawDepositRequest request, TokenBalanceRepository tbRepo) {
         BigInteger balance = new BigInteger(tbRepo.getTokenBalance(request.walletAddress, request.tokenAddress));
-        balance.subtract(request.amount);
+        balance = balance.subtract(request.amount);
         tbRepo.changeTokenBalance(request.walletAddress, request.tokenAddress, balance.toString());
         request.changeStatus(TransactionStatus.SUCCESS);
     }
 
     public void deposit(TransferRequest request, TokenBalanceRepository tbRepo) {
         BigInteger balance = new BigInteger(tbRepo.getTokenBalance(this.userId, request.tokenId));
-        balance.add(request.amount);
+        balance = balance.add(request.amount);
         tbRepo.changeTokenBalance(this.userId, request.tokenId, balance.toString());
         // TODO: add token repository here and in withdraw
     }
 
     public void withdraw(TransferRequest request, TokenBalanceRepository tbRepo) {
         BigInteger balance = new BigInteger(tbRepo.getTokenBalance(this.userId, request.tokenId));
-        balance.subtract(request.amount);
+        balance = balance.subtract(request.amount);
         tbRepo.changeTokenBalance(this.userId, request.tokenId, balance.toString());
     }
 

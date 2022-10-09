@@ -1,6 +1,7 @@
 package com.core.models;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.logging.Log;
 
 import java.math.BigInteger;
 import java.util.HashSet;
@@ -15,6 +16,7 @@ import org.web3j.abi.datatypes.Address;
 import com.core.network.ERC20;
 import com.core.network.Network;
 import com.core.network.NetworkConfig;
+import com.core.schemas.request.TokenRequest;
 
 @Entity
 public class Token extends PanacheEntityWithTime {
@@ -79,6 +81,19 @@ public class Token extends PanacheEntityWithTime {
             token = null;
         }
         return token;
+    }
+
+    public static boolean create(TokenRequest request){
+        try{
+            Token token = Token.tokenFromAddress(request.network, new Address(request.address));
+            token.persist();
+            return true;
+        } catch(Exception e){
+            Log.errorf("at Token.create request: %s, error: %s",request, e);
+            return false;
+
+        }
+
     }
 
 }
