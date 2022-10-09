@@ -12,13 +12,14 @@ import com.core.network.Network;
 
 public class HDWallet {
 
-    // Creation time of the key in seconds since the epoch, or zero if the key was deserialized from a version that did
+    // Creation time of the key in seconds since the epoch, or zero if the key was
+    // deserialized from a version that did
     // not have this field.
     private static final long CreationTimeStamp = 1409478661L;
 
     public static HDPath HDPathGenerator(int chainCoinType, int accountId, int accountIndex) {
         // m / purpose' / coin_type' / account' / change / address_index
-        return HDPath.parsePath(String.format("M/44H/%dH/%dH/0/%d", chainCoinType, accountId, accountIndex));
+        return HDPath.parsePath(String.format("m/44H/%dH/%dH/0/%d", chainCoinType, accountId, accountIndex));
     }
 
     private static String mnemonic = "science limit budget find another chair orient duty cost expire soap great";
@@ -39,10 +40,12 @@ public class HDWallet {
                         accountId,
                         accountIndex),
                 true);
-        String privKey = Sign.publicKeyFromPrivate(addrKey.getPrivKey()).toString(16);
-        addrKey.getPublicKeyAsHex();
-        addrKey.decompress().getPublicKeyAsHex();
-        addrKey.decompress().getPublicKeyAsHex().substring(2);
+        String privKey = addrKey.getPrivKey().toString(16);
+        // String privKey =
+        // Sign.publicKeyFromPrivate(addrKey.getPrivKey()).toString(16);
+        // addrKey.getPublicKeyAsHex();
+        // addrKey.decompress().getPublicKeyAsHex();
+        // addrKey.decompress().getPublicKeyAsHex().substring(2);
         String pubKey = Keys.getAddress(addrKey.decompress().getPublicKeyAsHex().substring(2));
         return new WalletKeyPair(privKey, pubKey);
     }
