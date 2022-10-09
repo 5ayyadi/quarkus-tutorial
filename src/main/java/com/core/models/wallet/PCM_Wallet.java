@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.web3j.crypto.Credentials;
+import org.web3j.crypto.ECKeyPair;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tx.gas.DefaultGasProvider;
 
@@ -29,6 +30,26 @@ public class PCM_Wallet extends PanacheEntityWithTime {
     
     @Column(updatable = false, unique = true)
     private Network network;
+
+    
+
+
+    public PCM_Wallet(String privateKey, String publicKey, Network network) {
+        this.privateKey = privateKey;
+        this.publicKey = publicKey;
+        this.network = network;
+    }
+
+    public PCM_Wallet() {
+    }
+
+    public static String getPublicKeyInHex(String privateKeyInHex) {
+        BigInteger privateKeyInBT = new BigInteger(privateKeyInHex, 16);
+        ECKeyPair aPair = ECKeyPair.create(privateKeyInBT);
+        BigInteger publicKeyInBT = aPair.getPublicKey();
+        String sPublickeyInHex = publicKeyInBT.toString(16);
+        return sPublickeyInHex;
+    }
 
     public ERC20 contract(String tokenAddress){
         return ERC20.load(tokenAddress, network.value.config.w3, 

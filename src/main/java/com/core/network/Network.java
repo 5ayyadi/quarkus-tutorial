@@ -22,7 +22,9 @@ public enum Network {
                         new NetworkConfig("0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6",
                                         "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"))),
         Fantom(new NetworkDetail("Fantom Opera", "FTM", 60, 250, new NetworkConfig(
-                        "0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6", "https://rpc.ankr.com/fantom/")));
+                        "0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6", "https://rpc.ankr.com/fantom/"))),
+        FtmTestnet(new NetworkDetail("Fantom Testnet", "FTM", 60, 0xfa2, new NetworkConfig(
+                "0x07b9c47452c41e8e00f98ac4c075f5c443281d2a", "https://rpc.testnet.fantom.network/")));
 
         public final NetworkDetail value;
         public final Logger logger;
