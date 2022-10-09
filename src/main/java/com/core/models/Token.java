@@ -23,6 +23,7 @@ public class Token extends PanacheEntityWithTime {
 
     public String name;
 
+    @Column(unique = true)
     public String symbol;
 
     @Column(updatable = false, unique = true)
@@ -62,38 +63,6 @@ public class Token extends PanacheEntityWithTime {
 
     public ERC20 tokenContract() {
         return ERC20.load(address, network.value.w3);
-    }
-
-    public static Token tokenFromAddress(Network network, Address address) {
-        Token token;
-        // ToDo - Query Token First ...
-        ERC20 erc20TokenContract = ERC20.load(address.toString(), network.value.config.w3);
-        try {
-            token = new Token(
-                    erc20TokenContract.name().send(),
-                    erc20TokenContract.symbol().send(),
-                    address.toString(),
-                    erc20TokenContract.decimals().send().intValue(),
-                    network);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            token = null;
-        }
-        return token;
-    }
-
-    public static boolean create(TokenRequest request){
-        try{
-            Token token = Token.tokenFromAddress(request.network, new Address(request.address));
-            token.persist();
-            return true;
-        } catch(Exception e){
-            Log.errorf("at Token.create request: %s, error: %s",request, e);
-            return false;
-
-        }
-
     }
 
 }

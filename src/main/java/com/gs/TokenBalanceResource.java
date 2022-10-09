@@ -44,7 +44,7 @@ public class TokenBalanceResource {
                 TokenBalances tb = new TokenBalances();
                 tb.setBalance("100500");
                 Token token;
-                token = tokenRepository.findByAddress(address);
+                token = tokenRepository.getByAddress(address);
                 if (token == null) {
                     token = new Token();
                     token.address = address;
@@ -59,7 +59,6 @@ public class TokenBalanceResource {
                 tb.setWallet(wallet);
                 tb.persist();
 
-                // Token token = Token.tokenFromAddress(Network.Ethereum);
             }
         }
     }

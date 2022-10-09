@@ -23,13 +23,12 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 @Entity
 public class TrxReceipt extends PanacheEntityWithTime {
 
-    @Column(columnDefinition = "text", nullable = true)
+    @Column(unique = true)
     public String transactionHash;
 
     @Column(columnDefinition = "text", nullable = true)
     public Long transactionIndex;
 
-    // @Column(nullable = true)
     // TODO - make this one field ( just a fk to Scannedblocks)
     // @ManyToOne
     // public ScannedBlocks blockNumberId;
@@ -39,25 +38,20 @@ public class TrxReceipt extends PanacheEntityWithTime {
     public String blockHash;
     // END-TODO
 
-    // @Column(nullable = true)
-    @Column(columnDefinition = "text", nullable = true)
+    @Column(nullable = true)
     public BigInteger cumulativeGasUsed;
-    @Column(columnDefinition = "text", nullable = true)
+    @Column(nullable = true)
     public BigInteger gasUsed;
-    @Column(columnDefinition = "text", nullable = true)
-    public String contractAddress;
-    // public String root;
-    // status is only present on Byzantium transactions onwards
-    // see EIP 658 https://github.com/ethereum/EIPs/pull/658
 
-    @Column(columnDefinition = "text", nullable = true)
+    // public BigInteger gasPriceInDollar; TODO - GAS-Station
+
     public String fromAddress;
-    @Column(columnDefinition = "text", nullable = true)
     public String toAddress;
-    // public String logsBloom;
-    @Column(nullable = true, length = 65535, columnDefinition = "Text")
+
+    @Column(nullable = true, length = 65535, columnDefinition = "text")
     @Type(type = "text")
     public String data;
+
     // Should Later be field
     @Column(columnDefinition = "text", nullable = true)
     public String status;
@@ -79,20 +73,10 @@ public class TrxReceipt extends PanacheEntityWithTime {
         this.blockNumber = blockNumber;
         this.cumulativeGasUsed = cumulativeGasUsed;
         this.gasUsed = gasUsed;
-        // this.contractAddress = contractAddress;
-        // this.root = root;
         this.status = status;
         this.fromAddress = from;
         this.toAddress = to;
-        // this.logsBloom = logsBloom;
         this.data = data;
-    }
-
-    public static TrxReceipt fromTransaction(Optional<TransactionReceipt> trx) {
-        if (trx != null) {
-            return TrxReceipt.fromTransaction(trx.get());
-        }
-        return null;
     }
 
     public static TrxReceipt fromTransactionObject(TransactionObject trx) {
@@ -119,12 +103,10 @@ public class TrxReceipt extends PanacheEntityWithTime {
                 trx.getBlockNumber().longValue(),
                 trx.getCumulativeGasUsed(),
                 trx.getGasUsed(),
-                // trx.getContractAddress(),
-                // trx.getRoot(),
                 trx.getStatus(),
                 trx.getFrom(),
                 trx.getTo(),
-                // trx.getLogsBloom(),
+                // trx.
                 null);
     }
 
@@ -132,8 +114,8 @@ public class TrxReceipt extends PanacheEntityWithTime {
     public String toString() {
         return "TrxReceipt [transactionHash=" + transactionHash + ", transactionIndex=" + transactionIndex
                 + ", blockNumber=" + blockNumber + ", blockHash=" + blockHash
-                + ", cumulativeGasUsed=" + cumulativeGasUsed + ", gasUsed=" + gasUsed + ", contractAddress="
-                + contractAddress + ", fromAddress=" + fromAddress + ", toAddress=" + toAddress
+                + ", cumulativeGasUsed=" + cumulativeGasUsed + ", gasUsed=" + gasUsed
+                + ", fromAddress=" + fromAddress + ", toAddress=" + toAddress
                 + ", data=" + data + ", status=" + status + ", requestedBlockNumber=" + requestedBlockNumber
                 + "]";
     }

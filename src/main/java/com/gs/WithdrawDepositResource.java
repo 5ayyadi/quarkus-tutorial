@@ -1,5 +1,6 @@
 package com.gs;
 
+import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -34,12 +35,14 @@ public class WithdrawDepositResource {
         return Response.status(Status.OK).entity(resWallet).build();
     }
 
+    @Transactional
     @Path("/deposit")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deposit(WithdrawDepositRequest request) {
         request.changeStatus(TransactionStatus.PENDING);
+        // TODO Why request has wallet address why you got the user for it
         Wallet resWallet = walletRepository.findByUserId(request.userId);
         if (Deposit.isValid(request, resWallet)) {
             request.changeStatus(TransactionStatus.CONFIRMED);

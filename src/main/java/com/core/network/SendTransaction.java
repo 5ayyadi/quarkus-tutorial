@@ -49,7 +49,7 @@ public class SendTransaction {
         String trxHash = ethSendTransaction.getResult();
         Optional<TransactionReceipt> trx = w3.ethGetTransactionReceipt(trxHash).send().getTransactionReceipt();
 
-        return TrxReceipt.fromTransaction(trx);
+        return TrxReceipt.fromTransaction(trx.get());
 
     }
 }

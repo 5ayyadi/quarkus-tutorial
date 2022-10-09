@@ -125,10 +125,6 @@ public class Wallet extends PanacheEntityWithTime {
 
     public void deposit(WithdrawDepositRequest request, TokenBalanceRepository tbRepo) {
         String balanceString = tbRepo.getTokenBalance(request.walletAddress, request.tokenAddress);
-        if(balanceString == null){
-            TokenBalances tb = new TokenBalances();
-            this.addTokenBalance(null);
-        }
         BigInteger balance = new BigInteger(balanceString);
         balance = balance.add(request.amount);
         tbRepo.changeTokenBalance(request.walletAddress, request.tokenAddress, balance.toString());
