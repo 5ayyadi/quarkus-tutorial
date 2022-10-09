@@ -9,18 +9,20 @@ public class NetworkDetail {
     public int chainId;
     public NetworkConfig config;
     public Web3j w3;
+    public String coingeckoId;
 
-    public NetworkDetail(String name, String symbol, int HDPathCoinType, int chainId) {
-        this(name, symbol, HDPathCoinType, chainId, null);
+    public NetworkDetail(String name, String symbol, int HDPathCoinType, int chainId, String coingeckoId) {
+        this(name, symbol, HDPathCoinType, chainId, null, coingeckoId);
     }
 
-    public NetworkDetail(String name, String symbol, int HDPathCoinType, int chainId, NetworkConfig config) {
+    public NetworkDetail(String name, String symbol, int HDPathCoinType, int chainId, NetworkConfig config, String coingeckoId) {
         this.name = name;
         this.symbol = symbol;
         this.HDPathCoinType = HDPathCoinType;
         this.chainId = chainId;
         this.config = config;
         this.w3 = this.config.w3;
+        this.coingeckoId = coingeckoId;
     }
 
     @Override
