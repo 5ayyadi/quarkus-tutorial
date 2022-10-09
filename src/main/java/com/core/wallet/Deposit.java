@@ -1,7 +1,5 @@
 package com.core.wallet;
 
-
-
 import java.math.BigInteger;
 
 import org.web3j.protocol.core.methods.response.Transaction;
@@ -13,15 +11,13 @@ import io.quarkus.logging.Log;
 
 public class Deposit {
 
-    
-
-    public static boolean isValid(WithdrawDepositRequest request, Wallet wallet){
-        try{
+    public static boolean isValid(WithdrawDepositRequest request, Wallet wallet) {
+        try {
             Transaction trx = request.network.value.w3.ethGetTransactionByHash(request.trxHash).send().getResult();
             TransferDecoder inputData = TransferDecoder.decode(trx, request.tokenAddress);
-            return (inputData.address.equals(wallet.address) 
-            && inputData.amount.equals(request.amount));
-        } catch(Exception e){
+            return (inputData.address.equals(wallet.address)
+                    && inputData.amount.equals(request.amount));
+        } catch (Exception e) {
             Log.error(e);
             return false;
         }

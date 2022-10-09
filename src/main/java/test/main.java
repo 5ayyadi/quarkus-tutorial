@@ -21,8 +21,11 @@ import org.web3j.utils.Strings;
 
 import com.core.network.Network;
 import com.core.network.TransactionGeneration;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -31,20 +34,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.json.Json;
+import javax.json.stream.JsonParser;
+
 public class main {
 
     public static void main(String[] args) {
         Web3j w3 = Network.EthereumLocal.value.w3;
 
         try {
-            // TODO - ADD block scanner
-            DefaultBlockParameterNumber blockNumber = new DefaultBlockParameterNumber(15260005);
-            Block b = w3.ethGetBlockByNumber(blockNumber, true).send().getBlock();
-            // System.out.println(b);
-            // System.out.println(b.getTransactions());
-            Date d = new Date();
-            System.out.println(d);
-            System.out.println();
+            String j = "{\"wbnb\":{\"usd\":278.91}}";
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jt = mapper.readTree(j);
+            System.out.println(jt.get("wbnb").get("usd"));
 
         } catch (Exception e) {
             e.printStackTrace();

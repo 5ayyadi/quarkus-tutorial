@@ -11,9 +11,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.hibernate.annotations.Filter;
 import org.web3j.abi.datatypes.Address;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @param address
@@ -32,14 +35,31 @@ public class TokenResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Token> wallets(@QueryParam("address") String address) {
-        if (address != null) {
-            Log.infof("Searching for %s", address);
-            ArrayList<Token> tokens = new ArrayList<>();
-            tokens.add(tokenRepository.findByAddress(address));
-            return tokens;
+    public List<Token> tokensList(
+            @QueryParam("token") String tokenSymbol,
+            @QueryParam("address") String tokenAddress
+    // @QueryParam("tokenId") Long tokenId,
+    ) {
+        // TODO filters ....
+        // return tokenRepository.list("address", null);
+        // String q = null;
+        // Map<String, Object> qp = new HashMap<String, Object>();
+
+        if (tokenSymbol != null) {
+            // q = "symbol";
+            // qp.put("symbol", tokenSymbol);
+            return tokenRepository.listBySymbol(tokenSymbol);
+
         }
-        return Token.listAll();
+        if (tokenAddress != null) {
+            // if (q != null)
+            // q += ",address";
+            // else
+            // q = "address";
+            // qp.put("address", tokenAddress);
+            return tokenRepository.listByAddress(tokenAddress);
+        }
+        return tokenRepository.listAll();
     }
 
     @Transactional
@@ -47,7 +67,8 @@ public class TokenResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(TokenRequest request) {
-        boolean result = Token.create(request);
+
+        boolean result = tokenRepository.create(request);
         return Response.status(Status.CREATED).entity(result).build();
     }
 
