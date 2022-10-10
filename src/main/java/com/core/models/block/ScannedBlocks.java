@@ -26,10 +26,11 @@ import io.quarkus.panache.common.Sort.Direction;
 public class ScannedBlocks extends PanacheEntityWithTime {
 
     // @Id
-    @Column(name = "blockNumber")
+    @Column(name = "blockNumber", unique = true)
     Long blockNumber;
     Network network;
     BlockScanStatus scanStatus;
+    int trxCount;
 
     @OneToMany
     @JoinColumn(name = "TrxReceipt_id")
@@ -44,9 +45,11 @@ public class ScannedBlocks extends PanacheEntityWithTime {
     public ScannedBlocks(
             Long blockNumber,
             Network network,
-            BlockScanStatus scanStatus) {
+            BlockScanStatus scanStatus,
+            int trxCount) {
         this.blockNumber = blockNumber;
         this.network = network;
+        this.trxCount = trxCount;
         if (scanStatus == null) {
             this.scanStatus = BlockScanStatus.PENDING;
         } else {
@@ -55,7 +58,11 @@ public class ScannedBlocks extends PanacheEntityWithTime {
     }
 
     public ScannedBlocks(Long blockNumber, Network network) {
-        this(blockNumber, network, null);
+        this(blockNumber, network, null, 0);
+    }
+
+    public Set<TrxReceipt> getTrxs() {
+        return trxs;
     }
 
     public static Long lastScannedBlock() {
@@ -69,4 +76,11 @@ public class ScannedBlocks extends PanacheEntityWithTime {
         }
         return (long) INITIAL_BLOCK_NUMBER;
     }
+
+    @Override
+    public String toString() {
+        return "ScannedBlocks [blockNumber=" + blockNumber + ", network=" + network + ", scanStatus=" + scanStatus
+                + ", trxs=" + trxs + "]";
+    }
+
 }

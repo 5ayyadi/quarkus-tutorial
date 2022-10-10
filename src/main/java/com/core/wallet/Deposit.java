@@ -13,6 +13,7 @@ public class Deposit {
 
     public static boolean isValid(WithdrawDepositRequest request, Wallet wallet) {
         try {
+            // TODO - think on ho to save trxReciept ...
             Transaction trx = request.network.value.w3.ethGetTransactionByHash(request.trxHash).send().getResult();
             TransferDecoder inputData = TransferDecoder.decode(trx, request.tokenAddress);
             return (inputData.address.equals(wallet.address)

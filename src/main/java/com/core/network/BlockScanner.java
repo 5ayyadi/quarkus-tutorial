@@ -27,15 +27,11 @@ import com.core.models.block.ScannedBlocks;
 */
 public class BlockScanner {
 
-    // ScannedBlocks scannedBlock;
-    // Network network;
-    // public BlockScanner(Long blocknumber) {
-    // }
     public static Map<Long, List<TrxReceipt>> fetchBlockNumbers(Network network, Long fromblockNumber,
             Long toblockNumber)
             throws IOException {
         Map<Long, List<TrxReceipt>> scannedBlocks = new HashMap<>();
-        for (long i = fromblockNumber; i < toblockNumber; i++) {
+        for (long i = fromblockNumber + 1; i <= toblockNumber; i++) {
             try {
 
                 System.out.println(String.format("Scanning %d", i));
@@ -47,16 +43,6 @@ public class BlockScanner {
         }
         return scannedBlocks;
     }
-
-    // @Transactional
-    // public static List<TrxReceipt> saveTransaction(Block block) {
-    // ArrayList<TrxReceipt> trxReceipts = new ArrayList<>();
-    // for (TransactionResult<TransactionObject> trx : block.getTransactions()) {
-    // trxReceipts.add(TrxReceipt.fromTransactionObject(trx.get()));
-    // }
-    // return trxReceipts;
-
-    // }
 
     public static List<TrxReceipt> fetchBlockNumber(Network network, Long blockNumber) throws IOException {
         Web3j w3 = network.value.w3;

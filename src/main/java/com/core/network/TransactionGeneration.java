@@ -56,17 +56,6 @@ public class TransactionGeneration {
         public static String transferTrxDataGenerator(String functionSelector, Address toWallet, BigInteger amount)
                         throws Exception {
                 // ATTENTION - I Assume function selector is Always OK so ...
-                // if (functionSelector.length() == 10) {
-                // if (!functionSelector.startsWith("0x")) {
-                // // ToDo - Must start with 0x if function selector length is 10
-                // // Example 0xa9059cbb for transfer
-                // throw new Exception();
-                // }
-                // }
-                // if (functionSelector.length() == 6) {
-                // // Making sure it puts "0x"
-                // functionSelector += "0x";
-                // }
                 if (amount.compareTo(MAX_ALLOWED_INT) != -1) {
                         // TODO - only supports 2^256 -1
                         throw new Exception();

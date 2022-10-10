@@ -70,7 +70,7 @@ public class Wallet extends PanacheEntityWithTime {
         }
         ;
         this.populateKeyPair(this.userId);
-        this.address = this.publicKey;
+        this.address = "0x" + this.publicKey;
         if (this.valueBalance == null) {
             this.valueBalance = "0";
         }
@@ -124,11 +124,12 @@ public class Wallet extends PanacheEntityWithTime {
         return this.address;
     }
 
-    public void deposit(WithdrawDepositRequest request, TokenBalanceRepository tbRepo, TokenRepository tknRepo, WalletRepository wltRepo) {
+    public void deposit(WithdrawDepositRequest request, TokenBalanceRepository tbRepo, TokenRepository tknRepo,
+            WalletRepository wltRepo) {
         String balanceString = tbRepo.getTokenBalance(this.id, request.tokenId);
-        if(balanceString == null){
+        if (balanceString == null) {
             TokenBalanceRepository.addTokenBalances(request, tknRepo, wltRepo);
-        } else {     
+        } else {
             BigInteger balance = new BigInteger(balanceString);
             balance = balance.add(request.amount);
             tbRepo.changeTokenBalance(this.id, request.tokenId, balance.toString());

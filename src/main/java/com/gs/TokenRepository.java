@@ -1,8 +1,11 @@
 package com.gs;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.persistence.Query;
 
 import org.web3j.abi.datatypes.Address;
 
@@ -39,6 +42,21 @@ public class TokenRepository implements PanacheRepository<Token> {
 
     public Token findByTokenId(Long token_id) {
         return find("token_id", token_id).firstResult();
+
+    }
+
+    public List<String> allTokenAddress() {
+        String q = "SELECT address from wallet";
+        Query queryObj = this.getEntityManager().createNativeQuery(q);
+        return (List<String>) queryObj.getResultList();
+    }
+
+    public Map<String, Long> allTokenAddressMapping() {
+        HashMap<String, Long> res = new HashMap<>();
+        for (Token token : listAll()) {
+            res.put(token.address, token.id);
+        }
+        return res;
     }
 
     public Token tokenFromAddress(Network network, Address address) {

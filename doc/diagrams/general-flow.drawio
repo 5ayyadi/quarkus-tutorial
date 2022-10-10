@@ -1,44 +1,332 @@
 <mxfile host="65bd71144e">
     <diagram id="o6TWDpoK3bL6y5wXZXeO" name="Page-1">
-        <mxGraphModel dx="837" dy="471" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="797" dy="530" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
                 <mxCell id="2" value="user_id&lt;br&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
                     <mxGeometry x="110" y="250" width="30" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="3" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4;arrowSize=0.4;verticalAlign=top;" parent="1" vertex="1">
+                <mxCell id="3" value="&lt;br&gt;Wallet_id&lt;br&gt;" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4;arrowSize=0.4;verticalAlign=top;" parent="1" vertex="1">
                     <mxGeometry x="390" y="260" width="80" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="5" value="user_wallet" style="html=1;verticalLabelPosition=bottom;align=center;labelBackgroundColor=#ffffff;verticalAlign=top;strokeWidth=2;strokeColor=#0080F0;shadow=0;dashed=0;shape=mxgraph.ios7.icons.wallet;" parent="1" vertex="1">
                     <mxGeometry x="300" y="260" width="50" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="6" value="" style="aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image;image=img/lib/active_directory/database_server.svg;" parent="1" vertex="1">
-                    <mxGeometry x="730" y="110" width="41" height="50" as="geometry"/>
+                <mxCell id="6" value="DB" style="aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image;image=img/lib/active_directory/database_server.svg;" parent="1" vertex="1">
+                    <mxGeometry x="594" y="75" width="41" height="50" as="geometry"/>
                 </mxCell>
                 <mxCell id="7" value="" style="shape=mxgraph.mockup.containers.marginRect;rectMarginTop=10;strokeColor=#666666;strokeWidth=1;dashed=0;rounded=1;arcSize=5;recursiveResize=0;" parent="1" vertex="1">
                     <mxGeometry x="530" y="190" width="150" height="200" as="geometry"/>
                 </mxCell>
-                <mxCell id="8" value="Tokens" style="shape=rect;strokeColor=none;fillColor=#008cff;strokeWidth=1;dashed=0;rounded=1;arcSize=20;fontColor=#ffffff;fontSize=17;spacing=2;spacingTop=-2;align=left;autosize=1;spacingLeft=4;resizeWidth=0;resizeHeight=0;perimeter=none;" parent="7" vertex="1">
-                    <mxGeometry x="5" width="80" height="30" as="geometry"/>
+                <mxCell id="17" value="CAKE" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="7" vertex="1">
+                    <mxGeometry x="15" y="122" width="47" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="13" value="BNB" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="7" vertex="1">
-                    <mxGeometry x="5" y="40" width="50" height="50" as="geometry"/>
+                <mxCell id="8" value="TokenBalances" style="shape=rect;strokeColor=none;fillColor=#008cff;strokeWidth=1;dashed=0;rounded=1;arcSize=20;fontColor=#ffffff;fontSize=17;spacing=2;spacingTop=-2;align=left;autosize=1;spacingLeft=4;resizeWidth=0;resizeHeight=0;perimeter=none;" parent="7" vertex="1">
+                    <mxGeometry x="5" width="140" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="BNB" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;strokeColor=#33FFFF;" parent="7" vertex="1">
+                    <mxGeometry x="50" y="50" width="50" height="50" as="geometry"/>
                 </mxCell>
                 <mxCell id="12" value="BUSD" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="7" vertex="1">
-                    <mxGeometry x="35" y="90" width="50" height="50" as="geometry"/>
+                    <mxGeometry x="35" y="130" width="50" height="50" as="geometry"/>
                 </mxCell>
                 <mxCell id="11" value="USDC" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="7" vertex="1">
                     <mxGeometry x="60" y="140" width="50" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="9" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4;arrowSize=0.4;verticalAlign=top;" parent="1" vertex="1">
+                <mxCell id="16" value="DAI" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;strokeColor=#050505;" parent="7" vertex="1">
+                    <mxGeometry x="90" y="140" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="&lt;br&gt;Create" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4;arrowSize=0.4;verticalAlign=top;" parent="1" vertex="1">
                     <mxGeometry x="205" y="260" width="80" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="14" value="Internal Transaction" style="aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;fontColor=#4277BB;labelBackgroundColor=#ffffff;fontSize=12;spacingTop=3;image;image=img/lib/ibm/blockchain/transaction_manager.svg;" parent="1" vertex="1">
                     <mxGeometry x="575" y="460" width="60" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="15" value="Blockchain Transaction" style="aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;fontColor=#A6BB61;labelBackgroundColor=#ffffff;fontSize=12;spacingTop=3;image;image=img/lib/ibm/blockchain/transaction_manager.svg;" parent="1" vertex="1">
-                    <mxGeometry x="760" y="250" width="60" height="60" as="geometry"/>
+                    <mxGeometry x="920" y="320" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="" style="shape=mxgraph.mockup.containers.marginRect;rectMarginTop=10;strokeColor=#666666;strokeWidth=1;dashed=0;rounded=1;arcSize=5;recursiveResize=0;" parent="1" vertex="1">
+                    <mxGeometry x="790" width="340" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="Blockscaner" style="shape=rect;strokeColor=none;fillColor=#008cff;strokeWidth=1;dashed=0;rounded=1;arcSize=20;fontColor=#ffffff;fontSize=17;spacing=2;spacingTop=-2;align=left;autosize=1;spacingLeft=4;resizeWidth=0;resizeHeight=0;perimeter=none;" parent="18" vertex="1">
+                    <mxGeometry x="5" width="120" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="" style="aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image;image=img/lib/active_directory/database_cube.svg;strokeColor=#050505;" parent="18" vertex="1">
+                    <mxGeometry x="30" y="90" width="45" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="TRX" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="18">
+                    <mxGeometry x="140" y="80" width="40" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="TRX" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="18">
+                    <mxGeometry x="150" y="90" width="40" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="TRX" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="18">
+                    <mxGeometry x="160" y="100" width="40" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="" style="html=1;verticalLabelPosition=bottom;align=center;labelBackgroundColor=#ffffff;verticalAlign=top;strokeWidth=2;strokeColor=#0080F0;shadow=0;dashed=0;shape=mxgraph.ios7.icons.wallet;" vertex="1" parent="18">
+                    <mxGeometry x="250" y="20" width="25" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="" style="html=1;verticalLabelPosition=bottom;align=center;labelBackgroundColor=#ffffff;verticalAlign=top;strokeWidth=2;strokeColor=#0080F0;shadow=0;dashed=0;shape=mxgraph.ios7.icons.wallet;" vertex="1" parent="18">
+                    <mxGeometry x="260" y="30" width="25" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="" style="html=1;verticalLabelPosition=bottom;align=center;labelBackgroundColor=#ffffff;verticalAlign=top;strokeWidth=2;strokeColor=#0080F0;shadow=0;dashed=0;shape=mxgraph.ios7.icons.wallet;" vertex="1" parent="18">
+                    <mxGeometry x="270" y="40" width="25" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="Token" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="18">
+                    <mxGeometry x="252.5" y="100" width="40" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="Token" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="18">
+                    <mxGeometry x="262.5" y="110" width="40" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="Token" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="18">
+                    <mxGeometry x="272.5" y="120" width="40" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="Incoming Transactions&lt;br&gt;" style="shape=flexArrow;endArrow=classic;html=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="950" y="310" as="sourcePoint"/>
+                        <mxPoint x="949.5" y="220" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="37" value="Store" style="shape=flexArrow;endArrow=classic;html=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="760" y="110" as="sourcePoint"/>
+                        <mxPoint x="680" y="110" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="38" value="Outgoing trx&lt;br&gt;" style="shape=flexArrow;endArrow=classic;html=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="720" y="349.5" as="sourcePoint"/>
+                        <mxPoint x="850" y="349.5" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="39" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#3F8624;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.iot_analytics_channel;rotation=-180;" vertex="1" parent="1">
+                    <mxGeometry x="1460" y="90" width="65" height="78" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="Singal &lt;br&gt;Change" style="shape=flexArrow;endArrow=classic;html=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1180" y="128.5" as="sourcePoint"/>
+                        <mxPoint x="1310" y="128.5" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="41" value="" style="strokeWidth=1;outlineConnect=0;dashed=0;align=center;html=1;fontSize=8;shape=mxgraph.eip.messageChannel;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="1330" y="119" width="100" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="50" value="admin_user_id" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+                    <mxGeometry x="120" y="400" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="51" value="&lt;br&gt;Wallet_id&lt;br&gt;" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4;arrowSize=0.4;verticalAlign=top;rotation=-35;" vertex="1" parent="1">
+                    <mxGeometry x="400" y="380" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="52" value="master_wallet" style="html=1;verticalLabelPosition=bottom;align=center;labelBackgroundColor=#ffffff;verticalAlign=top;strokeWidth=2;strokeColor=#0080F0;shadow=0;dashed=0;shape=mxgraph.ios7.icons.wallet;" vertex="1" parent="1">
+                    <mxGeometry x="310" y="410" width="50" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="53" value="&lt;br&gt;Create" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4;arrowSize=0.4;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="215" y="410" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="57" value="" style="swimlane;startSize=0;" vertex="1" parent="1">
+                    <mxGeometry x="190" y="580" width="720" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="58" value="Deposit" style="html=1;verticalLabelPosition=bottom;align=center;labelBackgroundColor=#ffffff;verticalAlign=top;strokeWidth=2;strokeColor=#0080F0;shadow=0;dashed=0;shape=mxgraph.ios7.icons.share;" vertex="1" parent="57">
+                    <mxGeometry x="66.24" y="10" width="55.26" height="75" as="geometry"/>
+                </mxCell>
+                <mxCell id="100" value="Withdraw" style="html=1;verticalLabelPosition=bottom;align=center;labelBackgroundColor=#ffffff;verticalAlign=top;strokeWidth=2;strokeColor=#0080F0;shadow=0;dashed=0;shape=mxgraph.ios7.icons.down;" vertex="1" parent="57">
+                    <mxGeometry x="590" y="23.5" width="61.35" height="74.5" as="geometry"/>
+                </mxCell>
+                <mxCell id="54" value="Normal&lt;br&gt;Transfer between&lt;br&gt;&amp;nbsp;usesrs" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#067F68;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.agent2;" vertex="1" parent="57">
+                    <mxGeometry x="321" y="23.5" width="78" height="78" as="geometry"/>
+                </mxCell>
+                <mxCell id="59" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="58" target="60">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="537.3700000000001" y="850" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="60" value="/GET&lt;br&gt;&amp;nbsp;user corresponding wallet address&lt;br&gt;&lt;br&gt;/POST&amp;nbsp;&lt;br&gt;Asks for trx hash user made&lt;br&gt;+&lt;br&gt;userId&lt;br&gt;=&lt;br&gt;increase user balance&lt;br&gt;&lt;br&gt;@Blockscanner&lt;br&gt;Listens for transactions on all wallets and all the tokens, then Submit them" style="whiteSpace=wrap;html=1;shape=mxgraph.basic.document" vertex="1" parent="1">
+                    <mxGeometry x="156.5" y="850" width="254.74" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="63" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="61" target="62">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="61" value="Deposit&lt;br&gt;Request" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="233.5" y="1070" width="73" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="65" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="62" target="64">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="62" value="User Id" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="210" y="1225" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="67" value="Scans" style="edgeStyle=none;html=1;" edge="1" parent="1" source="64" target="66">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="64" value="User &lt;br&gt;Wallet Address&lt;br&gt;In Blockchain" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="210" y="1365" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="68" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="66" target="64">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="156.5" y="1535"/>
+                            <mxPoint x="156.5" y="1395"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="69" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="68">
+                    <mxGeometry x="-0.0589" y="-5" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="80" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="66" target="79">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="66" value="New transaction?" style="rhombus;whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="213.5" y="1490" width="113" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="83" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="70" target="82">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="70" value="Get Transaction Reciept" style="whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="210" y="1840" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="75" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="72" target="74">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="92" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="72" target="91">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="72" value="Current BNB price&lt;br&gt;Current Token Price&amp;nbsp;&lt;br&gt;Current Gas Price&amp;nbsp;" style="whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="403" y="1645" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="77" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="74" target="76">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="74" value="Sends a new msg&amp;nbsp;" style="whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="403" y="1785" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="76" value="Queue a new job&amp;nbsp;&lt;br&gt;(Transfer assets to master wallet)" style="whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="403" y="1925" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="81" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="79" target="70">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="79" value="Wait For a few Blocks&lt;br&gt;( Potentioal Uncle block)" style="whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="210" y="1675" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="84" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="82" target="72">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="356.5" y="2010"/>
+                            <mxPoint x="356.5" y="1675"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="85" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="84">
+                    <mxGeometry x="-0.5186" y="-3" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="88" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="82" target="87">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="90" value="yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="88">
+                    <mxGeometry x="-0.322" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="82" value="trx Failed ?" style="rhombus;whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="230" y="1970" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="89" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="87" target="64">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="110.5" y="1395"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="87" value="Troubleshoot failure reason" style="whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="1980" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="94" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="91" target="93">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="91" value="Change User Balance" style="whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="603" y="1645" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="99" style="edgeStyle=none;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="93" target="96">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="663.5" y="2085"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="93" value="Triger a Balance Change action" style="whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="603" y="1785" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="96" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#ff0000;" vertex="1" parent="1">
+                    <mxGeometry x="255" y="2070" width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="101" value="/GET&amp;nbsp;&lt;br&gt;user withdraw history&lt;br&gt;&lt;br&gt;/POST&amp;nbsp;&lt;br&gt;Asks for withdraw&lt;br&gt;+&lt;br&gt;userId&lt;br&gt;+ &lt;br&gt;Optional&amp;lt;MasterWalletID&amp;gt;&lt;br&gt;=&lt;br&gt;decrease user balance&lt;br&gt;&lt;br&gt;@TransactionSender&lt;br&gt;Trasnfers asset from user wallet to master and then to user_desired_wallet" style="whiteSpace=wrap;html=1;shape=mxgraph.basic.document" vertex="1" parent="1">
+                    <mxGeometry x="683.3" y="860" width="254.74" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="102" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="100" target="101">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="105" value="" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="103" target="106">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1107" y="1070" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="103" value="Withdraw&lt;br&gt;Request" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="1070" y="960" width="73" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="110" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="106" target="109">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="106" value="User Id" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="1046.5" y="1110" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="112" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="109" target="111">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="116" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="109" target="115">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="119" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="116">
+                    <mxGeometry x="-0.3547" y="-1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="109" value="Has&lt;br&gt;Internal&lt;br&gt;Balance&lt;br&gt;?" style="rhombus;whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="1066.5" y="1240" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="111" value="Throw InsuffientBalance" style="whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="886.5" y="1250" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="118" value="No" style="edgeStyle=none;html=1;" edge="1" parent="1" source="115" target="117">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="115" value="Has&lt;br&gt;external&lt;br&gt;Balance&lt;br&gt;?" style="rhombus;whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="1066.5" y="1400" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="121" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="117" target="120">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="117" value="Current BNB price&lt;br&gt;Current Token Price&amp;nbsp;&lt;br&gt;Current Gas Price&amp;nbsp;" style="whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="1046.5" y="1570" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="123" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="120" target="122">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="120" value="Queue a Transfer request from master wallet" style="whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="1046.5" y="1710" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="125" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="122" target="124">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="122" value="Reduce balance" style="whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="1046.5" y="1850" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="124" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#ff0000;" vertex="1" parent="1">
+                    <mxGeometry x="1091.5" y="2030" width="30" height="30" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
