@@ -21,10 +21,16 @@ public class WithdrawDepositResource {
 
     public WalletRepository walletRepository;
     public TokenBalanceRepository tokenBalanceRepository;
+    public TokenRepository tokenRepository;
 
-    public WithdrawDepositResource(WalletRepository walletRepository, TokenBalanceRepository tokenBalanceRepository) {
+    public WithdrawDepositResource(
+        WalletRepository walletRepository, 
+        TokenBalanceRepository tokenBalanceRepository, 
+        TokenRepository tokenRepository) {
+            
         this.walletRepository = walletRepository;
         this.tokenBalanceRepository = tokenBalanceRepository;
+        this.tokenRepository = tokenRepository;
     }
 
     @Path("/deposit")
@@ -46,7 +52,8 @@ public class WithdrawDepositResource {
         Wallet resWallet = walletRepository.findByUserId(request.userId);
         if (Deposit.isValid(request, resWallet)) {
             request.changeStatus(TransactionStatus.CONFIRMED);
-            resWallet.deposit(request, tokenBalanceRepository);
+            resWallet.deposit(
+                request, tokenBalanceRepository, tokenRepository, walletRepository);
             return Response.status(Status.OK).entity(resWallet).build();
         }
         return Response.status(Status.BAD_REQUEST).entity(resWallet).build();

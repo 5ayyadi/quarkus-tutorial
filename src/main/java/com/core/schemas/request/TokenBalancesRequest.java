@@ -1,9 +1,13 @@
 package com.core.schemas.request;
 
-import com.core.math.Decimal;
+import java.math.BigInteger;
+
+import com.core.network.Network;
+
 
 public class TokenBalancesRequest {
+    public Network network;
     public String tokenAddress;
     public String walletAddress;
-    public Decimal balance;
+    public BigInteger amount;
 }

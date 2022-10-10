@@ -26,6 +26,7 @@ import com.core.wallet.HDWallet;
 import com.core.wallet.WalletKeyPair;
 import com.gs.TokenBalanceRepository;
 import com.gs.TokenRepository;
+import com.gs.WalletRepository;
 
 @Table(name = "wallet")
 @Entity
@@ -123,18 +124,22 @@ public class Wallet extends PanacheEntityWithTime {
         return this.address;
     }
 
-    public void deposit(WithdrawDepositRequest request, TokenBalanceRepository tbRepo) {
-        String balanceString = tbRepo.getTokenBalance(request.walletAddress, request.tokenAddress);
-        BigInteger balance = new BigInteger(balanceString);
-        balance = balance.add(request.amount);
-        tbRepo.changeTokenBalance(request.walletAddress, request.tokenAddress, balance.toString());
-        request.changeStatus(TransactionStatus.SUCCESS);
+    public void deposit(WithdrawDepositRequest request, TokenBalanceRepository tbRepo, TokenRepository tknRepo, WalletRepository wltRepo) {
+        String balanceString = tbRepo.getTokenBalance(this.id, request.tokenId);
+        if(balanceString == null){
+            TokenBalanceRepository.addTokenBalances(request, tknRepo, wltRepo);
+        } else {     
+            BigInteger balance = new BigInteger(balanceString);
+            balance = balance.add(request.amount);
+            tbRepo.changeTokenBalance(this.id, request.tokenId, balance.toString());
+            request.changeStatus(TransactionStatus.SUCCESS);
+        }
     }
 
     public void withdraw(WithdrawDepositRequest request, TokenBalanceRepository tbRepo) {
-        BigInteger balance = new BigInteger(tbRepo.getTokenBalance(request.walletAddress, request.tokenAddress));
+        BigInteger balance = new BigInteger(tbRepo.getTokenBalance(this.id, request.tokenId));
         balance = balance.subtract(request.amount);
-        tbRepo.changeTokenBalance(request.walletAddress, request.tokenAddress, balance.toString());
+        tbRepo.changeTokenBalance(this.id, request.tokenId, balance.toString());
         request.changeStatus(TransactionStatus.SUCCESS);
     }
 
@@ -153,7 +158,7 @@ public class Wallet extends PanacheEntityWithTime {
 
     public boolean hasBalance(WithdrawDepositRequest request, TokenBalanceRepository tbRepo) {
         BigInteger balance = new BigInteger(
-                tbRepo.getTokenBalance(request.walletAddress, request.tokenAddress));
+                tbRepo.getTokenBalance(this.id, request.tokenId));
         // returns 0 if equals and -1 if balance is less than amount
         return balance.compareTo(request.amount) == 1 ? true : false;
     }
