@@ -37,8 +37,8 @@ class STH extends PanacheEntity {
 @ApplicationScoped
 public class WalletRepository implements PanacheRepository<Wallet> {
 
-    public Wallet findByAddress(String address) {
-        return find("lower(address)", address.toLowerCase()).firstResult();
+    public Wallet findByPublicKey(String publickKey) {
+        return find("lower(publickey)", publickKey.toLowerCase()).firstResult();
     }
 
     public Wallet findByUserId(Long userId) {

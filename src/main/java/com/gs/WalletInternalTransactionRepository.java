@@ -12,8 +12,8 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 @ApplicationScoped
 public class WalletInternalTransactionRepository implements PanacheRepository<WalletInternalTransactions> {
 
-    public WalletInternalTransactions findByAddress(String address) {
-        return find("lower(address)", address.toLowerCase()).firstResult();
+    public WalletInternalTransactions findByPublicKey(String address) {
+        return find("lower(publickey)", address.toLowerCase()).firstResult();
     }
 
     public WalletInternalTransactions findByUserId(Long userId) {

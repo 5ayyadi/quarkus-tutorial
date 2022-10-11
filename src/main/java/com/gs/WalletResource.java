@@ -40,7 +40,7 @@ public class WalletResource {
         if (address != null) {
             Log.infof("Searching for %s", address);
             ArrayList<Wallet> wallets = new ArrayList<>();
-            wallets.add(walletRepository.findByAddress(address));
+            wallets.add(walletRepository.findByPublicKey(address));
             return wallets;
         }
         return walletRepository.listAll();

@@ -5,12 +5,9 @@ import io.restassured.http.ContentType;
 
 import org.junit.jupiter.api.Test;
 
-import com.core.models.wallet.Wallet;
 import com.core.network.Network;
-import com.core.schemas.request.AddressRequest;
 import com.core.schemas.request.TokenRequest;
 import com.core.schemas.request.WalletCreationRequest;
-import com.core.schemas.request.WithdrawDepositRequest;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.expect;

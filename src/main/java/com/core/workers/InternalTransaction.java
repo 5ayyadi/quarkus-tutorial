@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.List;
 
 import com.core.models.TokenBalances;
-import com.core.models.TransactionStatus;
 import com.core.models.wallet.*;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
