@@ -32,6 +32,7 @@ public abstract class WalletTransactionsBasicModel extends PanacheEntityWithTime
     @Column(name = "amount")
     public BigInteger amount;
 
+    public String message;
     public WalletTransactionStatus status;
     public WalletTransactionType type;
 

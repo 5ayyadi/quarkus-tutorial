@@ -2,6 +2,8 @@ package com.gs;
 
 import com.core.models.TransactionStatus;
 import com.core.models.wallet.Wallet;
+import com.core.models.wallet.WalletInternalTransactions;
+import com.core.models.wallet.WalletTransactionStatus;
 import com.core.schemas.request.TransferRequest;
 
 import javax.transaction.Transactional;
@@ -29,19 +31,31 @@ public class TransferResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response transfer(TransferRequest request) {
-
-        request.changeStatus(TransactionStatus.PENDING);
-        Wallet fromWallet = walletRepository.findByUserId(request.fromUID);
-        Wallet toWallet = walletRepository.findByUserId(request.toUID);
-        if (fromWallet.hasBalance(request, tokenBalanceRepository)) {
-            // withdraw in blockchain
-            // blockchain.withdraw(request);
-            fromWallet.withdraw(request, tokenBalanceRepository);
-            toWallet.deposit(request, tokenBalanceRepository);
-            request.changeStatus(TransactionStatus.SUCCESS);
+        WalletInternalTransactions trx = new WalletInternalTransactions(request);
+        trx.changeStatus(WalletTransactionStatus.PENDING);
+        if(trx.isTransferValid()){
+            //some code
+            trx.wallet.withdraw(request, tokenBalanceRepository);
+            trx.toWallet.deposit(request, tokenBalanceRepository);
+            trx.changeStatus(WalletTransactionStatus.SUCCESS);
             return Response.status(Status.OK).entity(request).build();
         }
+        trx.changeStatus(WalletTransactionStatus.FAILED, "Insufficient Balance");
         return Response.status(Status.NOT_ACCEPTABLE).entity(request).build();
+
+
+        // request.changeStatus(TransactionStatus.PENDING);
+        // Wallet fromWallet = walletRepository.findByUserId(request.fromUID);
+        // Wallet toWallet = walletRepository.findByUserId(request.toUID);
+        // if (fromWallet.hasBalance(request, tokenBalanceRepository)) {
+        //     // withdraw in blockchain
+        //     // blockchain.withdraw(request);
+        //     fromWallet.withdraw(request, tokenBalanceRepository);
+        //     toWallet.deposit(request, tokenBalanceRepository);
+        //     request.changeStatus(TransactionStatus.SUCCESS);
+        //     return Response.status(Status.OK).entity(request).build();
+        // }
+        // return Response.status(Status.NOT_ACCEPTABLE).entity(request).build();
     }
 
 }
