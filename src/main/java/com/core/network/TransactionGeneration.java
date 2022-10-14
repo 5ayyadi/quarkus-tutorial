@@ -19,12 +19,9 @@ import com.core.models.Token;
 public class TransactionGeneration {
 
         private static final BigInteger DEFAULT_GAS_LIMIT = new BigInteger("30000000");
-        private static final String TRANSFER_FUNCTION_SELECTOR = "0xa9059cbb";
+        private static final String ERC20TRANSFER_FUNCTION_SELECTOR = "0xa9059cbb";
         private static final BigInteger MAX_ALLOWED_INT = new BigInteger(
                         "115792089237316195423570985008687907853269984665640564039457584007913129639935");
-
-        // private static final String SENT_ETH_DATA = ;
-        // 0000000000000000000000008ac76a51cc950d9822d68b83fe1ad97b32cd580d0000000000000000000000000000000000000000000000000000000000000096;
 
         /**
          * RawTransaction
@@ -32,12 +29,17 @@ public class TransactionGeneration {
          * In Which blocknumber was this generated!
          */
         public static class RawTransactionAndExtraInfo {
-                public RawTransaction rawTransaction;
                 public BigInteger requestedBlockNumber;
+                public RawTransaction rawTransaction;
+                public GasStation gasStation;
+                public Network network;
 
-                public RawTransactionAndExtraInfo(RawTransaction rawTransaction, BigInteger requestedBlockNumber) {
+                public RawTransactionAndExtraInfo(RawTransaction rawTransaction, BigInteger requestedBlockNumber,
+                                Network network, GasStation gasStation) {
                         this.rawTransaction = rawTransaction;
                         this.requestedBlockNumber = requestedBlockNumber;
+                        this.network = network;
+                        this.gasStation = gasStation;
                 }
 
         }
@@ -96,7 +98,8 @@ public class TransactionGeneration {
                         throw new Exception();
                 }
                 System.out.println(String.format("Current Wallet %s Balance is %s", fromWallet, fromWalletBalance));
-                BigInteger gasPrice = w3.ethGasPrice().send().getGasPrice();
+                GasStation gasStation = new GasStation(network);
+                BigInteger gasPrice = gasStation.gasPrice;
                 BigInteger blockNumber = w3.ethBlockNumber().send().getBlockNumber();
                 BigInteger nonce = w3.ethGetTransactionCount(
                                 fromWallet, DefaultBlockParameterName.LATEST).send().getTransactionCount();
@@ -118,7 +121,7 @@ public class TransactionGeneration {
                 );
                 network.logger.info(trx_obj);
 
-                return new RawTransactionAndExtraInfo(transaction, blockNumber);
+                return new RawTransactionAndExtraInfo(transaction, blockNumber, network, gasStation);
 
         }
 
@@ -148,11 +151,12 @@ public class TransactionGeneration {
                 }
                 System.out.println(String.format("Current Wallet %s Balance is %s",
                                 fromWallet, fromWalletBalance));
-                BigInteger gasPrice = w3.ethGasPrice().send().getGasPrice();
+                GasStation gasStation = new GasStation(network);
+                BigInteger gasPrice = gasStation.gasPrice;
                 BigInteger blockNumber = w3.ethBlockNumber().send().getBlockNumber();
                 BigInteger nonce = w3.ethGetTransactionCount(
                                 fromWallet, DefaultBlockParameterName.LATEST).send().getTransactionCount();
-                String data = transferTrxDataGenerator(TRANSFER_FUNCTION_SELECTOR, fromWallet, amount);
+                String data = transferTrxDataGenerator(ERC20TRANSFER_FUNCTION_SELECTOR, fromWallet, amount);
 
                 RawTransaction transaction = RawTransaction
                                 .createTransaction(
@@ -172,7 +176,7 @@ public class TransactionGeneration {
                 );
                 network.logger.info(trx_obj);
 
-                return new RawTransactionAndExtraInfo(transaction, blockNumber);
+                return new RawTransactionAndExtraInfo(transaction, blockNumber, network, gasStation);
 
         }
 

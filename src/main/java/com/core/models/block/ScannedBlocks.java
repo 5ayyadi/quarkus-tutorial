@@ -1,5 +1,6 @@
 package com.core.models.block;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
+import com.core.models.PanacheEntityBaseWithTime;
 import com.core.models.PanacheEntityWithTime;
 import com.core.models.TrxReceipt;
 import com.core.network.Network;
@@ -23,13 +25,16 @@ import io.quarkus.panache.common.Sort;
 import io.quarkus.panache.common.Sort.Direction;
 
 @Entity
-public class ScannedBlocks extends PanacheEntityWithTime {
+public class ScannedBlocks extends PanacheEntityBaseWithTime {
 
-    // @Id
     @Column(name = "blockNumber", unique = true)
+    @Id
     Long blockNumber;
-    Network network;
-    BlockScanStatus scanStatus;
+
+    public Network network;
+    public Timestamp blockTimestamp;
+    public BlockScanStatus scanStatus;
+
     int trxCount;
 
     @OneToMany
@@ -37,7 +42,9 @@ public class ScannedBlocks extends PanacheEntityWithTime {
     Set<TrxReceipt> trxs = new HashSet<TrxReceipt>();
 
     @Transient
-    public static final long INITIAL_BLOCK_NUMBER = 15259989;
+    // public static final long INITIAL_BLOCK_NUMBER = 15259989; //NOTE - LOCAL -
+    // ETH
+    public static final long INITIAL_BLOCK_NUMBER = 11196262L; // NOTE - TESTNET - FTM
 
     public ScannedBlocks() {
     }
@@ -46,19 +53,17 @@ public class ScannedBlocks extends PanacheEntityWithTime {
             Long blockNumber,
             Network network,
             BlockScanStatus scanStatus,
-            int trxCount) {
+            int trxCount,
+            Timestamp timestamp) {
         this.blockNumber = blockNumber;
         this.network = network;
         this.trxCount = trxCount;
+        this.blockTimestamp = timestamp;
         if (scanStatus == null) {
             this.scanStatus = BlockScanStatus.PENDING;
         } else {
             this.scanStatus = scanStatus;
         }
-    }
-
-    public ScannedBlocks(Long blockNumber, Network network) {
-        this(blockNumber, network, null, 0);
     }
 
     public Set<TrxReceipt> getTrxs() {
@@ -69,9 +74,7 @@ public class ScannedBlocks extends PanacheEntityWithTime {
         Sort sort = Sort.by("blockNumber", Direction.Descending, null);
 
         ScannedBlocks scannedBlock = (ScannedBlocks) findAll(sort).firstResult();
-        // ScannedBlocks scannedBlock = find("blockNumber DESC").firstResult();
         if (scannedBlock != null) {
-
             return scannedBlock.blockNumber;
         }
         return (long) INITIAL_BLOCK_NUMBER;

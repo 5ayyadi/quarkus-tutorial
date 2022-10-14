@@ -43,10 +43,17 @@ public class main {
         Web3j w3 = Network.EthereumLocal.value.w3;
 
         try {
-            String j = "{\"wbnb\":{\"usd\":278.91}}";
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode jt = mapper.readTree(j);
-            System.out.println(jt.get("wbnb").get("usd"));
+            // String j = "{\"wbnb\":{\"usd\":278.91}}";
+            // ObjectMapper mapper = new ObjectMapper();
+            // JsonNode jt = mapper.readTree(j);
+            // System.out.println(jt.get("wbnb").get("usd"));
+
+            // DefaultBlockParameterNumber blockNumberObj = new
+            // DefaultBlockParameterNumber(w3.get);
+            Block block = w3.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, true).send().getBlock();
+            System.out.println(block.getTimestampRaw());
+            System.out.println(block.getTimestamp());
+            System.out.println(block.getAuthor());
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -2,7 +2,10 @@ package com.core.schemas.request;
 
 import java.math.BigInteger;
 
+import org.web3j.abi.datatypes.Address;
+
 import com.core.models.TransactionStatus;
+import com.core.models.wallet.WalletExternalTransactions;
 import com.core.network.Network;
 
 public class WithdrawDepositRequest extends TokenBalancesRequest {
@@ -14,7 +17,8 @@ public class WithdrawDepositRequest extends TokenBalancesRequest {
     public WithdrawDepositRequest() {
     }
 
-    public WithdrawDepositRequest(Long userId, Long tokenId, String walletAddress, String tokenAddress, BigInteger amount,
+    public WithdrawDepositRequest(Long userId, Long tokenId, Address walletAddress, Address tokenAddress,
+            BigInteger amount,
             Network network, String trxHash) {
         this.userId = userId;
         this.tokenId = tokenId;
@@ -28,4 +32,17 @@ public class WithdrawDepositRequest extends TokenBalancesRequest {
     public void changeStatus(TransactionStatus status) {
         this.status = status;
     }
+
+    public static WithdrawDepositRequest toWithdrawDepositRequest(WalletExternalTransactions wet) {
+        // TODO - PLease Fill this bit ...
+
+        // new WithdrawDepositRequest(null, null, null, null, null, null, null)
+        // trxReceipt.transactionHash,
+        // new Address(wet.token.address),
+        // wet.amount,
+        // network,
+        // wet.toWallet
+        return null;
+    }
+
 }

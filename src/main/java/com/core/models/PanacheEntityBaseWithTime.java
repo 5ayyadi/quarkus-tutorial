@@ -1,20 +1,19 @@
 package com.core.models;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+
+import javax.persistence.*;
+
 import java.sql.Timestamp;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.Date;
 
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreRemove;
-import javax.persistence.PreUpdate;
-
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-
 @MappedSuperclass
-public class PanacheEntityWithTime extends PanacheEntity {
+public class PanacheEntityBaseWithTime extends PanacheEntityBase {
 
-    public PanacheEntityWithTime() {
+    public PanacheEntityBaseWithTime() {
     }
 
     public Timestamp created;

@@ -14,6 +14,7 @@ public class Transfer extends PanacheEntity {
     public String toWallet;
     @Column()
     public int amount;
+    
 
     public void setFrom(String from) {
         this.fromWallet = from;

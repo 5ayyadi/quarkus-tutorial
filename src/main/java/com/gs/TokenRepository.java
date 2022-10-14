@@ -59,7 +59,7 @@ public class TokenRepository implements PanacheRepository<Token> {
         return res;
     }
 
-    public Token tokenFromAddress(Network network, Address address) {
+    public Token tokenFromAddress(Network network, Address address, boolean shouldPersistIfExists) {
         Token token = getByAddress(address);
         if (token != null) {
             return token;
@@ -72,25 +72,29 @@ public class TokenRepository implements PanacheRepository<Token> {
                     address.toString(),
                     erc20TokenContract.decimals().send().intValue(),
                     network);
+
+            try {
+
+                if (shouldPersistIfExists)
+                    token.persist();
+            } catch (Exception e) {
+                // TODO: handle exception
+                Log.error(e);
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            Log.error(e);
             token = null;
         }
         return token;
     }
 
-    public boolean create(TokenRequest request) {
-        try {
-            if (getByAddress(request.address) == null) {
-                Token token = tokenFromAddress(request.network, request.getAddress());
-                token.persist();
-            }
-            return true;
-        } catch (Exception e) {
-            Log.errorf("at Token.create request: %s, error: %s", request, e);
-            return false;
+    public Token create(TokenRequest request) {
 
-        }
+        return tokenFromAddress(
+                request.network,
+                request.toAddress(),
+                true);
 
     }
 

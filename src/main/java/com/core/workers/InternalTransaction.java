@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 import com.core.models.TokenBalances;
+import com.core.models.TransactionStatus;
 import com.core.models.wallet.*;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -12,11 +13,11 @@ public class InternalTransaction extends PanacheEntity {
 
     public void confirmedTransactions() {
         List<WalletInternalTransactions> confirmedTransactions = WalletInternalTransactions
-                .findByStatus(WalletTransactionStatus.CONFIRMED);
+                .findByStatus(TransactionStatus.CONFIRMED);
         for (WalletInternalTransactions trx : confirmedTransactions) {
             switch (trx.type) {
                 case TRANSFER:
-                    Wallet source = trx.wallet;
+                    Wallet source = trx.fromWallet;
                     Wallet destination = trx.toWallet;
                     TokenBalances sourceBalance = source.getTokenBalances(trx.token);
                     TokenBalances destinationBalance = destination.getTokenBalances(trx.token);
@@ -32,7 +33,7 @@ public class InternalTransaction extends PanacheEntity {
                     db.add(trx.amount);
                     break;
                 case WITHDRAW:
-                    source = trx.wallet;
+                    source = trx.fromWallet;
                     sourceBalance = source.getTokenBalances(trx.token);
                     sb = new BigInteger(sourceBalance.getBalance());
                     sb.subtract(trx.amount);
@@ -42,12 +43,10 @@ public class InternalTransaction extends PanacheEntity {
                     break;
                 case ETH_TRANSFER:
                     break;
-                case WITHDRAWAL:
-                    break;
                 default:
                     break;
             }
-            trx.status = WalletTransactionStatus.SUCCESS;
+            trx.status = TransactionStatus.SUCCESS;
             trx.persist();
         }
 

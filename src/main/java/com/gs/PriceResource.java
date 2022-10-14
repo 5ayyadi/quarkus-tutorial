@@ -13,12 +13,11 @@ import com.core.network.Network;
 
 @Path("/price")
 public class PriceResource {
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response gasPrice(@QueryParam("network") Network network){
+    public Response gasPrice(@QueryParam("network") Network network) {
         GasStation price = new GasStation(network);
-        price.populatePrice();
         return Response.status(Status.OK).entity(price).build();
     }
 

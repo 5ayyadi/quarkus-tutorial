@@ -11,8 +11,10 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.bitcoinj.wallet.UnreadableWalletException;
+import org.web3j.abi.datatypes.Address;
 
 import com.core.errors.ReachedMaxUserId;
 import com.core.models.PanacheEntityWithTime;
@@ -36,8 +38,8 @@ public class Wallet extends PanacheEntityWithTime {
 
     // public int id;
 
-    @Column(updatable = false, unique = true)
-    public String address;
+    @Column(updatable = false, unique = true, columnDefinition = "varchar")
+    private String address;
 
     @Column(unique = true)
     public long userId;
@@ -52,7 +54,9 @@ public class Wallet extends PanacheEntityWithTime {
     private Set<TokenBalances> tokenBalances = new HashSet<TokenBalances>();
 
     // Amount of Network Value in the wallet (Transfer Only)
+    // @Column(precision = 100, scale = 0, nullable = true)
     @Column(length = 80)
+    @Transient
     private String valueBalance;
 
     public Wallet() {
@@ -70,7 +74,7 @@ public class Wallet extends PanacheEntityWithTime {
         }
         ;
         this.populateKeyPair(this.userId);
-        this.address = "0x" + this.publicKey;
+        this.address = (new Address(this.publicKey)).toString();
         if (this.valueBalance == null) {
             this.valueBalance = "0";
         }
@@ -90,6 +94,14 @@ public class Wallet extends PanacheEntityWithTime {
 
     public void addTokenBalance(TokenBalances tb) {
         tokenBalances.add(tb);
+    }
+
+    public Address getAddress() {
+        return new Address(address);
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public TokenBalances getTokenBalances(Token token) {
@@ -118,10 +130,6 @@ public class Wallet extends PanacheEntityWithTime {
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    public String getAddress() {
-        return this.address;
     }
 
     public void deposit(WithdrawDepositRequest request, TokenBalanceRepository tbRepo, TokenRepository tknRepo,

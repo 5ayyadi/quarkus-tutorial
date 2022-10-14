@@ -17,9 +17,11 @@ public class TokenBalances extends PanacheEntityWithTime {
     private Token token;
 
     @Column(length = 255, nullable = false)
+    // @Column(precision = 100, scale = 0, nullable = true)
     private String Balance;
 
     @Column(length = 255, nullable = false)
+    // @Column(precision = 100, scale = 0, nullable = true)
     private String ContractBalance;
 
     public void setWallet(Wallet wallet) {

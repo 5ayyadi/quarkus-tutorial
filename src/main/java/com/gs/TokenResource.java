@@ -67,9 +67,8 @@ public class TokenResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(TokenRequest request) {
-
-        boolean result = tokenRepository.create(request);
-        return Response.status(Status.CREATED).entity(result).build();
+        Token token = tokenRepository.create(request);
+        return Response.status(Status.CREATED).entity(token).build();
     }
 
 }

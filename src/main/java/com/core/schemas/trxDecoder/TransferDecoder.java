@@ -2,6 +2,7 @@ package com.core.schemas.trxDecoder;
 
 import java.math.BigInteger;
 
+import org.web3j.abi.datatypes.Address;
 import org.web3j.protocol.core.methods.response.Transaction;
 
 public class TransferDecoder {
@@ -11,6 +12,10 @@ public class TransferDecoder {
     public TransferDecoder(String address, BigInteger amount) {
         this.address = address;
         this.amount = amount;
+    }
+
+    public static TransferDecoder decode(Transaction trx, Address tokenAddress) {
+        return TransferDecoder.decode(trx, tokenAddress.toString());
     }
 
     public static TransferDecoder decode(Transaction trx, String tokenAddress) {

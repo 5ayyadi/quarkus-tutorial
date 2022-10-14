@@ -35,6 +35,8 @@ public class Token extends PanacheEntityWithTime {
 
     public int decimals;
 
+    public boolean verified = false;
+
     @OneToMany(mappedBy = "token")
     private Set<TokenBalances> tokenBalances = new HashSet<TokenBalances>();
 
