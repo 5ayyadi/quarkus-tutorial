@@ -23,8 +23,10 @@ import com.core.network.Network;
 
 import io.quarkus.panache.common.Sort;
 import io.quarkus.panache.common.Sort.Direction;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @Entity
+@RegisterForReflection
 public class ScannedBlocks extends PanacheEntityBaseWithTime {
 
     @Column(name = "blockNumber", unique = true)

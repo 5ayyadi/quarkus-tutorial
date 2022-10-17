@@ -24,6 +24,7 @@ import org.web3j.protocol.core.methods.response.EthBlock.Block;
 import org.web3j.protocol.core.methods.response.EthBlock.TransactionObject;
 import org.web3j.protocol.core.methods.response.EthBlock.TransactionResult;
 
+import com.core.errors.BadTransactionHash;
 import com.core.models.Token;
 import com.core.models.TransactionStatus;
 import com.core.models.TransactionType;
@@ -32,7 +33,6 @@ import com.core.models.block.BlockScanStatus;
 import com.core.models.block.ScannedBlocks;
 import com.core.models.wallet.Wallet;
 import com.core.models.wallet.WalletExternalTransactions;
-
 import com.core.network.BlockScanner;
 import com.core.network.GasStation;
 import com.core.network.Network;
@@ -44,7 +44,12 @@ import com.gs.TrxReceiptRepository;
 import com.gs.WalletRepository;
 
 import io.quarkus.scheduler.Scheduled;
+
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
+import org.eclipse.microprofile.reactive.messaging.Incoming;
+import org.eclipse.microprofile.reactive.messaging.Outgoing;
 
 @ApplicationScoped
 public class BlockScannerScheduler {
@@ -66,6 +71,12 @@ public class BlockScannerScheduler {
     TrxReceiptRepository trxReceiptRepository;
     TokenBalanceRepository tokenBalanceRepository;
 
+    @Channel("blockStatus")
+    Emitter<String> blockStatusEmitter;
+
+    // ReactiveMessagingExtension
+    // Emitter<BitcoinMessage<?>> emitter;
+
     public BlockScannerScheduler(TokenRepository tokenRepository, WalletRepository walletRepository,
             TrxReceiptRepository trxReceiptRepository,
             TokenBalanceRepository tokenBalanceRepository) {
@@ -73,7 +84,6 @@ public class BlockScannerScheduler {
         this.walletRepository = walletRepository;
         this.trxReceiptRepository = trxReceiptRepository;
         this.tokenBalanceRepository = tokenBalanceRepository;
-
     }
 
     public int get() {
@@ -139,7 +149,7 @@ public class BlockScannerScheduler {
         // TODO Query Failed Blocks and retry scanning them
     }
 
-    @Scheduled(every = "5s")
+    @Scheduled(every = "1s")
     @Transactional
     void blockScanner() {
         Map<Address, Long> wallets = walletRepository.allWalletAddressMapping();
@@ -163,7 +173,6 @@ public class BlockScannerScheduler {
                     GasStation gasStation = new GasStation(network);
 
                     for (Long i = lastScannedBlocknumber + 1; i <= lastBlockToScan; i++) {
-
                         // TODO Check If you have't fetched it before
                         Set<TrxReceipt> setOfTrxReceipts = new HashSet<>();
                         Block block = blockScanner.scanBlock(i);
@@ -173,19 +182,29 @@ public class BlockScannerScheduler {
                                 BlockScanStatus.IN_PROGRESS,
                                 block.getTransactions().size(),
                                 new Timestamp(block.getTimestamp().longValue()));
+                        blockStatusEmitter.send(scannedBlock.toString()).whenComplete((x, y) -> {
+                            System.out.println(String.format("Completed %s , %s", x, y));
+                        });
                         try {
 
                             for (TransactionResult<TransactionObject> trxObject : block.getTransactions()) {
-                                TrxReceipt trxReceipt = blockScanner.processTrx(
-                                        scannedBlock,
-                                        trxObject.get(),
-                                        gasStation);
-                                if (trxReceipt != null) {
-                                    trxReceipt.persist();
-                                    setOfTrxReceipts.add(trxReceipt);
-                                    // Log.infof("TRX from:%s\tto:%s\tr:%s", trxReceipt.fromAddress,
-                                    // trxReceipt.toAddress,
-                                    // trxReceipt.getERC20ReceiverAddress());
+                                try {
+                                    TrxReceipt trxReceipt = blockScanner.processTrx(
+                                            scannedBlock,
+                                            trxObject.get(),
+                                            gasStation);
+
+                                    if (trxReceipt != null) {
+                                        trxReceipt.persist();
+                                        setOfTrxReceipts.add(trxReceipt);
+                                        Log.debug(trxReceipt.toString());
+                                        // Log.infof("TRX from:%s\tto:%s\tr:%s", trxReceipt.fromAddress,
+                                        // trxReceipt.toAddress,
+                                        // trxReceipt.getERC20ReceiverAddress());
+                                    }
+                                } catch (BadTransactionHash e) {
+                                    // TODO: handle exception
+                                    continue;
                                 }
 
                             }

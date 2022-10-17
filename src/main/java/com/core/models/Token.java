@@ -10,6 +10,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.web3j.abi.datatypes.Address;
 
@@ -19,6 +21,9 @@ import com.core.network.NetworkConfig;
 import com.core.schemas.request.TokenRequest;
 
 @Entity
+@Table(name = "token", uniqueConstraints = {
+        @UniqueConstraint(name = "unique_token", columnNames = { "address", "network" })
+})
 public class Token extends PanacheEntityWithTime {
 
     public String name;

@@ -20,6 +20,7 @@ import org.web3j.protocol.core.methods.response.EthBlock.Block;
 import org.web3j.protocol.core.methods.response.EthBlock.TransactionObject;
 import org.web3j.protocol.core.methods.response.EthBlock.TransactionResult;
 
+import com.core.errors.BadTransactionHash;
 import com.core.models.Token;
 import com.core.models.TransactionStatus;
 import com.core.models.TransactionType;
@@ -72,15 +73,21 @@ public final class BlockScanner {
      * If cant get amount from data or from ETH value in transaction
      */
     public TrxReceipt processTrx(ScannedBlocks scannedBlock, TransactionObject trxObject,
-            GasStation gasStation) {
+            GasStation gasStation) throws BadTransactionHash {
 
         TrxReceipt trxReceipt = TrxReceipt.castTransactionObjectToTrxReceipt(trxObject, scannedBlock,
                 gasStation.nativeTokenPrice);
         trxReceipt.scannedBlock = scannedBlock;
-        boolean shouldSave = false;
+        if (trxReceipt.toAddress == null) {
+            // Contract Creation !
+            // no need
+            throw new BadTransactionHash(trxReceipt.transactionHash);
+        }
 
+        boolean shouldSave = false;
         Address toAddress = new Address(trxReceipt.toAddress);
         Address fromAddress = new Address(trxReceipt.fromAddress);
+
         // If trx to address is a token then this case happens ...
         // else it would be null
         // -USDC-> walletAddress ....

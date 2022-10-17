@@ -37,10 +37,11 @@ public class ResourceTest {
                                 .body(validWallet)
                                 .when().post("/wallet")
                                 .then()
+
                                 // .body("address", is(
                                 // "<{typeAsString=address,
                                 // value=0x4c97380af08e1ee1846f00f737c0e1121087fedd}>"))
-                                // .body("address", is(("0x4c97380af08e1ee1846f00f737c0e1121087fedd")))
+                                // .body("address", is(new A("0x4c97380af08e1ee1846f00f737c0e1121087fedd")))
 
                                 .statusCode(201);
                 validWallet = new WalletCreationRequest(1L);

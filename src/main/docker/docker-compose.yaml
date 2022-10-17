@@ -12,7 +12,9 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=evm_wallet_manager
-
+  mq:
+    image: rabbitmq:3.9-management
+    res
 
 volumes:
   postgres_data:

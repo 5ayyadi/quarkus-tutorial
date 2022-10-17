@@ -158,4 +158,13 @@ public class TrxReceipt extends PanacheEntityBaseWithTime {
         }
     }
 
+    @Override
+    public String toString() {
+        return "TrxReceipt [transactionHash=" + transactionHash + ", transactionIndex=" + transactionIndex
+                + ", scannedBlock=" + scannedBlock + ", cumulativeGasUsed=" + cumulativeGasUsed + ", gasUsed=" + gasUsed
+                + ", nativeTokenPrice=" + nativeTokenPrice + ", fromAddress=" + fromAddress + ", toAddress=" + toAddress
+                + ", data=" + data + ", status=" + status + ", trxType=" + trxType + ", amount=" + amount + ", isErc20="
+                + isErc20 + ", ERC20ReceiverAddress=" + ERC20ReceiverAddress + "]";
+    }
+
 }
