@@ -203,6 +203,16 @@ public class ERC20 extends Contract {
         return new ERC20(contractAddress, web3j, credentials, contractGasProvider);
     }
 
+    public static ERC20 load(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider) {
+        return new ERC20(contractAddress, web3j, transactionManager, contractGasProvider);
+    }
+
+    public static ERC20 load(String contractAddress, Web3j w3, ContractGasProvider gasProvider) {
+        Credentials credentials = Credentials.create(DefaultPriavteKey);
+        return new ERC20(contractAddress, w3, credentials, gasProvider);
+    }
+
     public static ERC20 load(Address contractAddress, Web3j w3) {
         Credentials credentials = Credentials.create(DefaultPriavteKey);
         return new ERC20(contractAddress.toString(), w3, credentials, new DefaultGasProvider());

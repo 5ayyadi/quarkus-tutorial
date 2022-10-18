@@ -45,10 +45,10 @@ public class TokenRepository implements PanacheRepository<Token> {
 
     }
 
-    public List<String> allTokenAddress() {
+    public List<Address> allTokenAddress() {
         String q = "SELECT address from wallet";
         Query queryObj = this.getEntityManager().createNativeQuery(q);
-        return (List<String>) queryObj.getResultList();
+        return (List<Address>) queryObj.getResultList();
     }
 
     public Map<Address, Long> allTokenAddressMapping() {

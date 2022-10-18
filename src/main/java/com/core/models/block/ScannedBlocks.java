@@ -49,7 +49,7 @@ public class ScannedBlocks extends PanacheEntityBaseWithTime {
     // public static final long INITIAL_BLOCK_NUMBER = 15259989; //NOTE - LOCAL -
     // ETH
     @ConfigProperty(name = "blockScanner.firstBlockNumber")
-    public static final long INITIAL_BLOCK_NUMBER = 23818376L; // NOTE - TESTNET - FTM
+    public static final long INITIAL_BLOCK_NUMBER = 23818406L; // NOTE - TESTNET - FTM
 
     public ScannedBlocks() {
     }

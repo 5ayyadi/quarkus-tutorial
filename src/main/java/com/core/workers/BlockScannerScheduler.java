@@ -165,6 +165,8 @@ public class BlockScannerScheduler {
                         + (maxBlocksPerQuery < (lastBlockNumber - lastScannedBlocknumber) ? maxBlocksPerQuery
                                 : lastBlockNumber - lastScannedBlocknumber);
 
+                Log.infof("wallets:%s , tokens:%s, blockchain:%d , lastBlock:%d", wallets, tokens, lastBlockNumber,
+                        lastScannedBlocknumber);
                 if (lastScannedBlocknumber < lastBlockNumber) {
 
                     Log.debugf("Current Block Number : %s", lastBlockNumber);
