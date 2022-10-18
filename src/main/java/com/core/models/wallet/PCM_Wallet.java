@@ -1,6 +1,5 @@
 package com.core.models.wallet;
 
-
 import java.math.BigInteger;
 
 import javax.persistence.Column;
@@ -27,12 +26,9 @@ public class PCM_Wallet extends PanacheEntityWithTime {
 
     @Column(updatable = false, unique = true)
     private String publicKey;
-    
+
     @Column(updatable = false, unique = true)
     private Network network;
-
-    
-
 
     public PCM_Wallet(String privateKey, String publicKey, Network network) {
         this.privateKey = privateKey;
@@ -51,9 +47,10 @@ public class PCM_Wallet extends PanacheEntityWithTime {
         return sPublickeyInHex;
     }
 
-    public ERC20 contract(String tokenAddress){
-        return ERC20.load(tokenAddress, network.value.config.w3, 
-        Credentials.create(privateKey), new DefaultGasProvider());
+    public ERC20 contract(String tokenAddress) {
+        // TODO WHY ?
+        return ERC20.load(tokenAddress, network.value.config.w3,
+                Credentials.create(privateKey), new DefaultGasProvider());
     }
 
     public String balanceOf(String tokenAddress) {
@@ -66,14 +63,14 @@ public class PCM_Wallet extends PanacheEntityWithTime {
         }
     }
 
-    public boolean transferTo(String tokenAddress, String dstWallet, BigInteger amount){
+    public boolean transferTo(String tokenAddress, String dstWallet, BigInteger amount) {
         ERC20 contract = contract(tokenAddress);
         try {
             TransactionReceipt receipt = contract.transfer(dstWallet, amount).send();
             receipt.getStatus();
             // TODO: check status
             return true;
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;

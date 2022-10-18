@@ -16,6 +16,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 import com.core.models.PanacheEntityBaseWithTime;
 import com.core.models.PanacheEntityWithTime;
 import com.core.models.TrxReceipt;
@@ -46,7 +48,8 @@ public class ScannedBlocks extends PanacheEntityBaseWithTime {
     @Transient
     // public static final long INITIAL_BLOCK_NUMBER = 15259989; //NOTE - LOCAL -
     // ETH
-    public static final long INITIAL_BLOCK_NUMBER = 11196262L; // NOTE - TESTNET - FTM
+    @ConfigProperty(name = "blockScanner.firstBlockNumber")
+    public static final long INITIAL_BLOCK_NUMBER = 23818376L; // NOTE - TESTNET - FTM
 
     public ScannedBlocks() {
     }

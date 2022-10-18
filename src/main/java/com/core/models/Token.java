@@ -32,7 +32,7 @@ public class Token extends PanacheEntityWithTime {
     public String symbol;
 
     @Column(updatable = false, unique = true)
-    public String address;
+    private String address;
 
     // tOdO - Should later be unique with constraint of network and address
     @Column(nullable = true)
@@ -49,27 +49,28 @@ public class Token extends PanacheEntityWithTime {
         tokenBalances.add(tb);
     }
 
-    // public void setTokenBalances(Set<TokenBalances> tokenBalances) {
-    // this.tokenBalances = tokenBalances;
-    // }
-    // public Set<TokenBalances> getTokenBalances() {
-    // return tokenBalances;
-    // }
+    public Address getAddress() {
+        return new Address(address);
+    }
+
+    public void setAddress(Address address) {
+        this.address = address.toString();
+    }
 
     public Token() {
     }
 
-    public Token(String name, String symbol, String address, int decimals, Network network) {
+    public Token(String name, String symbol, Address address, int decimals, Network network) {
         this.name = name;
         this.symbol = symbol;
-        this.address = address;
+        this.address = address.toString();
         this.decimals = decimals;
         // this.chainId = chainId;
         this.network = network;
     }
 
     public ERC20 tokenContract() {
-        return ERC20.load(address, network.value.w3);
+        return ERC20.load(getAddress(), network.value.w3);
     }
 
 }

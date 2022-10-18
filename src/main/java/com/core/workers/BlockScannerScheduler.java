@@ -149,12 +149,12 @@ public class BlockScannerScheduler {
         // TODO Query Failed Blocks and retry scanning them
     }
 
-    @Scheduled(cron = "${blockScanner.BSC.ALL}")
+    @Scheduled(every = "15s")
+    // @Scheduled(cron = "${blockScanner.BSC.ALL}")
     @Transactional
     void blockScanner() {
         Map<Address, Long> wallets = walletRepository.allWalletAddressMapping();
-        Map<String, Long> tokens = tokenRepository.allTokenAddressMapping();
-
+        Map<Address, Long> tokens = tokenRepository.allTokenAddressMapping();
         if (isScannerRunning.get() == false) {
             isScannerRunning.set(true);
             try {
@@ -183,7 +183,7 @@ public class BlockScannerScheduler {
                                 block.getTransactions().size(),
                                 new Timestamp(block.getTimestamp().longValue()));
                         blockStatusEmitter.send(scannedBlock.toString()).whenComplete((x, y) -> {
-                            System.out.println(String.format("Completed %s , %s", x, y));
+                            Log.debugf("Completed %s , %s", x, y);
                         });
                         try {
 
@@ -198,9 +198,6 @@ public class BlockScannerScheduler {
                                         trxReceipt.persist();
                                         setOfTrxReceipts.add(trxReceipt);
                                         Log.debug(trxReceipt.toString());
-                                        // Log.infof("TRX from:%s\tto:%s\tr:%s", trxReceipt.fromAddress,
-                                        // trxReceipt.toAddress,
-                                        // trxReceipt.getERC20ReceiverAddress());
                                     }
                                 } catch (BadTransactionHash e) {
                                     // TODO: handle exception

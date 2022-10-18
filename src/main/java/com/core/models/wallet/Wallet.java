@@ -100,10 +100,6 @@ public class Wallet extends PanacheEntityWithTime {
         return new Address(address);
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public TokenBalances getTokenBalances(Token token) {
         Set<TokenBalances> allBalances = this.getTokenBalances();
         for (TokenBalances tb : allBalances) {

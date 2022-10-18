@@ -51,10 +51,10 @@ public class TokenRepository implements PanacheRepository<Token> {
         return (List<String>) queryObj.getResultList();
     }
 
-    public Map<String, Long> allTokenAddressMapping() {
-        HashMap<String, Long> res = new HashMap<>();
+    public Map<Address, Long> allTokenAddressMapping() {
+        HashMap<Address, Long> res = new HashMap<>();
         for (Token token : listAll()) {
-            res.put(token.address, token.id);
+            res.put(token.getAddress(), token.id);
         }
         return res;
     }
@@ -65,11 +65,11 @@ public class TokenRepository implements PanacheRepository<Token> {
             return token;
         }
         try {
-            ERC20 erc20TokenContract = ERC20.load(address.toString(), network.value.config.w3);
+            ERC20 erc20TokenContract = ERC20.load(address, network.value.config.w3);
             token = new Token(
                     erc20TokenContract.name().send(),
                     erc20TokenContract.symbol().send(),
-                    address.toString(),
+                    address,
                     erc20TokenContract.decimals().send().intValue(),
                     network);
 

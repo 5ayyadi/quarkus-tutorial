@@ -16,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.core.customTypes.Address;
 import com.core.models.wallet.Wallet;
 import com.core.models.wallet.WalletInternalTransactions;
 import com.core.schemas.request.WalletCreationRequest;
@@ -40,7 +41,7 @@ public class WalletResource {
         if (address != null) {
             Log.infof("Searching for %s", address);
             ArrayList<Wallet> wallets = new ArrayList<>();
-            wallets.add(walletRepository.findByPublicKey(address));
+            wallets.add(walletRepository.findByAddress(address));
             return wallets;
         }
         return walletRepository.listAll();
@@ -67,10 +68,10 @@ public class WalletResource {
         return Response.status(Status.CREATED).entity(resWallet).build();
     }
 
-    @Transactional
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
     public Response update(Wallet wallet) {
         // Wallet entity = walletRepository.findById(wallet.id);
         // entity.address = wallet.getAddress();

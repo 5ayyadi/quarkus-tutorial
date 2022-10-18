@@ -64,7 +64,9 @@ public class TokenBalanceRepository implements PanacheRepository<TokenBalances> 
 
     }
 
-    public static void addTokenBalances(TokenBalancesRequest request, TokenRepository tokenRepository,
+    public static void addTokenBalances(
+            TokenBalancesRequest request,
+            TokenRepository tokenRepository,
             WalletRepository walletRepository) {
         Wallet wallet = walletRepository.findByAddress(request.walletAddress);
         if (wallet != null) {
@@ -72,7 +74,7 @@ public class TokenBalanceRepository implements PanacheRepository<TokenBalances> 
             tb.setBalance(request.amount.toString());
             Token token = tokenRepository.getByAddress("0x" + request.tokenAddress);
             if (token == null) {
-                token = tokenRepository.tokenFromAddress(request.network, new Address(request.tokenAddress), false);
+                token = tokenRepository.tokenFromAddress(request.network, request.tokenAddress, false);
             }
             token.addTokenBalances(tb);
             wallet.getTokenBalances().add(tb);

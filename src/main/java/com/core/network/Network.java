@@ -8,12 +8,13 @@ import com.core.models.Token;
 
 public enum Network {
 
-        // BSCTestNet(new NetworkDetail("Binance Smart Chain testnet", "BSC", 60, 97,
-        // new NetworkConfig("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-        // "https://bsc-dataseed1.binance.org"))),
         BSC(new NetworkDetail("Binance Smart Chain", "BSC", 60, 56,
                         new NetworkConfig("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
                                         "https://bsc-dataseed1.binance.org"),
+                        "wbnb")),
+        BSCTestNet(new NetworkDetail("Binance Smart Chain testnet", "tBSC", 60, 97,
+                        new NetworkConfig("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+                                        "https://data-seed-prebsc-1-s1.binance.org:8545/"),
                         "wbnb")),
         Rinkeby(new NetworkDetail("Ethereum Testnet Ropsten", "ETH", 60, 4,
                         new NetworkConfig("0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15",

@@ -38,7 +38,7 @@ public class QuoteProcessor {
     public void processStatus(String quoteRequest) throws InterruptedException {
         // simulate some hard working task
         // Thread.sleep(200);
-        Log.infof("RECEIVED ...%s", quoteRequest);
+        // Log.infof("RECEIVED ...%s", quoteRequest);
 
         // return new Quote(quoteRequest, random.nextInt(100));
     }

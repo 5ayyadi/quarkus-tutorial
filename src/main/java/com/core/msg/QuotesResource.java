@@ -43,7 +43,6 @@ public class QuotesResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String createRequest() {
         UUID uuid = UUID.randomUUID();
-        System.out.println(quoteRequestEmitter.send(uuid.toString()));
         return uuid.toString();
     }
 }

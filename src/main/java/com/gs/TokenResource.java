@@ -1,7 +1,6 @@
 package com.gs;
 
 import com.core.models.Token;
-import com.core.schemas.request.TokenARequest;
 import com.core.schemas.request.TokenRequest;
 
 import io.quarkus.logging.Log;
@@ -68,7 +67,6 @@ public class TokenResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(TokenRequest request) {
-        System.out.println(request.address);
         Token token = tokenRepository.create(request);
         return Response.status(Status.CREATED).entity(token).build();
     }

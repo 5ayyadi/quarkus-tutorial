@@ -197,36 +197,15 @@ public class ERC20 extends Contract {
     // return responses;
     // }
 
-    @Deprecated
-    public static ERC20 load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice,
-            BigInteger gasLimit) {
-        return new ERC20(contractAddress, web3j, credentials, gasPrice, gasLimit);
-    }
-
-    @Deprecated
-    public static ERC20 load(String contractAddress, Web3j web3j, TransactionManager transactionManager,
-            BigInteger gasPrice, BigInteger gasLimit) {
-        return new ERC20(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
-    }
-
+    // @Deprecated
     public static ERC20 load(String contractAddress, Web3j web3j, Credentials credentials,
             ContractGasProvider contractGasProvider) {
         return new ERC20(contractAddress, web3j, credentials, contractGasProvider);
     }
 
-    public static ERC20 load(String contractAddress, Web3j web3j, TransactionManager transactionManager,
-            ContractGasProvider contractGasProvider) {
-        return new ERC20(contractAddress, web3j, transactionManager, contractGasProvider);
-    }
-
-    public static ERC20 load(String contractAddress, Web3j w3, ContractGasProvider gasProvider) {
+    public static ERC20 load(Address contractAddress, Web3j w3) {
         Credentials credentials = Credentials.create(DefaultPriavteKey);
-        return new ERC20(contractAddress, w3, credentials, gasProvider);
-    }
-
-    public static ERC20 load(String contractAddress, Web3j w3) {
-        Credentials credentials = Credentials.create(DefaultPriavteKey);
-        return new ERC20(contractAddress, w3, credentials, new DefaultGasProvider());
+        return new ERC20(contractAddress.toString(), w3, credentials, new DefaultGasProvider());
     }
 
     public static class TransferEventResponse {

@@ -1,16 +1,9 @@
 package com.core.network;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 import com.core.customTypes.Address;
@@ -39,15 +32,17 @@ import io.quarkus.logging.Log;
 // @ApplicationScoped
 public final class BlockScanner {
 
-    // @Inject
     @Transient
     TokenRepository tokenRepo;
 
     Map<Address, Long> wallets;
-    Map<String, Long> tokens;
+    Map<Address, Long> tokens;
     Network network;
 
-    public BlockScanner(Map<Address, Long> wallets, Map<String, Long> tokens, Network network,
+    public BlockScanner(
+            Map<Address, Long> wallets,
+            Map<Address, Long> tokens,
+            Network network,
             TokenRepository tokenRepo) {
         this.wallets = wallets;
         this.tokens = tokens;
@@ -102,15 +97,15 @@ public final class BlockScanner {
                 trxReceipt.trxType = TransactionType.WITHDRAW;
                 // trxReceipt.persist();
                 shouldSave = true;
-            } else if (tokens.containsKey(trxReceipt.toAddress)) {
+            } else if (tokens.containsKey(toAddress)) {
                 // #2
                 trxReceipt.trxType = TransactionType.WITHDRAW;
-                Long receiver_token_id = tokens.get(trxReceipt.fromAddress);
+                Long receiver_token_id = tokens.get(fromAddress);
                 Log.infof("Found To tokenId of %s", receiver_token_id);
                 shouldSave = true;
 
             } else {
-                Token token = tokenRepo.tokenFromAddress(network, new Address(trxReceipt.toAddress), true);
+                Token token = tokenRepo.tokenFromAddress(network, toAddress, true);
                 if (token != null) {
                     Log.infof("Found New Token %s on trx: %s", token.symbol, trxReceipt.transactionHash);
                     trxReceipt.trxType = TransactionType.WITHDRAW;
@@ -118,21 +113,21 @@ public final class BlockScanner {
                     shouldSave = true;
                 }
             }
-        } else if (tokens.containsKey(trxReceipt.fromAddress)) {
+        } else if (tokens.containsKey(fromAddress)) {
             // Kinda impossible case
             // Token
-            Long token_id = tokens.get(trxReceipt.fromAddress);
+            Long token_id = tokens.get(fromAddress);
             Log.infof("Found to tokenId of %s", token_id);
             trxReceipt.trxType = TransactionType.UNKNOWN;
             shouldSave = true;
         } else if (wallets.containsKey(toAddress)) {
             // #3
             // TODO ETH DEPOSIT ....
-            Long receiver_token_id = tokens.get(trxReceipt.fromAddress);
+            Long receiver_token_id = tokens.get(fromAddress);
             Log.infof("Found To tokenId of %s", receiver_token_id);
             trxReceipt.trxType = TransactionType.DEPOSIT;
             shouldSave = true;
-        } else if (tokens.containsKey(trxReceipt.toAddress)) {
+        } else if (tokens.containsKey(toAddress)) {
             // #1 (Probably) < PARSE TRX DATA : IF receiver there is wallet address >
             if (trxReceipt.getERC20ReceiverAddress() == null) {
                 // Some Thing Went really wrong ....
@@ -141,7 +136,7 @@ public final class BlockScanner {
 
             } else {
 
-                Long token_id = tokens.get(trxReceipt.toAddress);
+                Long token_id = tokens.get(toAddress);
                 Log.infof("Found to tokenId of %s", token_id);
                 trxReceipt.trxType = TransactionType.DEPOSIT;
                 shouldSave = true;
@@ -151,7 +146,7 @@ public final class BlockScanner {
                 Long receiver_wallet_id = wallets.get(trxReceipt.getERC20ReceiverAddress());
                 Log.infof("Found To walletId of %s", receiver_wallet_id);
 
-                Long receiver_token_id = tokens.get(trxReceipt.fromAddress);
+                Long receiver_token_id = tokens.get(fromAddress);
                 if (receiver_token_id == null) {
                     Token token = tokenRepo.tokenFromAddress(network, new Address(trxReceipt.toAddress), true);
                     if (token != null)

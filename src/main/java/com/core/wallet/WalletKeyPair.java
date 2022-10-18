@@ -30,10 +30,6 @@ public class WalletKeyPair extends ECKeyPair {
         return getPublicKey().toString(16);
     }
 
-    // public String getAddress() {
-    // return getPublicKeyString();
-    // }
-
     // TODO - How does override works ????
     @Override
     public BigInteger getPrivateKey() {

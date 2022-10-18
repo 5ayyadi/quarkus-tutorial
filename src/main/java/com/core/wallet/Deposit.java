@@ -17,7 +17,7 @@ public class Deposit {
         return Deposit.isValid(request.trxHash, request.tokenAddress, request.amount, request.network, wallet);
     }
 
-    public static boolean isValid(String trxHash, String tokenAddress, BigInteger amount, Network network,
+    public static boolean isValid(String trxHash, Address tokenAddress, BigInteger amount, Network network,
             Wallet wallet) {
         try {
             // TODO - think on how to save trxReciept ...

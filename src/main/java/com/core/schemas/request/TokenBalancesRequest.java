@@ -8,7 +8,7 @@ import com.core.network.Network;
 
 public class TokenBalancesRequest {
     public Network network;
-    public String tokenAddress;
-    public String walletAddress;
+    public Address tokenAddress;
+    public Address walletAddress;
     public BigInteger amount;
 }

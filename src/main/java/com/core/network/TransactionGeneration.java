@@ -139,9 +139,13 @@ public class TransactionGeneration {
          * @return RawTransactionAndExtraInfo
          * @throws Exception
          */
-        public static RawTransactionAndExtraInfo transferToken(Network network, Token token, String fromWallet,
+        public static RawTransactionAndExtraInfo transferToken(
+                        Network network,
+                        Token token,
+                        String fromWallet,
                         String toWallet,
-                        BigInteger amount, BigInteger currentGasLimit)
+                        BigInteger amount,
+                        BigInteger currentGasLimit)
                         throws Exception {
                 Web3j w3 = network.value.w3;
                 BigInteger fromWalletBalance = token.tokenContract().balanceOf(fromWallet).send();
