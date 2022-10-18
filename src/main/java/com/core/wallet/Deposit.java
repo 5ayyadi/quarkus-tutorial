@@ -17,13 +17,13 @@ public class Deposit {
         return Deposit.isValid(request.trxHash, request.tokenAddress, request.amount, request.network, wallet);
     }
 
-    public static boolean isValid(String trxHash, Address tokenAddress, BigInteger amount, Network network,
+    public static boolean isValid(String trxHash, String tokenAddress, BigInteger amount, Network network,
             Wallet wallet) {
         try {
             // TODO - think on how to save trxReciept ...
             Transaction trx = network.value.w3.ethGetTransactionByHash(trxHash).send().getResult();
             TransferDecoder inputData = TransferDecoder.decode(trx, tokenAddress);
-            return (inputData.address.equals(wallet.getAddress())
+            return (inputData.address.equals(wallet.getAddress().toString())
                     && inputData.amount.equals(amount));
         } catch (Exception e) {
             Log.error(e);

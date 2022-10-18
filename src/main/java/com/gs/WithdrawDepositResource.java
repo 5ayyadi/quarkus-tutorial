@@ -47,6 +47,7 @@ public class WithdrawDepositResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deposit(WithdrawDepositRequest request) {
+        // TODO: check if the transaction is already in the database
         request.changeStatus(TransactionStatus.PENDING);
         // TODO Why request has wallet address and why you got the user for it
         Wallet resWallet = walletRepository.findByUserId(request.userId);

@@ -17,7 +17,7 @@ public class WithdrawDepositRequest extends TokenBalancesRequest {
     public WithdrawDepositRequest() {
     }
 
-    public WithdrawDepositRequest(Long userId, Long tokenId, Address walletAddress, Address tokenAddress,
+    public WithdrawDepositRequest(Long userId, Long tokenId, String walletAddress, String tokenAddress,
             BigInteger amount,
             Network network, String trxHash) {
         this.userId = userId;

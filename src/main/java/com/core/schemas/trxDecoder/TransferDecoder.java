@@ -24,7 +24,7 @@ public class TransferDecoder {
             if (tokenAddress.equals("0xe")) {
                 return new TransferDecoder(trx.getTo(), trx.getValue());
             } else {
-                return new TransferDecoder(input.substring(34, 74), new BigInteger(input.substring(74, 138), 16));
+                return new TransferDecoder("0x" + input.substring(34, 74), new BigInteger(input.substring(74, 138), 16));
             }
         }
         return new TransferDecoder("0x0", BigInteger.ZERO);

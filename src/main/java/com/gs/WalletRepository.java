@@ -23,6 +23,10 @@ public class WalletRepository implements PanacheRepository<Wallet> {
         return find("lower(publickey)", publicKey.toLowerCase()).firstResult();
     }
 
+    public Wallet findByAddress(String address) {
+        return find("address", address).firstResult();
+    }
+
     public Wallet findByAddress(Address address) {
         return find("address", address).firstResult();
     }
