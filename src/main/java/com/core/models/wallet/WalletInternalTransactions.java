@@ -20,22 +20,6 @@ import com.gs.WalletRepository;
 @Entity
 public class WalletInternalTransactions extends WalletTransactionsBasicModel {
 
-    @Inject
-    @Transient
-    TokenRepository tknRepo;
-
-    @Inject
-    @Transient
-    WalletRepository wltRepo;
-
-    @Inject
-    @Transient
-    TokenBalanceRepository tbRepo;
-
-    @Inject
-    @Transient
-    WalletInternalTransactionRepository wltTrxRepo;
-
     public WalletInternalTransactions() {
     }
 
@@ -43,7 +27,7 @@ public class WalletInternalTransactions extends WalletTransactionsBasicModel {
         super(wallet, string);
     }
 
-    public WalletInternalTransactions(TransferRequest request) {
+    public WalletInternalTransactions(TransferRequest request, TokenRepository tknRepo, WalletRepository wltRepo) {
         this.amount = request.amount;
         this.status = TransactionStatus.SUBMITTED;
         this.type = request.type;
@@ -63,21 +47,22 @@ public class WalletInternalTransactions extends WalletTransactionsBasicModel {
         return list("status", status);
     }
 
-    public boolean isTransferValid() {
+    public boolean isTransferValid(TokenBalanceRepository tbRepo) {
         // TODO: later on we can add nonce or avoid duplication
-        return _hasBalance();
+        return _hasBalance(tbRepo);
     }
 
-    private boolean _hasBalance() {
+    private boolean _hasBalance(TokenBalanceRepository tbRepo) {
         BigInteger balance = new BigInteger(tbRepo.getTokenBalance(fromWallet.id, token.id));
         return balance.compareTo(amount) == 1 ? true : false;
     }
 
-    public int changeStatus(TransactionStatus status) {
+    public int changeStatus(TransactionStatus status, WalletInternalTransactionRepository wltTrxRepo) {
+        this.status = status;
         return wltTrxRepo.update("status", status);
     }
 
-    public int changeStatus(TransactionStatus status, String message) {
+    public int changeStatus(TransactionStatus status, String message,  WalletInternalTransactionRepository wltTrxRepo) {
         wltTrxRepo.update("status", status);
         return wltTrxRepo.update("message", message);
     }
