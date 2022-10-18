@@ -2,7 +2,7 @@ package com.core.schemas.request;
 
 import java.math.BigInteger;
 
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 
 import com.core.models.TransactionStatus;
 import com.core.models.wallet.WalletExternalTransactions;

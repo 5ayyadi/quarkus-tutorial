@@ -5,7 +5,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 
 import com.core.models.Token;
 import com.core.models.TokenBalances;

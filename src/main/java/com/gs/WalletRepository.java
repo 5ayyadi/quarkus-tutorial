@@ -8,7 +8,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.Parameter;
 import javax.persistence.Query;
 
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 
 import com.core.models.wallet.Wallet;
 

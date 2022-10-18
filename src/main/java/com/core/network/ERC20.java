@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import org.web3j.abi.EventEncoder;
 import org.web3j.abi.TypeReference;
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 import org.web3j.abi.datatypes.Event;
 import org.web3j.abi.datatypes.Function;
 import org.web3j.abi.datatypes.Type;
@@ -66,17 +66,17 @@ public class ERC20 extends Contract {
 
     public static final String FUNC_ALLOWANCE = "allowance";
 
-    public static final Event TRANSFER_EVENT = new Event("Transfer",
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
-            }, new TypeReference<Address>(true) {
-            }, new TypeReference<Uint256>() {
-            }));;
+    // public static final Event TRANSFER_EVENT = new Event("Transfer",
+    // Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
+    // }, new TypeReference<Address>(true) {
+    // }, new TypeReference<Uint256>() {
+    // }));;
 
-    public static final Event APPROVAL_EVENT = new Event("Approval",
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
-            }, new TypeReference<Address>(true) {
-            }, new TypeReference<Uint256>() {
-            }));;
+    // public static final Event APPROVAL_EVENT = new Event("Approval",
+    // Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
+    // }, new TypeReference<Address>(true) {
+    // }, new TypeReference<Uint256>() {
+    // }));;
 
     @Deprecated
     protected ERC20(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice,
@@ -177,19 +177,25 @@ public class ERC20 extends Contract {
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
-    public List<TransferEventResponse> getTransferEvents(TransactionReceipt transactionReceipt) {
-        List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(TRANSFER_EVENT, transactionReceipt);
-        ArrayList<TransferEventResponse> responses = new ArrayList<TransferEventResponse>(valueList.size());
-        for (Contract.EventValuesWithLog eventValues : valueList) {
-            TransferEventResponse typedResponse = new TransferEventResponse();
-            typedResponse.log = eventValues.getLog();
-            typedResponse._from = (String) eventValues.getIndexedValues().get(0).getValue();
-            typedResponse._to = (String) eventValues.getIndexedValues().get(1).getValue();
-            typedResponse._value = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
-            responses.add(typedResponse);
-        }
-        return responses;
-    }
+    // public List<TransferEventResponse> getTransferEvents(TransactionReceipt
+    // transactionReceipt) {
+    // List<Contract.EventValuesWithLog> valueList =
+    // extractEventParametersWithLog(TRANSFER_EVENT, transactionReceipt);
+    // ArrayList<TransferEventResponse> responses = new
+    // ArrayList<TransferEventResponse>(valueList.size());
+    // for (Contract.EventValuesWithLog eventValues : valueList) {
+    // TransferEventResponse typedResponse = new TransferEventResponse();
+    // typedResponse.log = eventValues.getLog();
+    // typedResponse._from = (String)
+    // eventValues.getIndexedValues().get(0).getValue();
+    // typedResponse._to = (String)
+    // eventValues.getIndexedValues().get(1).getValue();
+    // typedResponse._value = (BigInteger)
+    // eventValues.getNonIndexedValues().get(0).getValue();
+    // responses.add(typedResponse);
+    // }
+    // return responses;
+    // }
 
     @Deprecated
     public static ERC20 load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice,

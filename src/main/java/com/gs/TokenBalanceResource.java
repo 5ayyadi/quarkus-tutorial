@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 
 import java.util.List;
 

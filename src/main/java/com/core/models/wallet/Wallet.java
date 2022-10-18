@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.bitcoinj.wallet.UnreadableWalletException;
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 
 import com.core.errors.ReachedMaxUserId;
 import com.core.models.PanacheEntityWithTime;

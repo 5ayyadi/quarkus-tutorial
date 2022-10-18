@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.Query;
 
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 
 import com.core.models.Token;
 import com.core.network.ERC20;
@@ -93,7 +93,7 @@ public class TokenRepository implements PanacheRepository<Token> {
 
         return tokenFromAddress(
                 request.network,
-                request.toAddress(),
+                request.address,
                 true);
 
     }

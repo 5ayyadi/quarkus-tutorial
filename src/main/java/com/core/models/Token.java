@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 
 import com.core.network.ERC20;
 import com.core.network.Network;

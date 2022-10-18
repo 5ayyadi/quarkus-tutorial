@@ -2,7 +2,7 @@ package com.core.wallet;
 
 import java.math.BigInteger;
 
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 import org.web3j.protocol.core.methods.response.Transaction;
 import com.core.models.wallet.Wallet;
 import com.core.network.Network;

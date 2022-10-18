@@ -13,7 +13,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterNumber;
 import org.web3j.protocol.core.methods.response.EthBlock.Block;

@@ -1,6 +1,7 @@
 package com.gs;
 
 import com.core.models.Token;
+import com.core.schemas.request.TokenARequest;
 import com.core.schemas.request.TokenRequest;
 
 import io.quarkus.logging.Log;
@@ -12,7 +13,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.hibernate.annotations.Filter;
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +68,7 @@ public class TokenResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(TokenRequest request) {
+        System.out.println(request.address);
         Token token = tokenRepository.create(request);
         return Response.status(Status.CREATED).entity(token).build();
     }

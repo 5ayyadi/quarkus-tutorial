@@ -1,7 +1,7 @@
 package com.gs;
 
 import org.junit.jupiter.api.Test;
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 
 import com.core.network.Network;
 import com.core.schemas.request.WithdrawDepositRequest;

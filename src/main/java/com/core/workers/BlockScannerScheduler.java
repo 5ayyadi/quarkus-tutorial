@@ -17,7 +17,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterNumber;
 import org.web3j.protocol.core.methods.response.EthBlock.Block;
@@ -149,7 +149,7 @@ public class BlockScannerScheduler {
         // TODO Query Failed Blocks and retry scanning them
     }
 
-    @Scheduled(every = "1s")
+    @Scheduled(cron = "${blockScanner.BSC.ALL}")
     @Transactional
     void blockScanner() {
         Map<Address, Long> wallets = walletRepository.allWalletAddressMapping();

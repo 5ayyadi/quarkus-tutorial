@@ -1,7 +1,7 @@
 package com.core.network;
 
 import io.quarkus.resteasy.runtime.vertx.JsonObjectReader;
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.DefaultGasProvider;

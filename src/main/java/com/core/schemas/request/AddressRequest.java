@@ -1,6 +1,6 @@
 package com.core.schemas.request;
 
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 
 public class AddressRequest {
     public String address;

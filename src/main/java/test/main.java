@@ -1,6 +1,6 @@
 package test;
 
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;

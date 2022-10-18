@@ -3,7 +3,7 @@ package com.core.network;
 import java.io.IOException;
 import java.math.BigInteger;
 
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;

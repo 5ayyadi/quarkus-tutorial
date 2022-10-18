@@ -2,7 +2,7 @@ package com.core.schemas.trxDecoder;
 
 import java.math.BigInteger;
 
-import org.web3j.abi.datatypes.Address;
+import com.core.customTypes.Address;
 import org.web3j.protocol.core.methods.response.Transaction;
 
 public class TransferDecoder {
