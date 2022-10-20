@@ -11,6 +11,7 @@ import com.core.models.Token;
 import com.core.models.TokenBalances;
 import com.core.models.wallet.Wallet;
 import com.core.schemas.request.TokenBalancesRequest;
+import com.core.schemas.request.WithdrawDepositRequest;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.logging.Log;
@@ -65,10 +66,10 @@ public class TokenBalanceRepository implements PanacheRepository<TokenBalances> 
     }
 
     public static void addTokenBalances(
-            TokenBalancesRequest request,
+            WithdrawDepositRequest request,
             TokenRepository tokenRepository,
             WalletRepository walletRepository) {
-        Wallet wallet = walletRepository.findByAddress(request.walletAddress);
+        Wallet wallet = walletRepository.findByUserId(request.userId);
         if (wallet != null) {
             TokenBalances tb = new TokenBalances();
             tb.setBalance(request.amount.toString());

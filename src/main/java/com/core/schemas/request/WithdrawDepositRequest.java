@@ -12,6 +12,7 @@ public class WithdrawDepositRequest extends TokenBalancesRequest {
     public Long userId;
     public Long tokenId;
     public TransactionStatus status = TransactionStatus.RECEIVED;
+    public Address userWallet;
     public String trxHash;
 
     public WithdrawDepositRequest() {
@@ -19,12 +20,15 @@ public class WithdrawDepositRequest extends TokenBalancesRequest {
 
     public WithdrawDepositRequest(
             Long userId, Long tokenId,
-            Address walletAddress, Address tokenAddress,
+            Address serverWallet,
+            Address userWallet,
+            Address tokenAddress,
             BigInteger amount,
             Network network, String trxHash) {
         this.userId = userId;
         this.tokenId = tokenId;
-        this.walletAddress = walletAddress;
+        this.serverWallet = serverWallet;
+        this.userWallet = userWallet;
         this.tokenAddress = tokenAddress;
         this.amount = amount;
         this.network = network;

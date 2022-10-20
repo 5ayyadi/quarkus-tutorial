@@ -14,6 +14,13 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.bitcoinj.wallet.UnreadableWalletException;
+import org.web3j.crypto.Credentials;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.request.Transaction;
+import org.web3j.protocol.core.methods.response.EthEstimateGas;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.tx.gas.DefaultGasProvider;
+
 import com.core.customTypes.Address;
 
 import com.core.errors.ReachedMaxUserId;
@@ -21,6 +28,8 @@ import com.core.models.PanacheEntityWithTime;
 import com.core.models.Token;
 import com.core.models.TokenBalances;
 import com.core.models.TransactionStatus;
+import com.core.network.ERC20;
+import com.core.network.GasStation;
 import com.core.network.Network;
 import com.core.schemas.request.TransferRequest;
 import com.core.schemas.request.WithdrawDepositRequest;
@@ -29,6 +38,8 @@ import com.core.wallet.WalletKeyPair;
 import com.gs.TokenBalanceRepository;
 import com.gs.TokenRepository;
 import com.gs.WalletRepository;
+
+import io.quarkus.logging.Log;
 
 @Table(name = "wallet")
 @Entity
@@ -172,6 +183,51 @@ public class Wallet extends PanacheEntityWithTime {
         BigInteger balance = new BigInteger(tbRepo.getTokenBalance(this.id, request.tokenId));
         // returns 0 if equals and -1 if balance is less than amount
         return balance.compareTo(request.amount) == 1 ? true : false;
+    }
+
+    public boolean externalTransfer(
+        Address destination, 
+        Token token, 
+        BigInteger amount, 
+        Network network){
+        Credentials credentials = Credentials.create(this.privateKey);
+        // Why didn't I used token.tokenContract? because 
+        // the private key may vary. :(
+        ERC20 tokenContract = 
+        ERC20.load(
+            token.getAddress().toString(), 
+            network.value.w3, 
+            credentials, 
+            new DefaultGasProvider());
+
+            
+        try{
+
+            // ======================================================
+            //      gas is returned, only needed to sign
+            // ======================================================
+            // String hexAmount = String.format("%064x", amount);
+            // String data =   "0xa9059cbb000000000000000000000000" +
+            //                 destination.toPublicKey() + 
+            //                 hexAmount;               
+            // Transaction transaction = new Transaction(
+            //     this.address, 
+            //     network.value.w3.ethGetTransactionCount(this.address, DefaultBlockParameterName.LATEST).send().getTransactionCount(),
+            //     network.w3.ethGasPrice().send().getGasPrice(), 
+            //     new BigInteger("210000"),
+            //     destination.toString(), 
+            //     amount, 
+            //     data);
+            // EthEstimateGas gas = network.value.w3.ethEstimateGas(transaction).send();
+            // =====================================================
+
+            // This returns error
+            TransactionReceipt trxReceipt = tokenContract.transfer(destination.toString(), amount).sendAsync().get();
+            return trxReceipt.isStatusOK();
+        } catch(Exception e){
+            Log.errorf("from: %s error: %s", this.address, e);
+            return false;
+        }
     }
 
     @Override

@@ -62,18 +62,18 @@ public class ResourceTest {
                                 .statusCode(201);
         }
 
-        @Test
-        public void testPostToken() {
+        // @Test
+        // public void testPostToken() {
 
-                TokenRequest validToken = new TokenRequest(ETH_USDC, network);
-                System.out.println(validToken);
-                given()
-                                .contentType(ContentType.JSON)
-                                .body(validToken)
-                                .when().post("/token")
-                                .then()
-                                .statusCode(201);
-        }
+        //         TokenRequest validToken = new TokenRequest(ETH_USDC, network);
+        //         System.out.println(validToken);
+        //         given()
+        //                         .contentType(ContentType.JSON)
+        //                         .body(validToken)
+        //                         .when().post("/token")
+        //                         .then()
+        //                         .statusCode(201);
+        // }
 
         @Test
         public void testGetToken() {

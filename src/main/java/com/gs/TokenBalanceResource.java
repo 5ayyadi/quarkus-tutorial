@@ -35,11 +35,11 @@ public class TokenBalanceResource {
         return tokenBalanceRepository.getTokenBalance(wallet_address, token_address);
     }
 
-    @Transactional
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public void create(TokenBalancesRequest request) {
-        TokenBalanceRepository.addTokenBalances(request, tokenRepository, walletRepository);
-    }
+    // @Transactional
+    // @POST
+    // @Consumes(MediaType.APPLICATION_JSON)
+    // @Produces(MediaType.APPLICATION_JSON)
+    // public void create(TokenBalancesRequest request) {
+    //     TokenBalanceRepository.addTokenBalances(request, tokenRepository, walletRepository);
+    // }
 }

@@ -3,41 +3,30 @@ package com.gs;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import com.core.models.TransactionStatus;
+import com.core.models.wallet.WalletInternalTransactions;
+import com.core.schemas.request.TransferRequest;
+import com.core.schemas.request.WithdrawDepositRequest;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
-// @Entity
-public class Transfer extends PanacheEntity {
+public class Transfer {
 
-    @Column()
-    public String fromWallet;
-    @Column()
-    public String toWallet;
-    @Column()
-    public int amount;
-    
-
-    public void setFrom(String from) {
-        this.fromWallet = from;
+    public static WalletInternalTransactions transfer(TransferRequest request,
+            TokenRepository tokenRepo,
+            WalletRepository walletRepository,
+            WalletInternalTransactionRepository wltTrxRepo,
+            TokenBalanceRepository tokenBalanceRepository) {
+        WalletInternalTransactions trx = new WalletInternalTransactions(request, tokenRepo, walletRepository);
+        trx.changeStatus(TransactionStatus.PENDING, wltTrxRepo);
+        if (trx.isTransferValid(tokenBalanceRepository)) {
+            // some code
+            trx.fromWallet.withdraw(request, tokenBalanceRepository);
+            trx.toWallet.deposit(request, tokenBalanceRepository);
+            trx.changeStatus(TransactionStatus.SUCCESS, wltTrxRepo);
+            return trx;
+        }
+        trx.changeStatus(TransactionStatus.FAILED, "Insufficient Balance", wltTrxRepo);
+        return null;
     }
-
-    public void setTo(String to) {
-        this.toWallet = to;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public String getFrom() {
-        return this.fromWallet;
-    }
-
-    public String getTo() {
-        return this.toWallet;
-    }
-
-    public int getAmount() {
-        return this.amount;
-    }
-
 }

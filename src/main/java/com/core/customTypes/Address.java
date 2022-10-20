@@ -63,6 +63,10 @@ public class Address implements Type<String> {
         return value;
     }
 
+    public String toPublicKey(){
+        return value.substring(2,42);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

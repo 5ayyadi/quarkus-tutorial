@@ -28,7 +28,7 @@ public class WalletRepository implements PanacheRepository<Wallet> {
     }
 
     public Wallet findByAddress(Address address) {
-        return find("address", address).firstResult();
+        return this.findByAddress(address.toString());
     }
 
     public Wallet findByUserId(Long userId) {

@@ -36,18 +36,12 @@ public class TransferResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response transfer(TransferRequest request) {
+        WalletInternalTransactions trx = Transfer.transfer(request, tokenRepo, walletRepository, wltTrxRepo, tokenBalanceRepository);
         // see if transaction is in the database
-        WalletInternalTransactions trx = new WalletInternalTransactions(request, tokenRepo, walletRepository);
-        trx.changeStatus(TransactionStatus.PENDING, wltTrxRepo);
-        if (trx.isTransferValid(tokenBalanceRepository)) {
-            // some code
-            trx.fromWallet.withdraw(request, tokenBalanceRepository);
-            trx.toWallet.deposit(request, tokenBalanceRepository);
-            trx.changeStatus(TransactionStatus.SUCCESS, wltTrxRepo);
-            return Response.status(Status.OK).entity(trx).build();
+        if(trx.equals(null)){
+            return Response.status(Status.NOT_ACCEPTABLE).entity(request).build();
         }
-        trx.changeStatus(TransactionStatus.FAILED, "Insufficient Balance", wltTrxRepo);
-        return Response.status(Status.NOT_ACCEPTABLE).entity(request).build();
+        return Response.status(Status.OK).entity(trx).build();
 
         // request.changeStatus(TransactionStatus.PENDING);
         // Wallet fromWallet = walletRepository.findByUserId(request.fromUID);

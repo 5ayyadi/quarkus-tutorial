@@ -13,6 +13,8 @@ import javax.ws.rs.core.Response.Status;
 
 import com.core.models.TransactionStatus;
 import com.core.models.wallet.Wallet;
+import com.core.models.wallet.WalletInternalTransactions;
+import com.core.schemas.request.TransferRequest;
 import com.core.schemas.request.WithdrawDepositRequest;
 import com.core.wallet.Deposit;
 
@@ -22,15 +24,18 @@ public class WithdrawDepositResource {
     public TokenBalanceRepository tokenBalanceRepository;
     public WalletRepository walletRepository;
     public TokenRepository tokenRepository;
+    public WalletInternalTransactionRepository internalRepo;
 
     public WithdrawDepositResource(
             WalletRepository walletRepository,
             TokenBalanceRepository tokenBalanceRepository,
-            TokenRepository tokenRepository) {
+            TokenRepository tokenRepository,
+            WalletInternalTransactionRepository internalRepo) {
 
         this.walletRepository = walletRepository;
         this.tokenBalanceRepository = tokenBalanceRepository;
         this.tokenRepository = tokenRepository;
+        this.internalRepo = internalRepo;
     }
 
     @Path("/deposit")
@@ -60,21 +65,32 @@ public class WithdrawDepositResource {
         return Response.status(Status.BAD_REQUEST).entity(resWallet).build();
     }
 
+    @Transactional
     @Path("/withdraw")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response withdraw(WithdrawDepositRequest request) {
-        request.changeStatus(TransactionStatus.PENDING);
-        Wallet resWallet = walletRepository.findByUserId(request.userId);
-        if (resWallet.hasBalance(request, tokenBalanceRepository)) {
-            // withdraw in blockchain
-            // blockchain.withdraw(request);
-            resWallet.withdraw(request, tokenBalanceRepository);
-            return Response.status(Status.OK).entity(request).build();
+        // internal transfer from user id to server wallet
+        WalletInternalTransactions internalTrx = Withdraw.internalTransfer(
+                request,
+                tokenRepository,
+                tokenBalanceRepository,
+                internalRepo,
+                walletRepository);
 
+        // external transfer from server wallet to user wallet
+        Boolean externalTrx = Withdraw.externalTransfer(
+                request,
+                tokenRepository,
+                tokenBalanceRepository,
+                internalRepo,
+                walletRepository);
+
+        if (internalTrx.status.equals(TransactionStatus.SUCCESS) && externalTrx) {
+            return Response.status(Status.OK).entity(request).build();
         }
-        return Response.status(Status.NOT_ACCEPTABLE).entity(request).build();
+        return Response.status(Status.BAD_REQUEST).entity(request).build();
     }
 
 }
