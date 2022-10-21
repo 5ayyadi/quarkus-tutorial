@@ -1,4 +1,4 @@
-package com.gs;
+package com.core.repositories;
 
 import java.util.HashMap;
 import java.util.List;

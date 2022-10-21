@@ -1,6 +1,7 @@
 package com.core.customTypes;
 
 import java.math.BigInteger;
+import java.util.Objects;
 
 import javax.persistence.Transient;
 
@@ -78,7 +79,7 @@ public class Address implements Type<String> {
 
         Address address = (Address) o;
 
-        return value != null ? value.equals(address.value) : address.value == null;
+        return Objects.equals(value, address.value);
     }
 
     @Override

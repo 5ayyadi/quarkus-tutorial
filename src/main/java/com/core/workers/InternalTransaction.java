@@ -21,21 +21,21 @@ public class InternalTransaction extends PanacheEntity {
                     Wallet destination = trx.toWallet;
                     TokenBalances sourceBalance = source.getTokenBalances(trx.token);
                     TokenBalances destinationBalance = destination.getTokenBalances(trx.token);
-                    BigInteger sb = new BigInteger(sourceBalance.getBalance());
-                    BigInteger db = new BigInteger(destinationBalance.getBalance());
+                    BigInteger sb = sourceBalance.getBalance();
+                    BigInteger db = destinationBalance.getBalance();
                     db.add(trx.amount);
                     sb.subtract(trx.amount);
                     break;
                 case DEPOSIT:
                     destination = trx.toWallet;
                     destinationBalance = destination.getTokenBalances(trx.token);
-                    db = new BigInteger(destinationBalance.getBalance());
+                    db = destinationBalance.getBalance();
                     db.add(trx.amount);
                     break;
                 case WITHDRAW:
                     source = trx.fromWallet;
                     sourceBalance = source.getTokenBalances(trx.token);
-                    sb = new BigInteger(sourceBalance.getBalance());
+                    sb = sourceBalance.getBalance();
                     sb.subtract(trx.amount);
                 case CONTRACT_CALL:
                     break;

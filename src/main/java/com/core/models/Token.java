@@ -43,7 +43,7 @@ public class Token extends PanacheEntityWithTime {
     public boolean verified = false;
 
     @OneToMany(mappedBy = "token")
-    private Set<TokenBalances> tokenBalances = new HashSet<TokenBalances>();
+    private final Set<TokenBalances> tokenBalances = new HashSet<TokenBalances>();
 
     public void addTokenBalances(TokenBalances tb) {
         tokenBalances.add(tb);

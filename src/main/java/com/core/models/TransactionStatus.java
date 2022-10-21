@@ -12,7 +12,7 @@ public enum TransactionStatus {
     PARSED("PARSED"),
     FOUND("FOUND");
 
-    private String status;
+    private final String status;
 
     TransactionStatus(String status) {
         this.status = status;

@@ -16,7 +16,6 @@ public class WalletExternalTransactions extends WalletTransactionsBasicModel {
 
     @OneToOne
     @JoinColumn(name = "TrxReceipt_id")
-    // @Column(nullable = true)
     private TrxReceipt trxReceipt;
 
     public WalletExternalTransactions() {

@@ -1,4 +1,4 @@
-package com.gs;
+package com.api;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
@@ -14,19 +14,22 @@ import javax.ws.rs.core.Response.Status;
 import com.core.models.TransactionStatus;
 import com.core.models.wallet.Wallet;
 import com.core.models.wallet.WalletInternalTransactions;
-import com.core.schemas.request.TransferRequest;
+import com.core.repositories.TokenBalanceRepository;
+import com.core.repositories.TokenRepository;
+import com.core.repositories.WalletInternalTransactionRepository;
+import com.core.repositories.WalletRepository;
 import com.core.schemas.request.WithdrawDepositRequest;
 import com.core.wallet.Deposit;
 
 @Path("/transaction")
-public class WithdrawDepositResource {
+public class TransactionResource {
 
     public TokenBalanceRepository tokenBalanceRepository;
     public WalletRepository walletRepository;
     public TokenRepository tokenRepository;
     public WalletInternalTransactionRepository internalRepo;
 
-    public WithdrawDepositResource(
+    public TransactionResource(
             WalletRepository walletRepository,
             TokenBalanceRepository tokenBalanceRepository,
             TokenRepository tokenRepository,

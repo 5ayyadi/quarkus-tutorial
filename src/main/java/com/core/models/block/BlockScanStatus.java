@@ -5,5 +5,5 @@ public enum BlockScanStatus {
     FAILED,
     PENDING,
     IN_PROGRESS,
-    RETRYING;
+    RETRYING
 }

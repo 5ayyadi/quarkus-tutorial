@@ -1,4 +1,4 @@
-package com.gs;
+package com.api;
 
 import org.junit.jupiter.api.Test;
 import com.core.customTypes.Address;
@@ -37,9 +37,9 @@ public class TransactionTest {
      */
     @Test
     public void testPostDeposit() {
-        Integer num = 1;
-        Long user_id = num.longValue();
-        Long token_id = num.longValue();
+        // TODO WHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+        Long user_id = 0l;
+        Long token_id = 4l;
 
         WithdrawDepositRequest request = new WithdrawDepositRequest(
                 user_id,

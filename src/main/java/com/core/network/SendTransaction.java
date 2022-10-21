@@ -13,8 +13,36 @@ import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.utils.Numeric;
 
 import com.core.models.TrxReceipt;
+import com.core.models.wallet.Wallet;
+import com.core.network.TransactionGeneration.RawTransactionAndExtraInfo;
 
 public class SendTransaction {
+
+    public static TrxReceipt SignAndSend(
+            RawTransactionAndExtraInfo trx,
+            Wallet wallet)
+            throws Exception {
+        return SignAndSend(trx.network, trx.rawTransaction, wallet.getPrivateKey(), wallet.getPublicKey());
+    }
+
+    public static TrxReceipt SignAndSend(
+            Network network,
+            RawTransaction rawTransaction,
+            Wallet wallet)
+            throws Exception {
+        return SignAndSend(network, rawTransaction, wallet.getPrivateKey(), wallet.getPublicKey());
+    }
+
+    public static TrxReceipt SignAndSend(
+            Network network,
+            RawTransaction rawTransaction,
+            String privateKey,
+            String publicKey)
+            throws Exception {
+        BigInteger requestedBlockNumber = network.w3.ethBlockNumber().send().getBlockNumber();
+        return SignAndSend(network, rawTransaction, privateKey, publicKey, requestedBlockNumber);
+    }
+
     public static TrxReceipt SignAndSend(
             Network network,
             RawTransaction rawTransaction,
@@ -48,8 +76,11 @@ public class SendTransaction {
         EthSendTransaction ethSendTransaction = w3.ethSendRawTransaction(hexValue).send();
         String trxHash = ethSendTransaction.getResult();
         Optional<TransactionReceipt> trx = w3.ethGetTransactionReceipt(trxHash).send().getTransactionReceipt();
-
-        return TrxReceipt.fromTransaction(trx.get());
+        if (trx.isPresent()) {
+            return TrxReceipt.fromTransaction(trx.get());
+        } else {
+            return null;
+        }
 
     }
 }

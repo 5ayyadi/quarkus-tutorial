@@ -1,4 +1,4 @@
-package com.gs;
+package com.api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +16,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.core.customTypes.Address;
 import com.core.models.wallet.Wallet;
-import com.core.models.wallet.WalletInternalTransactions;
+import com.core.repositories.WalletInternalTransactionRepository;
+import com.core.repositories.WalletRepository;
 import com.core.schemas.request.WalletCreationRequest;
 
 import io.quarkus.logging.Log;
@@ -55,15 +55,11 @@ public class WalletResource {
     public Response create(WalletCreationRequest walletReq) {
         // TODO - Check if userId has wallet
         Wallet resWallet = walletRepository.findByUserId(walletReq.userId);
-        Wallet wallet;
         if (resWallet == null) {
-            wallet = new Wallet(walletReq.userId);
-            walletRepository.persist(wallet);
-            resWallet = wallet;
-            wallet.setValueBalance("150000");
-            WalletInternalTransactions walletTransactions = new WalletInternalTransactions(wallet,
-                    "1000");
-            walletInternalTransactionRepository.persist(walletTransactions);
+            resWallet = new Wallet(walletReq.userId);
+            resWallet.persist();
+            // walletRepository.persist(wallet);
+            // resWallet = wallet;
         }
         return Response.status(Status.CREATED).entity(resWallet).build();
     }

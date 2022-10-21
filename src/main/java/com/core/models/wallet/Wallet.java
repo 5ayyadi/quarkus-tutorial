@@ -15,9 +15,7 @@ import javax.persistence.Transient;
 
 import org.bitcoinj.wallet.UnreadableWalletException;
 import org.web3j.crypto.Credentials;
-import org.web3j.protocol.core.DefaultBlockParameterName;
-import org.web3j.protocol.core.methods.request.Transaction;
-import org.web3j.protocol.core.methods.response.EthEstimateGas;
+import org.web3j.crypto.ECKeyPair;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tx.gas.DefaultGasProvider;
 
@@ -29,15 +27,14 @@ import com.core.models.Token;
 import com.core.models.TokenBalances;
 import com.core.models.TransactionStatus;
 import com.core.network.ERC20;
-import com.core.network.GasStation;
 import com.core.network.Network;
 import com.core.schemas.request.TransferRequest;
 import com.core.schemas.request.WithdrawDepositRequest;
 import com.core.wallet.HDWallet;
 import com.core.wallet.WalletKeyPair;
-import com.gs.TokenBalanceRepository;
-import com.gs.TokenRepository;
-import com.gs.WalletRepository;
+import com.core.repositories.TokenBalanceRepository;
+import com.core.repositories.TokenRepository;
+import com.core.repositories.WalletRepository;
 
 import io.quarkus.logging.Log;
 
@@ -61,14 +58,19 @@ public class Wallet extends PanacheEntityWithTime {
     @Column(updatable = false, unique = true)
     private String publicKey;
 
-    @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<TokenBalances> tokenBalances = new HashSet<TokenBalances>();
+    // TODO Impelement Functionality
+    boolean isEnabled = true;
 
-    // Amount of Network Value in the wallet (Transfer Only)
-    // @Column(precision = 100, scale = 0, nullable = true)
-    @Column(length = 80)
-    @Transient
-    private String valueBalance;
+    @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private final Set<TokenBalances> tokenBalances = new HashSet<TokenBalances>();
+
+    public static String getPublicKeyInHex(String privateKeyInHex) {
+        BigInteger privateKeyInBT = new BigInteger(privateKeyInHex, 16);
+        ECKeyPair aPair = ECKeyPair.create(privateKeyInBT);
+        BigInteger publicKeyInBT = aPair.getPublicKey();
+        String sPublickeyInHex = publicKeyInBT.toString(16);
+        return sPublickeyInHex;
+    }
 
     public Wallet() {
     }
@@ -79,24 +81,20 @@ public class Wallet extends PanacheEntityWithTime {
 
     @PrePersist
     public void populateKeysUsingUID() throws ReachedMaxUserId {
-        // TODO - Make Sure UserIds are long and not overflowing
         if (this.userId > ReachedMaxUserId.MAX_USER_ID) {
             throw new ReachedMaxUserId();
         }
-        ;
         this.populateKeyPair(this.userId);
         this.address = (new Address(this.publicKey)).toString();
-        if (this.valueBalance == null) {
-            this.valueBalance = "0";
-        }
+
     }
 
-    public String getValueBalance() {
-        return valueBalance;
+    public String getPrivateKey() {
+        return privateKey;
     }
 
-    public void setValueBalance(String valueBalance) {
-        this.valueBalance = valueBalance;
+    public String getPublicKey() {
+        return publicKey;
     }
 
     public Set<TokenBalances> getTokenBalances() {
@@ -176,55 +174,54 @@ public class Wallet extends PanacheEntityWithTime {
         BigInteger balance = new BigInteger(
                 tbRepo.getTokenBalance(this.id, request.tokenId));
         // returns 0 if equals and -1 if balance is less than amount
-        return balance.compareTo(request.amount) == 1 ? true : false;
+        return balance.compareTo(request.amount) == 1;
     }
 
     public boolean hasBalance(TransferRequest request, TokenBalanceRepository tbRepo) {
         BigInteger balance = new BigInteger(tbRepo.getTokenBalance(this.id, request.tokenId));
         // returns 0 if equals and -1 if balance is less than amount
-        return balance.compareTo(request.amount) == 1 ? true : false;
+        return balance.compareTo(request.amount) == 1;
     }
 
     public boolean externalTransfer(
-        Address destination, 
-        Token token, 
-        BigInteger amount, 
-        Network network){
+            Address destination,
+            Token token,
+            BigInteger amount,
+            Network network) {
         Credentials credentials = Credentials.create(this.privateKey);
-        // Why didn't I used token.tokenContract? because 
+        // Why didn't I used token.tokenContract? because
         // the private key may vary. :(
-        ERC20 tokenContract = 
-        ERC20.load(
-            token.getAddress().toString(), 
-            network.value.w3, 
-            credentials, 
-            new DefaultGasProvider());
+        ERC20 tokenContract = ERC20.load(
+                token.getAddress().toString(),
+                network.value.w3,
+                credentials,
+                new DefaultGasProvider());
 
-            
-        try{
+        try {
 
             // ======================================================
-            //      gas is returned, only needed to sign
+            // gas is returned, only needed to sign
             // ======================================================
             // String hexAmount = String.format("%064x", amount);
-            // String data =   "0xa9059cbb000000000000000000000000" +
-            //                 destination.toPublicKey() + 
-            //                 hexAmount;               
+            // String data = "0xa9059cbb000000000000000000000000" +
+            // destination.toPublicKey() +
+            // hexAmount;
             // Transaction transaction = new Transaction(
-            //     this.address, 
-            //     network.value.w3.ethGetTransactionCount(this.address, DefaultBlockParameterName.LATEST).send().getTransactionCount(),
-            //     network.w3.ethGasPrice().send().getGasPrice(), 
-            //     new BigInteger("210000"),
-            //     destination.toString(), 
-            //     amount, 
-            //     data);
+            // this.address,
+            // network.value.w3.ethGetTransactionCount(this.address,
+            // DefaultBlockParameterName.LATEST).send().getTransactionCount(),
+            // network.w3.ethGasPrice().send().getGasPrice(),
+            // new BigInteger("210000"),
+            // destination.toString(),
+            // amount,
+            // data);
             // EthEstimateGas gas = network.value.w3.ethEstimateGas(transaction).send();
             // =====================================================
 
             // This returns error
             TransactionReceipt trxReceipt = tokenContract.transfer(destination.toString(), amount).sendAsync().get();
             return trxReceipt.isStatusOK();
-        } catch(Exception e){
+        } catch (Exception e) {
             Log.errorf("from: %s error: %s", this.address, e);
             return false;
         }
@@ -237,7 +234,6 @@ public class Wallet extends PanacheEntityWithTime {
                 ", userId=" + userId +
                 ", privateKey='" + privateKey + '\'' +
                 ", publicKey='" + publicKey + '\'' +
-                ", balance=" + getValueBalance() +
                 ", id=" + id +
                 '}';
     }

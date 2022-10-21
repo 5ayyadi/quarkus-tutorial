@@ -78,11 +78,11 @@ public class ScannedBlocks extends PanacheEntityBaseWithTime {
     public static Long lastScannedBlock() {
         Sort sort = Sort.by("blockNumber", Direction.Descending, null);
 
-        ScannedBlocks scannedBlock = (ScannedBlocks) findAll(sort).firstResult();
+        ScannedBlocks scannedBlock = findAll(sort).firstResult();
         if (scannedBlock != null) {
             return scannedBlock.blockNumber;
         }
-        return (long) INITIAL_BLOCK_NUMBER;
+        return INITIAL_BLOCK_NUMBER;
     }
 
     @Override

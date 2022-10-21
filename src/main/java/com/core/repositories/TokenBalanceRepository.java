@@ -1,16 +1,12 @@
-package com.gs;
+package com.core.repositories;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import javax.transaction.Transactional;
-
-import com.core.customTypes.Address;
 
 import com.core.models.Token;
 import com.core.models.TokenBalances;
 import com.core.models.wallet.Wallet;
-import com.core.schemas.request.TokenBalancesRequest;
 import com.core.schemas.request.WithdrawDepositRequest;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
@@ -32,39 +28,6 @@ public class TokenBalanceRepository implements PanacheRepository<TokenBalances> 
     // wallet_id, token_id)));
 
     // }
-
-    public TokenBalances updateTokenBalanceRelation(String wallet_address, String token_address) {
-        return updateTokenBalanceRelation(
-                Wallet.find("address", wallet_address).firstResult(),
-                Token.find("address", token_address).firstResult());
-
-    }
-
-    public TokenBalances updateTokenBalanceRelation(Long wallet_id, Long token_id) {
-
-        return updateTokenBalanceRelation(
-                Wallet.find("id", wallet_id).firstResult(),
-                Token.find("id", token_id).firstResult());
-    }
-
-    private TokenBalances updateTokenBalanceRelation(Wallet wallet, Token token) {
-
-        // TODO - Check if token balance record exist then create it
-        TokenBalances tb = new TokenBalances();
-
-        tb.setBalance("0");
-        token.addTokenBalances(tb);
-        wallet.getTokenBalances().add(tb);
-        token.persist();
-        wallet.persist();
-        tb.setToken(token);
-        tb.setWallet(wallet);
-        tb.persist();
-
-        return tb;
-
-    }
-
     public static void addTokenBalances(
             WithdrawDepositRequest request,
             TokenRepository tokenRepository,
@@ -91,21 +54,22 @@ public class TokenBalanceRepository implements PanacheRepository<TokenBalances> 
         try {
             Query queryObj = this.getEntityManager().createNativeQuery(query);
             return (String) queryObj.getSingleResult();
-            // } catch (NoResultException e) {
-            // updateTokenBalanceRelation(wallet_id, token_id);
-
+        } catch (NoResultException e) {
+            // TODO - Why was this line commented ?
+            updateTokenBalanceRelation(wallet_id, token_id);
+            return "0";
         } catch (Exception e) {
             Log.errorf("Error at token Balance in token repo: %s", e.getMessage());
             return null;
         }
     }
 
-    private String _executeQuery(String wallet_address, String token_address, String query) {
+    private String _executeQuery(String wallet_address, String tokenAddress, String query) {
         try {
             Query queryObj = this.getEntityManager().createNativeQuery(query);
             return (String) queryObj.getSingleResult();
         } catch (NoResultException e) {
-            updateTokenBalanceRelation(wallet_address, token_address);
+            updateTokenBalanceRelation(wallet_address, tokenAddress);
             return "0";
         } catch (Exception e) {
             Log.errorf("Error at token Balance in token repo: %s", e.getMessage());
@@ -113,26 +77,26 @@ public class TokenBalanceRepository implements PanacheRepository<TokenBalances> 
         }
     }
 
-    private void _executeUpdateQuery(String wallet_address, String token_address, String query) {
+    private void _executeUpdateQuery(String wallet_address, String tokenAddress, String query) {
         Query queryObj = this.getEntityManager().createNativeQuery(query);
         try {
             queryObj.executeUpdate();
         } catch (NoResultException e) {
-            System.out.println(String.format("%s, on query : %s", e, query));
-            updateTokenBalanceRelation(wallet_address, token_address);
+            System.out.printf("%s, on query : %s%n", e, query);
+            updateTokenBalanceRelation(wallet_address, tokenAddress);
         } catch (Exception e) {
             Log.errorf("Error at token Balance in token repo: %s", e.getMessage());
             throw e;
         }
     }
 
-    public void _executeUpdateQuery(Long wallet_address, Long token_address, String query) {
+    public void _executeUpdateQuery(Long wallet_address, Long tokenAddress, String query) {
         Query queryObj = this.getEntityManager().createNativeQuery(query);
         try {
             queryObj.executeUpdate();
         } catch (NoResultException e) {
-            System.out.println(String.format("%s, on query : %s", e, query));
-            updateTokenBalanceRelation(wallet_address, token_address);
+            System.out.printf("%s, on query : %s%n", e, query);
+            updateTokenBalanceRelation(wallet_address, tokenAddress);
         } catch (Exception e) {
             Log.errorf("Error at token Balance in token repo: %s", e.getMessage());
             throw e;
@@ -153,14 +117,14 @@ public class TokenBalanceRepository implements PanacheRepository<TokenBalances> 
 
     }
 
-    public String getTokenBalance(String wallet_address, String token_address) {
+    public String getTokenBalance(String wallet_address, String tokenAddress) {
         // TODO - Makes this dynamic
-        return _executeQuery(wallet_address, token_address, String.format(
+        return _executeQuery(wallet_address, tokenAddress, String.format(
                 "SELECT balance from token" +
                         " JOIN token_balance tb on token.id = tb.token_id " +
                         "join wallet w on w.id = tb.wallet_id" +
                         " where w.address = '%s' and token.address = '%s'",
-                wallet_address, token_address));
+                wallet_address, tokenAddress));
     }
 
     public void changeTokenBalance(Long wallet_id, Long token_id, String newBalance) {
@@ -173,16 +137,49 @@ public class TokenBalanceRepository implements PanacheRepository<TokenBalances> 
                 newBalance, wallet_id, token_id));
     }
 
-    public void changeTokenBalance(String wallet_address, String token_address, String newBalance) {
+    public void changeTokenBalance(String wallet_address, String tokenAddress, String newBalance) {
         _executeUpdateQuery(
-                wallet_address, token_address,
+                wallet_address, tokenAddress,
                 String.format(
                         "UPDATE token_balance set balance ='%s' where id in " +
                                 "(SELECT tb.id from token" +
                                 " JOIN token_balance tb on token.id = tb.token_id " +
                                 "join wallet w on w.id = tb.wallet_id" +
                                 " where w.address = '%s' and token.address = '%s')",
-                        newBalance, wallet_address, token_address));
+                        newBalance, wallet_address, tokenAddress));
+
+    }
+
+    public TokenBalances updateTokenBalanceRelation(String wallet_address, String tokenAddress) {
+        return updateTokenBalanceRelation(
+                Wallet.find("address", wallet_address).firstResult(),
+                Token.find("address", tokenAddress).firstResult());
+
+    }
+
+    public TokenBalances updateTokenBalanceRelation(Long wallet_id, Long token_id) {
+        Wallet wallet = Wallet.findById(wallet_id);
+        Token token = Token.findById(token_id);
+        return updateTokenBalanceRelation(
+                wallet,
+                token);
+    }
+
+    private TokenBalances updateTokenBalanceRelation(Wallet wallet, Token token) {
+
+        // TODO - Check if token balance record exist then create it
+        TokenBalances tb = new TokenBalances();
+
+        tb.setBalance("0");
+        token.addTokenBalances(tb);
+        wallet.getTokenBalances().add(tb);
+        token.persist();
+        wallet.persist();
+        tb.setToken(token);
+        tb.setWallet(wallet);
+        tb.persist();
+
+        return tb;
 
     }
 

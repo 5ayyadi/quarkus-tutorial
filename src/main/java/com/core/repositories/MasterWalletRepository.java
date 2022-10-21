@@ -1,14 +1,14 @@
-package com.gs;
+package com.core.repositories;
 
 import javax.enterprise.context.ApplicationScoped;
 
-import com.core.models.wallet.PCM_Wallet;
+import com.core.models.wallet.MasterWallet;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 @ApplicationScoped
-public class PcmRepository implements PanacheRepository<PCM_Wallet> {
+public class MasterWalletRepository implements PanacheRepository<MasterWallet> {
 
-    public PCM_Wallet findByPublicKey(String pk) {
+    public MasterWallet findByPublicKey(String pk) {
         return find("lower(publicKey)", pk.toLowerCase()).firstResult();
     }
     

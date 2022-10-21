@@ -26,8 +26,7 @@ public class BaseCustomError extends RuntimeException {
 
     @Override
     public String getMessage() {
-        // TODO Auto-generated method stub
-        return this.toString();
+        return String.format("[%s]::[%s]", statusCode, errorMsg);
     }
 
     @Override

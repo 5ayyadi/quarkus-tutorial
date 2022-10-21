@@ -9,7 +9,7 @@ public enum TransactionType {
     ETH_TRANSFER("ETH_TRANSFER"),
     UNKNOWN("UNKNOWN");
 
-    private String value;
+    private final String value;
 
     TransactionType(String value) {
         this.value = value;

@@ -4,18 +4,14 @@ import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 
 import com.core.models.Token;
 import com.core.models.TransactionStatus;
 import com.core.schemas.request.TransferRequest;
-import com.google.inject.Inject;
-import com.gs.TokenBalanceRepository;
-import com.gs.TokenRepository;
-import com.gs.WalletInternalTransactionRepository;
-import com.gs.WalletRepository;
+import com.core.repositories.TokenBalanceRepository;
+import com.core.repositories.TokenRepository;
+import com.core.repositories.WalletInternalTransactionRepository;
+import com.core.repositories.WalletRepository;
 
 @Entity
 public class WalletInternalTransactions extends WalletTransactionsBasicModel {
@@ -54,7 +50,7 @@ public class WalletInternalTransactions extends WalletTransactionsBasicModel {
 
     private boolean _hasBalance(TokenBalanceRepository tbRepo) {
         BigInteger balance = new BigInteger(tbRepo.getTokenBalance(fromWallet.id, token.id));
-        return balance.compareTo(amount) == 1 ? true : false;
+        return balance.compareTo(amount) == 1;
     }
 
     public int changeStatus(TransactionStatus status, WalletInternalTransactionRepository wltTrxRepo) {

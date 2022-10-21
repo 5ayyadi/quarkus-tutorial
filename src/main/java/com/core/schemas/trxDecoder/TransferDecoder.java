@@ -20,7 +20,7 @@ public class TransferDecoder {
 
     public static TransferDecoder decode(Transaction trx, String tokenAddress) {
         String input = trx.getInput();
-        if (input.substring(0, 10).equals("0xa9059cbb")) {
+        if (input.startsWith("0xa9059cbb")) {
             if (tokenAddress.equals("0xe")) {
                 return new TransferDecoder(trx.getTo(), trx.getValue());
             } else {

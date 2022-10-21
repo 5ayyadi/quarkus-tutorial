@@ -1,14 +1,12 @@
-package com.gs;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
+package com.api;
 
 import com.core.models.TransactionStatus;
 import com.core.models.wallet.WalletInternalTransactions;
+import com.core.repositories.TokenBalanceRepository;
+import com.core.repositories.TokenRepository;
+import com.core.repositories.WalletInternalTransactionRepository;
+import com.core.repositories.WalletRepository;
 import com.core.schemas.request.TransferRequest;
-import com.core.schemas.request.WithdrawDepositRequest;
-
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 public class Transfer {
 

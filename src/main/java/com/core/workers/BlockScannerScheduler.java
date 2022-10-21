@@ -2,50 +2,37 @@ package com.core.workers;
 
 import io.quarkus.logging.Log;
 
-import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import com.core.customTypes.Address;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.DefaultBlockParameterNumber;
 import org.web3j.protocol.core.methods.response.EthBlock.Block;
 import org.web3j.protocol.core.methods.response.EthBlock.TransactionObject;
 import org.web3j.protocol.core.methods.response.EthBlock.TransactionResult;
 
 import com.core.errors.BadTransactionHash;
-import com.core.models.Token;
 import com.core.models.TransactionStatus;
-import com.core.models.TransactionType;
 import com.core.models.TrxReceipt;
 import com.core.models.block.BlockScanStatus;
 import com.core.models.block.ScannedBlocks;
-import com.core.models.wallet.Wallet;
 import com.core.models.wallet.WalletExternalTransactions;
 import com.core.network.BlockScanner;
 import com.core.network.GasStation;
 import com.core.network.Network;
-import com.core.schemas.request.WithdrawDepositRequest;
-import com.core.wallet.Deposit;
-import com.gs.TokenBalanceRepository;
-import com.gs.TokenRepository;
-import com.gs.TrxReceiptRepository;
-import com.gs.WalletRepository;
-
-import io.quarkus.scheduler.Scheduled;
+import com.core.repositories.TokenBalanceRepository;
+import com.core.repositories.TokenRepository;
+import com.core.repositories.TrxReceiptRepository;
+import com.core.repositories.WalletRepository;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import io.quarkus.scheduler.Scheduled;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
@@ -53,37 +40,31 @@ import org.eclipse.microprofile.reactive.messaging.Outgoing;
 
 @ApplicationScoped
 public class BlockScannerScheduler {
-    // @Inject
-    // ScannedBlocks scannedBlocks;
 
     @ConfigProperty(name = "app.network")
     Network network;
-    @ConfigProperty(name = "app.maxBlocksPerQuery")
-    int maxBlocksPerQuery = 10;
-    @ConfigProperty(name = "app.pendingBlocks")
-    int pendingBlocks = 10;
 
-    private AtomicInteger counter = new AtomicInteger();
-    private AtomicBoolean isScannerRunning = new AtomicBoolean(false);
+    private final AtomicInteger counter = new AtomicInteger();
+    private final AtomicBoolean isScannerRunning = new AtomicBoolean(false);
 
     TokenRepository tokenRepository;
     WalletRepository walletRepository;
     TrxReceiptRepository trxReceiptRepository;
     TokenBalanceRepository tokenBalanceRepository;
+    BlockScanner blockScanner;
 
-    @Channel("blockStatus")
-    Emitter<String> blockStatusEmitter;
-
-    // ReactiveMessagingExtension
-    // Emitter<BitcoinMessage<?>> emitter;
-
-    public BlockScannerScheduler(TokenRepository tokenRepository, WalletRepository walletRepository,
+    public BlockScannerScheduler(
+            BlockScanner blockScanner,
+            TokenRepository tokenRepository,
+            WalletRepository walletRepository,
             TrxReceiptRepository trxReceiptRepository,
             TokenBalanceRepository tokenBalanceRepository) {
+        this.blockScanner = blockScanner;
         this.tokenRepository = tokenRepository;
         this.walletRepository = walletRepository;
         this.trxReceiptRepository = trxReceiptRepository;
         this.tokenBalanceRepository = tokenBalanceRepository;
+        Log.info("BlockScanner Scheduler Started!");
     }
 
     public int get() {
@@ -109,6 +90,7 @@ public class BlockScannerScheduler {
             wet.type = trxReceipt.trxType;
             wet.status = TransactionStatus.CONFIRMED;
             trxReceipt.status = TransactionStatus.CONFIRMED;
+
             // WithdrawDepositRequest request =
             // WithdrawDepositRequest.toWithdrawDepositRequest(wet);
             // switch (trxReceipt.trxType) {
@@ -149,85 +131,19 @@ public class BlockScannerScheduler {
         // TODO Query Failed Blocks and retry scanning them
     }
 
-    @Scheduled(every = "15s")
     // @Scheduled(cron = "${blockScanner.BSC.ALL}")
+    @Scheduled(every = "15s")
     @Transactional
     void blockScanner() {
-        Map<Address, Long> wallets = walletRepository.allWalletAddressMapping();
-        Map<Address, Long> tokens = tokenRepository.allTokenAddressMapping();
-        if (isScannerRunning.get() == false) {
+        if (!isScannerRunning.get()) {
             isScannerRunning.set(true);
             try {
-                Web3j w3 = network.value.w3;
-                Long lastBlockNumber = (w3.ethBlockNumber().send().getBlockNumber().longValue()) - pendingBlocks;
-                Long lastScannedBlocknumber = ScannedBlocks.lastScannedBlock();
-                Long lastBlockToScan = lastScannedBlocknumber
-                        + (maxBlocksPerQuery < (lastBlockNumber - lastScannedBlocknumber) ? maxBlocksPerQuery
-                                : lastBlockNumber - lastScannedBlocknumber);
 
-                Log.infof("wallets:%s , tokens:%s, blockchain:%d , lastBlock:%d", wallets, tokens, lastBlockNumber,
-                        lastScannedBlocknumber);
-                if (lastScannedBlocknumber < lastBlockNumber) {
-
-                    Log.debugf("Current Block Number : %s", lastBlockNumber);
-                    Log.debugf("Last Scanned Block Number : %s", lastScannedBlocknumber);
-                    BlockScanner blockScanner = new BlockScanner(wallets, tokens, network, tokenRepository);
-                    GasStation gasStation = new GasStation(network);
-
-                    for (Long i = lastScannedBlocknumber + 1; i <= lastBlockToScan; i++) {
-                        // TODO Check If you have't fetched it before
-                        Set<TrxReceipt> setOfTrxReceipts = new HashSet<>();
-                        Block block = blockScanner.scanBlock(i);
-                        ScannedBlocks scannedBlock = new ScannedBlocks(
-                                block.getNumber().longValue(),
-                                network,
-                                BlockScanStatus.IN_PROGRESS,
-                                block.getTransactions().size(),
-                                new Timestamp(block.getTimestamp().longValue()));
-                        blockStatusEmitter.send(scannedBlock.toString()).whenComplete((x, y) -> {
-                            Log.debugf("Completed %s , %s", x, y);
-                        });
-                        try {
-
-                            for (TransactionResult<TransactionObject> trxObject : block.getTransactions()) {
-                                try {
-                                    TrxReceipt trxReceipt = blockScanner.processTrx(
-                                            scannedBlock,
-                                            trxObject.get(),
-                                            gasStation);
-
-                                    if (trxReceipt != null) {
-                                        trxReceipt.persist();
-                                        setOfTrxReceipts.add(trxReceipt);
-                                        Log.debug(trxReceipt.toString());
-                                    }
-                                } catch (BadTransactionHash e) {
-                                    // TODO: handle exception
-                                    continue;
-                                }
-
-                            }
-
-                            Log.debugf("BlockNumber#%d: Safely Quired %d transactions! \t persisted %d records!",
-                                    block.getNumber(), block.getTransactions().size(), setOfTrxReceipts.size());
-
-                            scannedBlock.getTrxs().addAll(setOfTrxReceipts);
-                            scannedBlock.scanStatus = BlockScanStatus.SUCCESS;
-                            scannedBlock.persist();
-                            Log.debugf("Scanned-Block : %s", scannedBlock);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.errorf("Scanning-Block : %s   --due to : %s", scannedBlock, e);
-                            scannedBlock.scanStatus = BlockScanStatus.FAILED;
-                            scannedBlock.persist();
-                        }
-                    }
-                }
-                Log.debugf("HEAVY TASK FINISHED!");
-
+                blockScanner.run();
             } catch (Exception e) {
                 // TODO: handle exception
                 e.printStackTrace();
+                Log.error(e);
             } finally {
                 isScannerRunning.set(false);
             }

@@ -22,7 +22,7 @@ public class HDWallet {
         return HDPath.parsePath(String.format("m/44H/%dH/%dH/0/%d", chainCoinType, accountId, accountIndex));
     }
 
-    private static String mnemonic = "science limit budget find another chair orient duty cost expire soap great";
+    private static final String mnemonic = "science limit budget find another chair orient duty cost expire soap great";
     // TODO - read from .env file
     // private static String mnemonic = System.getenv("MNEMONIC_PHRASE");
 

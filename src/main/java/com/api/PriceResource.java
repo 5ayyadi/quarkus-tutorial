@@ -1,4 +1,4 @@
-package com.gs;
+package com.api;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

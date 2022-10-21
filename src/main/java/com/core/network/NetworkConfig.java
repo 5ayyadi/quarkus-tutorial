@@ -19,6 +19,7 @@ import io.quarkus.logging.Log;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class NetworkConfig {
@@ -42,7 +43,7 @@ public class NetworkConfig {
     public NetworkConfig(
             Address wrappedTokenAddress,
             String rpc) {
-        this(wrappedTokenAddress, Arrays.asList(rpc), new ArrayList<String>());
+        this(wrappedTokenAddress, Collections.singletonList(rpc), new ArrayList<String>());
     }
 
     public NetworkConfig(

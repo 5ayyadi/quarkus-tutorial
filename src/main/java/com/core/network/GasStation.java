@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.quarkus.logging.Log;
+import jnr.ffi.types.u_int32_t;
 
 public class GasStation {
     public Double nativeTokenPrice;
@@ -43,5 +44,10 @@ public class GasStation {
         } catch (Exception e) {
             Log.errorf("at Price constructor: %s", e);
         }
+    }
+
+    public BigInteger currentGasLimit() {
+        // TODO this should become a bit more logical you know ...
+        return new BigInteger("9000000");
     }
 }

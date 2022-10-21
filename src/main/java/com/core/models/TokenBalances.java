@@ -1,5 +1,8 @@
 package com.core.models;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import javax.persistence.*;
 
 import com.core.models.wallet.Wallet;
@@ -46,8 +49,13 @@ public class TokenBalances extends PanacheEntityWithTime {
         Balance = balance;
     }
 
-    public String getBalance() {
-        return Balance;
+    public BigInteger getBalance() {
+        // token.decimals
+        return new BigInteger(Balance);
+    }
+
+    public BigDecimal getBalanceDecimaled() {
+        return (new BigDecimal(getBalance())).divide(new BigDecimal(token.decimals));
     }
 
     public Token getToken() {

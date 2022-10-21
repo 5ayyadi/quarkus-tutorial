@@ -1,9 +1,9 @@
-package com.gs;
+package com.api;
 
 import com.core.models.Token;
+import com.core.repositories.TokenRepository;
+import com.core.repositories.WalletRepository;
 import com.core.schemas.request.TokenRequest;
-
-import io.quarkus.logging.Log;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
@@ -11,12 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.hibernate.annotations.Filter;
-import com.core.customTypes.Address;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @param address

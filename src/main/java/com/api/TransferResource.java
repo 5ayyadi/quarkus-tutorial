@@ -1,10 +1,11 @@
-package com.gs;
+package com.api;
 
-import com.core.models.TransactionStatus;
-import com.core.models.wallet.Wallet;
 import com.core.models.wallet.WalletInternalTransactions;
+import com.core.repositories.TokenBalanceRepository;
+import com.core.repositories.TokenRepository;
+import com.core.repositories.WalletInternalTransactionRepository;
+import com.core.repositories.WalletRepository;
 import com.core.schemas.request.TransferRequest;
-import com.google.inject.Inject;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
@@ -13,7 +14,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;;
+import javax.ws.rs.core.Response.Status;
 
 @Path("/transfer")
 public class TransferResource {

@@ -97,7 +97,7 @@ public class TransactionGeneration {
                         // TODO - Wallet ETH Balance Must be more than desired amount
                         throw new Exception();
                 }
-                System.out.println(String.format("Current Wallet %s Balance is %s", fromWallet, fromWalletBalance));
+                System.out.printf("Current Wallet %s Balance is %s%n", fromWallet, fromWalletBalance);
                 GasStation gasStation = new GasStation(network);
                 BigInteger gasPrice = gasStation.gasPrice;
                 BigInteger blockNumber = w3.ethBlockNumber().send().getBlockNumber();
@@ -153,8 +153,8 @@ public class TransactionGeneration {
                         // TODO - Wallet ETH Balance Must be more than desired amount
                         throw new Exception();
                 }
-                System.out.println(String.format("Current Wallet %s Balance is %s",
-                                fromWallet, fromWalletBalance));
+                System.out.printf("Current Wallet %s Balance is %s%n",
+                                fromWallet, fromWalletBalance);
                 GasStation gasStation = new GasStation(network);
                 BigInteger gasPrice = gasStation.gasPrice;
                 BigInteger blockNumber = w3.ethBlockNumber().send().getBlockNumber();
@@ -182,6 +182,19 @@ public class TransactionGeneration {
 
                 return new RawTransactionAndExtraInfo(transaction, blockNumber, network, gasStation);
 
+        }
+
+        public static RawTransactionAndExtraInfo transferToken(
+                        Network network,
+                        Token token,
+                        String fromWallet,
+                        String toWallet,
+                        BigInteger amount) throws Exception {
+
+                BigInteger currentGasLimit = (new GasStation(network)).currentGasLimit();
+                RawTransactionAndExtraInfo _res = transferToken(network, token, fromWallet, toWallet, amount,
+                                currentGasLimit);
+                return _res;
         }
 
 }
