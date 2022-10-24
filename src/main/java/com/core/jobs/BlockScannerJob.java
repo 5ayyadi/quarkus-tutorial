@@ -1,4 +1,4 @@
-package com.core.network;
+package com.core.jobs;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -12,6 +12,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.Transient;
+import javax.transaction.Transactional;
 
 import com.core.customTypes.Address;
 
@@ -27,8 +28,10 @@ import com.core.models.Token;
 import com.core.models.TransactionStatus;
 import com.core.models.TransactionType;
 import com.core.models.TrxReceipt;
-import com.core.models.block.BlockScanStatus;
+import com.core.models.block.ScannedBlocksStatus;
 import com.core.models.block.ScannedBlocks;
+import com.core.network.GasStation;
+import com.core.network.Network;
 import com.core.repositories.TokenRepository;
 import com.core.repositories.WalletRepository;
 
@@ -40,19 +43,15 @@ import io.quarkus.logging.Log;
 * finds deposit  
 * accepts withdrawal requests  
 */
-@Singleton
-public final class BlockScanner {
+@ApplicationScoped
+public final class BlockScannerJob {
 
     @ConfigProperty(name = "app.network")
-    Network network;
+    Network defaultNetwork;
     @ConfigProperty(name = "app.maxBlocksPerQuery")
-    public static int maxBlocksPerQuery;
+    public int maxBlocksPerQuery;
     @ConfigProperty(name = "app.pendingBlocks")
-    public static int pendingBlocks;
-
-    // Map<Address, Long> wallets;
-    // Map<Address, Long> tokens;
-    // Network network;
+    public int pendingBlocks;
 
     @Inject
     TokenRepository tokenRepository;
@@ -60,7 +59,7 @@ public final class BlockScanner {
     @Inject
     WalletRepository walletRepository;
 
-    public BlockScanner() {
+    public BlockScannerJob() {
 
     }
 
@@ -82,7 +81,7 @@ public final class BlockScanner {
      * If cant get amount from data or from ETH value in transaction
      */
     public TrxReceipt processTrx(ScannedBlocks scannedBlock, TransactionObject trxObject,
-            GasStation gasStation) throws BadTransactionHash {
+            GasStation gasStation, Network network) throws BadTransactionHash {
         Map<Address, Long> wallets = walletRepository.allWalletAddressMapping();
         Map<Address, Long> tokens = tokenRepository.allTokenAddressMapping();
 
@@ -98,7 +97,12 @@ public final class BlockScanner {
         boolean shouldSave = false;
         Address toAddress = new Address(trxReceipt.toAddress);
         Address fromAddress = new Address(trxReceipt.fromAddress);
-
+        if (toAddress == new Address("0x4c97380af08e1ee1846f00f737c0e1121087fedd")) {
+            System.out.println(toAddress);
+        }
+        if (toAddress.toString() == ("0x4c97380af08e1ee1846f00f737c0e1121087fedd")) {
+            System.out.println(toAddress);
+        }
         // If trx to address is a token then this case happens ...
         // else it would be null
         // -USDC-> walletAddress ....
@@ -188,7 +192,7 @@ public final class BlockScanner {
         }
     }
 
-    public Block scanBlock(Long blockNumber) throws IOException {
+    public Block scanBlock(Network network, Long blockNumber) throws IOException {
         Web3j w3 = network.value.w3;
         DefaultBlockParameterNumber blockNumberObj = new DefaultBlockParameterNumber(blockNumber);
         return w3.ethGetBlockByNumber(blockNumberObj, true).send().getBlock();
@@ -204,6 +208,12 @@ public final class BlockScanner {
     }
 
     public void run()
+            throws IOException {
+        run(defaultNetwork);
+    }
+
+    @Transactional
+    public void run(Network network)
             throws IOException {
         Map<Address, Long> wallets = walletRepository.allWalletAddressMapping();
         Map<Address, Long> tokens = tokenRepository.allTokenAddressMapping();
@@ -228,13 +238,15 @@ public final class BlockScanner {
             for (Long i = lastScannedBlocknumber + 1; i <= lastBlockToScan; i++) {
                 // TODO Check If you have't fetched it before
                 Set<TrxReceipt> setOfTrxReceipts = new HashSet<>();
-                Block block = scanBlock(i);
+                Block block = scanBlock(network, i);
                 ScannedBlocks scannedBlock = new ScannedBlocks(
                         block.getNumber().longValue(),
                         network,
-                        BlockScanStatus.IN_PROGRESS,
+                        ScannedBlocksStatus.IN_PROGRESS,
                         block.getTransactions().size(),
                         new Timestamp(block.getTimestamp().longValue()));
+                scannedBlock.persist();
+
                 // blockStatusEmitter.send(scannedBlock.toString()).whenComplete((x, y) -> {
                 // Log.debugf("Completed %s , %s", x, y);
                 // });
@@ -245,7 +257,8 @@ public final class BlockScanner {
                             TrxReceipt trxReceipt = processTrx(
                                     scannedBlock,
                                     trxObject.get(),
-                                    gasStation);
+                                    gasStation,
+                                    network);
 
                             if (trxReceipt != null) {
                                 trxReceipt.persist();
@@ -263,13 +276,14 @@ public final class BlockScanner {
                             block.getNumber(), block.getTransactions().size(), setOfTrxReceipts.size());
 
                     scannedBlock.getTrxs().addAll(setOfTrxReceipts);
-                    scannedBlock.scanStatus = BlockScanStatus.SUCCESS;
+                    scannedBlock.scanStatus = ScannedBlocksStatus.SUCCESS;
                     scannedBlock.persist();
                     Log.debugf("Scanned-Block : %s", scannedBlock);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    // e.printStackTrace();
                     Log.errorf("Scanning-Block : %s   --due to : %s", scannedBlock, e);
-                    scannedBlock.scanStatus = BlockScanStatus.FAILED;
+                    scannedBlock.scanStatus = ScannedBlocksStatus.FAILED;
+                    scannedBlock.getTrxs().clear();
                     scannedBlock.persist();
                 }
             }
@@ -277,4 +291,15 @@ public final class BlockScanner {
         Log.debugf("HEAVY TASK FINISHED!");
 
     }
+
+    public void doubleCheckBlocks() {
+        // TODO check if there are any missing block numbers
+        // Count from a max number of block in the past
+    }
+
+    public void checkFailedBlocks() {
+        // TODO check if there are any missing block numbers
+        // Count from a max number of block in the past
+    }
+
 }

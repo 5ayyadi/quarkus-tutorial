@@ -37,9 +37,9 @@ public class TrxReceipt extends PanacheEntityBaseWithTime {
     @ManyToOne
     public ScannedBlocks scannedBlock;
 
-    @Column(nullable = true)
+    @Column(nullable = true, precision = 100, scale = 0)
     public BigInteger cumulativeGasUsed;
-    @Column(nullable = true)
+    @Column(nullable = true, precision = 100, scale = 0)
     public BigInteger gasUsed;
 
     @Column(nullable = true)

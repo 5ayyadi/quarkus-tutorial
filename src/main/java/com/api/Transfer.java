@@ -17,14 +17,16 @@ public class Transfer {
             TokenBalanceRepository tokenBalanceRepository) {
         WalletInternalTransactions trx = new WalletInternalTransactions(request, tokenRepo, walletRepository);
         trx.changeStatus(TransactionStatus.PENDING, wltTrxRepo);
+        trx.persist();
         if (trx.isTransferValid(tokenBalanceRepository)) {
             // some code
             trx.fromWallet.withdraw(request, tokenBalanceRepository);
             trx.toWallet.deposit(request, tokenBalanceRepository);
             trx.changeStatus(TransactionStatus.SUCCESS, wltTrxRepo);
-            return trx;
+        } else {
+            trx.changeStatus(TransactionStatus.FAILED, "Insufficient Balance", wltTrxRepo);
+
         }
-        trx.changeStatus(TransactionStatus.FAILED, "Insufficient Balance", wltTrxRepo);
-        return null;
+        return trx;
     }
 }

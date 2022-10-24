@@ -20,10 +20,12 @@ interface Type<T> {
  */
 public class Address implements Type<String> {
 
-    public static final String TYPE_NAME = "address";
     public static final int LENGTH = 160;
+    public static final String TYPE_NAME = "address";
     public static final int LENGTH_IN_HEX = LENGTH >> 2;
+    public static final Address ZERO = new Address(BigInteger.ZERO);
     public static final Address DEFAULT = new Address(BigInteger.ZERO);
+    public static final Address VALUE_TOKEN_ADDRESS = new Address("0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE");
 
     private String value;
 
@@ -64,8 +66,8 @@ public class Address implements Type<String> {
         return value;
     }
 
-    public String toPublicKey(){
-        return value.substring(2,42);
+    public String toPublicKey() {
+        return value.substring(2, 42);
     }
 
     @Override

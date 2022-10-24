@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import org.web3j.protocol.Web3j;
 
+import com.core.customTypes.Address;
 import com.core.models.Token;
 
 public enum Network {
@@ -38,23 +39,20 @@ public enum Network {
         public final NetworkDetail value;
         public final Logger logger;
         public final Web3j w3;
-        public final Token nativeToken;
+        // public Token nativeToken;
 
         Network(NetworkDetail value) {
                 this.value = value;
                 this.w3 = value.w3;
                 String loggerName = String.format("NetworkLogger:%s", value.name);
                 this.logger = Logger.getLogger(loggerName);
-                // TODO
-                this.nativeToken = null;
+
         }
 
         Network(NetworkDetail value, Logger logger) {
                 this.value = value;
                 this.w3 = value.w3;
                 this.logger = logger;
-                // TODO
-                this.nativeToken = null;
         }
 
         @Override

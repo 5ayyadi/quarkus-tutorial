@@ -5,14 +5,14 @@ import com.core.models.block.ScannedBlocks;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection
-public class BlockScannerMassages {
+public class ScannedBlocksMassages {
 
     public String id;
     public ScannedBlocks block;
 
     public String Status;
 
-    public BlockScannerMassages(String id, ScannedBlocks block, String status) {
+    public ScannedBlocksMassages(String id, ScannedBlocks block, String status) {
         this.id = id;
         this.block = block;
         Status = status;
@@ -21,7 +21,7 @@ public class BlockScannerMassages {
     /**
      * Default constructor required for Jackson serializer
      */
-    public BlockScannerMassages() {
+    public ScannedBlocksMassages() {
     }
 
     @Override

@@ -22,10 +22,13 @@ import com.core.network.SendTransaction;
 import com.core.network.TransactionGeneration;
 import com.core.network.TransactionGeneration.RawTransactionAndExtraInfo;
 
-@Entity
+// @Table(name = "master_wallet")
+// @Entity
 public class MasterWallet extends Wallet {
 
-    boolean isAdmin = true;
+    // @OneToOne
+    // @JoinColumn(name = "wallet_id")
+    // private Wallet wallet;
 
     public MasterWallet(Long userId) {
         super(userId);

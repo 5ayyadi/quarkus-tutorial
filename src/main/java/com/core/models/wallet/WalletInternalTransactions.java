@@ -3,10 +3,16 @@ package com.core.models.wallet;
 import java.math.BigInteger;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.core.models.Token;
 import com.core.models.TransactionStatus;
+import com.core.models.TransactionType;
 import com.core.schemas.request.TransferRequest;
 import com.core.repositories.TokenBalanceRepository;
 import com.core.repositories.TokenRepository;
@@ -14,7 +20,13 @@ import com.core.repositories.WalletInternalTransactionRepository;
 import com.core.repositories.WalletRepository;
 
 @Entity
+@Table(name = "wallet_in_trx")
 public class WalletInternalTransactions extends WalletTransactionsBasicModel {
+
+    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @JoinColumn(name = "wallet_ex_trx_id", nullable = true)
+    @MapsId
+    private WalletExternalTransactions boundedExternalTrx;
 
     public WalletInternalTransactions() {
     }
@@ -30,7 +42,6 @@ public class WalletInternalTransactions extends WalletTransactionsBasicModel {
         this.token = tknRepo.findById(request.tokenId);
         this.fromWallet = wltRepo.findByUserId(request.fromUID);
         this.toWallet = wltRepo.findByUserId(request.toUID);
-        this.persist();
     }
 
     @Override
@@ -58,13 +69,31 @@ public class WalletInternalTransactions extends WalletTransactionsBasicModel {
         return wltTrxRepo.update("status", status);
     }
 
-    public int changeStatus(TransactionStatus status, String message,  WalletInternalTransactionRepository wltTrxRepo) {
+    public int changeStatus(TransactionStatus status, String message, WalletInternalTransactionRepository wltTrxRepo) {
         wltTrxRepo.update("status", status);
         return wltTrxRepo.update("message", message);
     }
-    // @Override
-    // public boolean transfer(Token token, Wallet toWallet, Decimal amount) {
-    // return false;
-    // }
 
+    public static WalletInternalTransactions fromDepositExtInternalTransactions(
+            WalletExternalTransactions externalTrx) {
+        return fromExtInternalTransactions(externalTrx, TransactionType.DEPOSIT);
+    }
+
+    public static WalletInternalTransactions fromWithdrawExtInternalTransactions(
+            WalletExternalTransactions externalTrx) {
+        return fromExtInternalTransactions(externalTrx, TransactionType.WITHDRAW);
+    }
+
+    private static WalletInternalTransactions fromExtInternalTransactions(WalletExternalTransactions externalTrx,
+            TransactionType transactionType) {
+        WalletInternalTransactions internalTrx = new WalletInternalTransactions();
+        internalTrx.fromWallet = externalTrx.fromWallet;
+        internalTrx.status = TransactionStatus.FOUND;
+        internalTrx.boundedExternalTrx = externalTrx;
+        internalTrx.toWallet = externalTrx.toWallet;
+        internalTrx.amount = externalTrx.amount;
+        internalTrx.token = externalTrx.token;
+        internalTrx.type = transactionType;
+        return internalTrx;
+    }
 }
