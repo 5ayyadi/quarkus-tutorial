@@ -74,7 +74,7 @@ public class BlockScannerScheduler {
     }
 
     @Transactional
-    @Scheduled(every = "60s")
+    @Scheduled(every = "25s")
     void submitScannedBlocks() {
         if (!isConfirmDepositsJobRunning.get()) {
             try {
@@ -86,6 +86,7 @@ public class BlockScannerScheduler {
                 isConfirmDepositsJobRunning.set(false);
             }
         }
+
     }
 
     @Transactional
@@ -99,7 +100,7 @@ public class BlockScannerScheduler {
     }
 
     // @Scheduled(cron = "${blockScanner.BSC.ALL}")
-    // @Scheduled(every = "1s")
+    @Scheduled(every = "2s")
     @Transactional
     void blockScanner() {
         if (!isScannerRunning.get()) {

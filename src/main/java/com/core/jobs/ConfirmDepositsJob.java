@@ -11,6 +11,7 @@ import com.core.models.TrxReceipt;
 import com.core.models.wallet.WalletExternalTransactions;
 import com.core.models.wallet.WalletInternalTransactions;
 import com.core.network.Network;
+import com.core.repositories.TokenBalanceRepository;
 import com.core.repositories.TokenRepository;
 import com.core.repositories.TrxReceiptRepository;
 import com.core.repositories.WalletInternalTransactionRepository;
@@ -32,6 +33,9 @@ public class ConfirmDepositsJob {
 
     @Inject
     TrxReceiptRepository trxReceiptRepository;
+
+    @Inject
+    TokenBalanceRepository tokenBalanceRepository;
 
     @Inject
     WalletInternalTransactionRepository internalTransactionRepository;
@@ -64,6 +68,7 @@ public class ConfirmDepositsJob {
             switch (wet.type) {
                 case DEPOSIT: {
                     wit = WalletInternalTransactions.fromDepositExtInternalTransactions(wet);
+                    wit.toWallet.deposit(wit.token.id, wit.amount, tokenBalanceRepository);
                     wit.persist();
                     break;
                 }

@@ -33,6 +33,11 @@ public class Decimal extends BigDecimal {
         this(Math.toIntExact(val));
     }
 
+    public BigDecimal divideBydDecimal(int tokenDecimals) {
+        return this.divide(TEN.pow(tokenDecimals));
+
+    }
+
     public static final Decimal ONE = new Decimal(1);
     public static final Decimal TWO = new Decimal(2);
     public static final Decimal THREE = new Decimal(3);

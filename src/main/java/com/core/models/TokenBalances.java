@@ -5,6 +5,7 @@ import java.math.BigInteger;
 
 import javax.persistence.*;
 
+import com.core.math.Decimal;
 import com.core.models.wallet.Wallet;
 
 @Table(name = "token_balance")
@@ -55,7 +56,7 @@ public class TokenBalances extends PanacheEntityWithTime {
     }
 
     public BigDecimal getBalanceDecimaled() {
-        return (new BigDecimal(getBalance())).divide(new BigDecimal(token.decimals));
+        return new Decimal(getBalance()).divideBydDecimal(token.decimals);
     }
 
     public Token getToken() {

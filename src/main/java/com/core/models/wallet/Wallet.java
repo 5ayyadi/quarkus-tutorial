@@ -89,6 +89,14 @@ public class Wallet extends PanacheEntityWithTime {
 
     }
 
+    public void setAdmin() {
+        this.isAdmin = true;
+    }
+
+    public void revokeAdmin() {
+        this.isAdmin = false;
+    }
+
     public String getPrivateKey() {
         return privateKey;
     }
@@ -161,6 +169,13 @@ public class Wallet extends PanacheEntityWithTime {
         BigInteger balance = new BigInteger(tbRepo.getTokenBalance(this.id, request.tokenId));
         balance = balance.add(request.amount);
         tbRepo.changeTokenBalance(this.id, request.tokenId, balance.toString());
+        // TODO: add token repository here and in withdraw
+    }
+
+    public void deposit(Long tokenId, BigInteger amount, TokenBalanceRepository tbRepo) {
+        BigInteger balance = new BigInteger(tbRepo.getTokenBalance(this.id, tokenId));
+        balance = balance.add(amount);
+        tbRepo.changeTokenBalance(this.id, tokenId, balance.toString());
         // TODO: add token repository here and in withdraw
     }
 

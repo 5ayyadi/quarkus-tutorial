@@ -9,7 +9,7 @@ public enum TransactionStatus {
     FAILED("FAILED"),
     REVERTED("REVERTED"),
     UNKNOWN("UNKNOWN"),
-    PARSED("PARSED"),
+    PARSED("PARSED"), // transaction is parsed and waiting to be applied ...
     FOUND("FOUND");
 
     private final String status;
