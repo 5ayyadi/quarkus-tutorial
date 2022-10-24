@@ -35,10 +35,10 @@ public abstract class WalletTransactionsBasicModel extends PanacheEntityWithTime
     @JoinColumn(name = "to_wallet")
     public Wallet toWallet;
 
-    @Column(name = "amount")
+    @Column(name = "amount", precision = 100, scale = 0)
     public BigInteger amount;
 
-    public String message;
+    // public String message;
     public TransactionStatus status;
     public TransactionType type;
 

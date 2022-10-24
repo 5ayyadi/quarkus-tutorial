@@ -18,12 +18,13 @@ import org.web3j.protocol.core.methods.response.EthBlock.TransactionObject;
 import org.web3j.protocol.core.methods.response.EthBlock.TransactionResult;
 
 import com.core.errors.BadTransactionHash;
+import com.core.jobs.BlockScannerJob;
+import com.core.jobs.ConfirmDepositsJob;
 import com.core.models.TransactionStatus;
 import com.core.models.TrxReceipt;
-import com.core.models.block.BlockScanStatus;
+import com.core.models.block.ScannedBlocksStatus;
 import com.core.models.block.ScannedBlocks;
 import com.core.models.wallet.WalletExternalTransactions;
-import com.core.network.BlockScanner;
 import com.core.network.GasStation;
 import com.core.network.Network;
 import com.core.repositories.TokenBalanceRepository;
@@ -43,106 +44,71 @@ public class BlockScannerScheduler {
 
     @ConfigProperty(name = "app.network")
     Network network;
-
-    private final AtomicInteger counter = new AtomicInteger();
+    // TODO - Check if native Token exists in db ...
+    private final AtomicBoolean checkNativeToken = new AtomicBoolean(false);
     private final AtomicBoolean isScannerRunning = new AtomicBoolean(false);
+    private final AtomicBoolean isConfirmDepositsJobRunning = new AtomicBoolean(false);
 
     TokenRepository tokenRepository;
     WalletRepository walletRepository;
     TrxReceiptRepository trxReceiptRepository;
     TokenBalanceRepository tokenBalanceRepository;
-    BlockScanner blockScanner;
+    // JOBS ...
+    BlockScannerJob blockScannerJob;
+    ConfirmDepositsJob confirmDepositsJob;
 
     public BlockScannerScheduler(
-            BlockScanner blockScanner,
+            BlockScannerJob blockScannerJob,
             TokenRepository tokenRepository,
             WalletRepository walletRepository,
+            ConfirmDepositsJob confirmDepositsJob,
             TrxReceiptRepository trxReceiptRepository,
             TokenBalanceRepository tokenBalanceRepository) {
-        this.blockScanner = blockScanner;
+        this.blockScannerJob = blockScannerJob;
         this.tokenRepository = tokenRepository;
         this.walletRepository = walletRepository;
+        this.confirmDepositsJob = confirmDepositsJob;
         this.trxReceiptRepository = trxReceiptRepository;
         this.tokenBalanceRepository = tokenBalanceRepository;
         Log.info("BlockScanner Scheduler Started!");
     }
 
-    public int get() {
-        return counter.get();
-    }
-
     @Transactional
+    @Scheduled(every = "60s")
     void submitScannedBlocks() {
-
-        for (TrxReceipt trxReceipt : trxReceiptRepository.parsedTrxReceipts()) {
-            WalletExternalTransactions wet = new WalletExternalTransactions();
-            wet.fromWallet = walletRepository.findByAddress(new Address(trxReceipt.fromAddress));
-            if (trxReceipt.isErc20) {
-
-                wet.token = tokenRepository.getByAddress(trxReceipt.toAddress);
-                wet.amount = trxReceipt.amount;
-                wet.toWallet = walletRepository.findByAddress(trxReceipt.getERC20ReceiverAddress());
-            } else {
-                wet.token = network.nativeToken;
-                wet.amount = trxReceipt.amount;
-                wet.toWallet = walletRepository.findByAddress(new Address(trxReceipt.toAddress));
+        if (!isConfirmDepositsJobRunning.get()) {
+            try {
+                isConfirmDepositsJobRunning.set(true);
+                confirmDepositsJob.run();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                isConfirmDepositsJobRunning.set(false);
             }
-            wet.type = trxReceipt.trxType;
-            wet.status = TransactionStatus.CONFIRMED;
-            trxReceipt.status = TransactionStatus.CONFIRMED;
-
-            // WithdrawDepositRequest request =
-            // WithdrawDepositRequest.toWithdrawDepositRequest(wet);
-            // switch (trxReceipt.trxType) {
-            // case DEPOSIT: {
-            // if (Deposit.isValid(
-            // trxReceipt.transactionHash,
-            // new Address(wet.token.address),
-            // wet.amount,
-            // network,
-            // wet.toWallet)) {
-
-            // wet.toWallet.deposit(request, tokenBalanceRepository,
-            // tokenRepository,
-            // walletRepository);
-            // }
-            // break;
-            // }
-            // case WITHDRAW: {
-            // request.changeStatus(TransactionStatus.PENDING);
-            // Wallet resWallet = walletRepository.findByUserId(request.userId);
-            // if (resWallet.hasBalance(request, tokenBalanceRepository)) {
-            // // withdraw in blockchain
-            // // blockchain.withdraw(request);
-            // resWallet.withdraw(request, tokenBalanceRepository);
-
-            // }
-            // break;
-
-            // }
-            // default:
-            // break;
-            // }
-
         }
     }
 
+    @Transactional
     void blockScannerFailedBlocks() {
-        // TODO Query Failed Blocks and retry scanning them
+        blockScannerJob.checkFailedBlocks();
+    }
+
+    @Transactional
+    void blockScannerMissedBlocks() {
+        blockScannerJob.doubleCheckBlocks();
     }
 
     // @Scheduled(cron = "${blockScanner.BSC.ALL}")
-    @Scheduled(every = "15s")
+    // @Scheduled(every = "1s")
     @Transactional
     void blockScanner() {
         if (!isScannerRunning.get()) {
             isScannerRunning.set(true);
             try {
-
-                blockScanner.run();
+                blockScannerJob.run();
             } catch (Exception e) {
                 // TODO: handle exception
-                e.printStackTrace();
+                // e.printStackTrace();
                 Log.error(e);
             } finally {
                 isScannerRunning.set(false);

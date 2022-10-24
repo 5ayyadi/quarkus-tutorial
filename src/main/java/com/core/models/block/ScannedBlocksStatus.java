@@ -1,6 +1,6 @@
 package com.core.models.block;
 
-public enum BlockScanStatus {
+public enum ScannedBlocksStatus {
     SUCCESS,
     FAILED,
     PENDING,

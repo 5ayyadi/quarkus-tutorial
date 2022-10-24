@@ -58,11 +58,11 @@ public class Wallet extends PanacheEntityWithTime {
     @Column(updatable = false, unique = true)
     private String publicKey;
 
-    // TODO Impelement Functionality
-    boolean isEnabled = true;
-
     @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private final Set<TokenBalances> tokenBalances = new HashSet<TokenBalances>();
+
+    @Column(nullable = true)
+    private boolean isAdmin;
 
     public static String getPublicKeyInHex(String privateKeyInHex) {
         BigInteger privateKeyInBT = new BigInteger(privateKeyInHex, 16);

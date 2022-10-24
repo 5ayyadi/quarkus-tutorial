@@ -29,15 +29,15 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @Entity
 @RegisterForReflection
-public class ScannedBlocks extends PanacheEntityBaseWithTime {
+public class ScannedBlocks extends PanacheEntityWithTime {
 
     @Column(name = "blockNumber", unique = true)
-    @Id
+    // @Id
     Long blockNumber;
 
     public Network network;
     public Timestamp blockTimestamp;
-    public BlockScanStatus scanStatus;
+    public ScannedBlocksStatus scanStatus;
 
     int trxCount;
 
@@ -46,10 +46,8 @@ public class ScannedBlocks extends PanacheEntityBaseWithTime {
     Set<TrxReceipt> trxs = new HashSet<TrxReceipt>();
 
     @Transient
-    // public static final long INITIAL_BLOCK_NUMBER = 15259989; //NOTE - LOCAL -
-    // ETH
     @ConfigProperty(name = "blockScanner.firstBlockNumber")
-    public static final long INITIAL_BLOCK_NUMBER = 23818406L; // NOTE - TESTNET - FTM
+    public static final long INITIAL_BLOCK_NUMBER = 23963100L; // NOTE - TESTNET - FTM
 
     public ScannedBlocks() {
     }
@@ -57,7 +55,7 @@ public class ScannedBlocks extends PanacheEntityBaseWithTime {
     public ScannedBlocks(
             Long blockNumber,
             Network network,
-            BlockScanStatus scanStatus,
+            ScannedBlocksStatus scanStatus,
             int trxCount,
             Timestamp timestamp) {
         this.blockNumber = blockNumber;
@@ -65,7 +63,7 @@ public class ScannedBlocks extends PanacheEntityBaseWithTime {
         this.trxCount = trxCount;
         this.blockTimestamp = timestamp;
         if (scanStatus == null) {
-            this.scanStatus = BlockScanStatus.PENDING;
+            this.scanStatus = ScannedBlocksStatus.PENDING;
         } else {
             this.scanStatus = scanStatus;
         }

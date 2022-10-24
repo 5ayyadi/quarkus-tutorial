@@ -10,7 +10,9 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import com.core.customTypes.Address;
@@ -71,6 +73,11 @@ public class Token extends PanacheEntityWithTime {
 
     public ERC20 tokenContract() {
         return ERC20.load(getAddress(), network.value.w3);
+    }
+
+    @PrePersist
+    public void generateNativeToken() {
+
     }
 
 }

@@ -14,11 +14,28 @@ import com.core.network.ERC20;
 import com.core.network.Network;
 import com.core.schemas.request.TokenRequest;
 
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.logging.Log;
 
 @ApplicationScoped
 public class TokenRepository implements PanacheRepository<Token> {
+
+    public Token getNetworkNativeToken(Network network) {
+        PanacheQuery<Token> q = find("address", Address.VALUE_TOKEN_ADDRESS.toString());
+        if (q.count() == 0) {
+            Token t = new Token();
+            t.symbol = network.value.symbol;
+            t.name = network.value.name;
+            t.decimals = network.value.decimals;
+            t.setAddress(Address.VALUE_TOKEN_ADDRESS);
+            t.network = network;
+            t.verified = true;
+            t.persist();
+            return t;
+        }
+        return q.firstResult();
+    }
 
     public Token getByAddress(String address) {
         return find("lower(address)", address.toLowerCase()).firstResult();
