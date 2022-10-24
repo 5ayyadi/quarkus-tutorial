@@ -55,6 +55,7 @@ public class Wallet extends PanacheEntityWithTime {
     @Column(updatable = false)
     private String privateKey;
 
+
     @Column(updatable = false, unique = true)
     private String publicKey;
 

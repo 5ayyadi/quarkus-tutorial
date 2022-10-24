@@ -10,7 +10,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.core.models.wallet.MasterWallet;
-import com.core.models.wallet.Wallet;
 import com.core.repositories.MasterWalletRepository;
 import com.core.schemas.request.MasterWalletRequest;
 import com.core.schemas.request.PcmTransferRequest;
@@ -40,8 +39,12 @@ public class MasterWalletResource {
         // masterWalletRepository.persist(wallet);
         // resWallet = wallet;
         // }
-        MasterWallet masterWallet = masterWalletRepository.findById(request.wallet_id);
+        MasterWallet masterWallet = masterWalletRepository.findByUserId(request.userId);
+        if (masterWallet == null) {
+            masterWallet = new MasterWallet(request.userId);
+        }
         masterWallet.setAdmin();
+        masterWallet.persist();
         return Response.status(Status.CREATED).entity(masterWallet).build();
     }
 

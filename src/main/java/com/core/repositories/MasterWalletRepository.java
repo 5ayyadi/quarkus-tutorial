@@ -19,6 +19,11 @@ public class MasterWalletRepository implements PanacheRepository<MasterWallet> {
 
     public MasterWallet findByAddress(Address address) {
         return this.findByAddress(address.toString());
+
+    }
+
+    public MasterWallet findByUserId(Long userId) {
+        return find("userId", userId).firstResult();
     }
 
 }

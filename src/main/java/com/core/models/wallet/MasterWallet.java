@@ -30,6 +30,10 @@ public class MasterWallet extends Wallet {
         // @JoinColumn(name = "wallet_id")
         // private Wallet wallet;
 
+        public MasterWallet(Long userId) {
+                super(userId);
+        }
+
         public MasterWallet() {
         }
 

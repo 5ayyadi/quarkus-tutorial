@@ -43,7 +43,6 @@ public class TransactionTest {
 
         WithdrawDepositRequest request = new WithdrawDepositRequest(
                 user_id,
-                token_id,
                 new Address("0x1d006127b22952870f327b30ca370b4af78fb5dc"),
                 new Address("0x1d006127b22952870f327b30ca370b4af78fb5dc"),
                 new Address("0xe3249321b47090b2998976397fd17b3ee26bdce6"),
