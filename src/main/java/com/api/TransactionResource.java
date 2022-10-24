@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response.Status;
 import com.core.models.TransactionStatus;
 import com.core.models.wallet.Wallet;
 import com.core.models.wallet.WalletInternalTransactions;
+import com.core.repositories.MasterWalletRepository;
 import com.core.repositories.TokenBalanceRepository;
 import com.core.repositories.TokenRepository;
 import com.core.repositories.WalletInternalTransactionRepository;
@@ -26,6 +27,7 @@ public class TransactionResource {
 
     public TokenBalanceRepository tokenBalanceRepository;
     public WalletRepository walletRepository;
+    public MasterWalletRepository masterWalletRepository;
     public TokenRepository tokenRepository;
     public WalletInternalTransactionRepository internalRepo;
 
@@ -33,9 +35,11 @@ public class TransactionResource {
             WalletRepository walletRepository,
             TokenBalanceRepository tokenBalanceRepository,
             TokenRepository tokenRepository,
-            WalletInternalTransactionRepository internalRepo) {
+            WalletInternalTransactionRepository internalRepo,
+            MasterWalletRepository masterWalletRepository) {
 
         this.walletRepository = walletRepository;
+        this.masterWalletRepository = masterWalletRepository;
         this.tokenBalanceRepository = tokenBalanceRepository;
         this.tokenRepository = tokenRepository;
         this.internalRepo = internalRepo;
@@ -55,6 +59,7 @@ public class TransactionResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deposit(WithdrawDepositRequest request) {
+        request.tokenId = tokenRepository.getByAddress(request.tokenAddress).id;
         // TODO: check if the transaction is already in the database
         request.changeStatus(TransactionStatus.PENDING);
         // TODO Why request has wallet address and why you got the user for it
@@ -74,6 +79,7 @@ public class TransactionResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response withdraw(WithdrawDepositRequest request) {
+        request.tokenId = tokenRepository.getByAddress(request.tokenAddress).id;
         // internal transfer from user id to server wallet
         WalletInternalTransactions internalTrx = Withdraw.internalTransfer(
                 request,
@@ -88,6 +94,7 @@ public class TransactionResource {
                 tokenRepository,
                 tokenBalanceRepository,
                 internalRepo,
+                masterWalletRepository,
                 walletRepository);
 
         if (internalTrx.status.equals(TransactionStatus.SUCCESS) && externalTrx) {

@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.core.models.wallet.MasterWallet;
 import com.core.repositories.MasterWalletRepository;
 import com.core.schemas.request.MasterWalletRequest;
 import com.core.schemas.request.PcmTransferRequest;
@@ -28,17 +29,9 @@ public class MasterWalletResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(MasterWalletRequest request) {
-        // TODO - Check if userId has wallet
-        // String publicKey = MasterWallet.getPublicKeyInHex(request.privateKey);
-
-        // MasterWallet resWallet = masterWalletRepository.findByPublicKey(publicKey);
-        // if (resWallet == null) {
-        // MasterWallet wallet = new MasterWallet(request.privateKey, publicKey,
-        // request.network);
-        // masterWalletRepository.persist(wallet);
-        // resWallet = wallet;
-        // }
-        return Response.status(Status.CREATED).entity(null).build();
+        MasterWallet masterWallet = new MasterWallet(request.userId);
+        masterWallet.persist();
+        return Response.status(Status.CREATED).entity(masterWallet).build();
     }
 
     @Path("/transfer")
