@@ -80,6 +80,14 @@ public class Wallet extends PanacheEntityWithTime {
         this.userId = userId;
     }
 
+    public Wallet(Address walletAddress){
+        // this constructor is used for when 
+        // we don't have the private key of wallet
+        // (mainly for a withdraw request destination)
+        this.address = walletAddress.toString();
+        
+    }
+
     @PrePersist
     public void populateKeysUsingUID() throws ReachedMaxUserId {
         if (this.userId > ReachedMaxUserId.MAX_USER_ID) {

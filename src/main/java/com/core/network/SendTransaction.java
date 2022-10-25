@@ -9,9 +9,11 @@ import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.tx.RawTransactionManager;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.utils.Numeric;
 
+import com.arjuna.ats.jta.TransactionManager;
 import com.core.models.TrxReceipt;
 import com.core.models.wallet.Wallet;
 import com.core.network.TransactionGeneration.RawTransactionAndExtraInfo;
@@ -52,7 +54,7 @@ public class SendTransaction {
             throws Exception {
         Web3j w3 = network.value.w3;
         Credentials credentials = Credentials.create(privateKey);
-        if (credentials.getAddress() != publicKey) {
+        if (!credentials.getAddress().equals("0x" + publicKey)) {
             // TODO - miss match privatekey wallet address
             throw new Exception();
         }
@@ -71,7 +73,7 @@ public class SendTransaction {
         // );
         // System.out.println(trx_obj);
 
-        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
+        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, network.value.chainId.byteValue() ,credentials);
         String hexValue = Numeric.toHexString(signedMessage);
         EthSendTransaction ethSendTransaction = w3.ethSendRawTransaction(hexValue).send();
         String trxHash = ethSendTransaction.getResult();

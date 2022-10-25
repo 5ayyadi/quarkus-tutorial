@@ -80,21 +80,20 @@ public class TransactionResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response withdraw(WithdrawDepositRequest request) {
         request.tokenId = tokenRepository.getByAddress(request.tokenAddress).id;
-        // internal transfer from user id to server wallet
-        WalletInternalTransactions internalTrx = Withdraw.internalTransfer(
-                request,
-                tokenRepository,
-                tokenBalanceRepository,
-                internalRepo,
-                walletRepository);
 
-        // external transfer from server wallet to user wallet
         Boolean externalTrx = Withdraw.externalTransfer(
                 request,
                 tokenRepository,
                 tokenBalanceRepository,
                 internalRepo,
                 masterWalletRepository,
+                walletRepository);
+
+        WalletInternalTransactions internalTrx = Withdraw.internalTransfer(
+                request,
+                tokenRepository,
+                tokenBalanceRepository,
+                internalRepo,
                 walletRepository);
 
         if (internalTrx.status.equals(TransactionStatus.SUCCESS) && externalTrx) {

@@ -16,8 +16,8 @@ public class Transfer {
             WalletInternalTransactionRepository wltTrxRepo,
             TokenBalanceRepository tokenBalanceRepository) {
         WalletInternalTransactions trx = new WalletInternalTransactions(request, tokenRepo, walletRepository);
-        trx.changeStatus(TransactionStatus.PENDING, wltTrxRepo);
         trx.persist();
+        trx.changeStatus(TransactionStatus.PENDING, wltTrxRepo);
         if (trx.isTransferValid(tokenBalanceRepository)) {
             // some code
             trx.fromWallet.withdraw(request, tokenBalanceRepository);

@@ -40,3 +40,6 @@ nb-configuration.xml
 .env
 datah2.trace.db
 data/postgres
+
+# Test
+tt.*

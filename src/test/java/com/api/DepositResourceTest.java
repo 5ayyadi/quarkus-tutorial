@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
 import java.math.BigInteger;
 
 @QuarkusTest
-public class DepositResource {
+public class DepositResourceTest {
 
     Address ZERO = new Address("0x4c97380af08e1ee1846f00f737c0e1121087fedd");
     Address ONE = new Address("0x1d006127b22952870f327b30ca370b4af78fb5dc");
@@ -26,15 +26,15 @@ public class DepositResource {
     public void testGetDeposit() {
         given()
                 .queryParams("user_id", 0L)
-                .when().get("/deposit")
+                .when().get("/transaction/deposit")
                 .then()
-                .body("address", is(ZERO))
+                .body("address.value", is(ZERO.toString()))
                 .statusCode(200);
         given()
                 .queryParams("user_id", 1L)
-                .when().get("/deposit")
+                .when().get("/transaction/deposit")
                 .then()
-                .body("address", is(ONE))
+                .body("address.value", is(ONE.toString()))
                 .statusCode(200);
     }
 
@@ -55,9 +55,9 @@ public class DepositResource {
         given()
                 .contentType(ContentType.JSON)
                 .body(wdRequest)
-                .when().post("/deposit")
+                .when().post("/transaction/deposit")
                 .then()
-                .body("address.value", is(ZERO))
+                .body("address.value", is(ZERO.getValue()))
                 .statusCode(200);
 
         wdRequest = new WithdrawDepositRequest(
@@ -72,9 +72,9 @@ public class DepositResource {
         given()
                 .contentType(ContentType.JSON)
                 .body(wdRequest)
-                .when().post("/deposit")
+                .when().post("/transaction/deposit")
                 .then()
-                .body("address.value", is(ONE))
+                .body("address.value", is(ONE.getValue()))
                 .statusCode(200);
 
         wdRequest = new WithdrawDepositRequest(
@@ -89,9 +89,9 @@ public class DepositResource {
         given()
                 .contentType(ContentType.JSON)
                 .body(wdRequest)
-                .when().post("/deposit")
+                .when().post("/transaction/deposit")
                 .then()
-                .body("address.value", is(ONE))
+                .body("address.value", is(ONE.getValue()))
                 .statusCode(200);
 
     }

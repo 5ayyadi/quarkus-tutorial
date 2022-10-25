@@ -167,7 +167,7 @@ public class TransactionGeneration {
                                                 nonce,
                                                 gasPrice,
                                                 currentGasLimit,
-                                                toWallet,
+                                                token.getAddress().getValue(),
                                                 BigInteger.ZERO,
                                                 data);
                 String trx_obj = String.format(

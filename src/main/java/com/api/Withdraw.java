@@ -50,9 +50,8 @@ public class Withdraw {
         try{
             
             MasterWallet masterWallet = masterRepo.findByAddress(request.serverWallet.toString());
-            Wallet destination = wltRepo.findByAddress(request.userWallet);
             Token token = tknRepo.getByAddress(request.tokenAddress.toString());
-            masterWallet.transferTo(request.network, token, destination, request.amount);
+            masterWallet.transferTo(request.network, token, request.userWallet, request.amount);
             // changing master wallet amount
             BigInteger balance = new BigInteger(tbRepo.getTokenBalance(masterWallet.id, token.id));
             BigInteger newBalance = balance.subtract(request.amount);

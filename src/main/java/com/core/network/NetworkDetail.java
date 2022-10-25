@@ -7,7 +7,7 @@ public class NetworkDetail {
     public int decimals;
     public String symbol;
     public int HDPathCoinType;
-    public int chainId;
+    public Integer chainId;
     public NetworkConfig config;
     public Web3j w3;
     public String coingeckoId;
