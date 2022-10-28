@@ -13,7 +13,9 @@ public class TransferRequest {
     public TransactionType type = TransactionType.TRANSFER;
     public TransactionStatus status = TransactionStatus.RECEIVED;
 
-    
+    public TransferRequest() {
+    }
+
     public TransferRequest(Long fromUID, Long toUID, Long tokenId, BigInteger amount, TransactionType type,
             TransactionStatus status) {
         this.fromUID = fromUID;
@@ -23,7 +25,6 @@ public class TransferRequest {
         this.type = type;
         this.status = status;
     }
-
 
     public void changeStatus(TransactionStatus status) {
         this.status = status;

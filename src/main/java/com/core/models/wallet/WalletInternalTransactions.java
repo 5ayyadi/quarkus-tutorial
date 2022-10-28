@@ -4,7 +4,9 @@ import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
@@ -23,16 +25,24 @@ import com.core.repositories.WalletRepository;
 @Table(name = "wallet_in_trx")
 public class WalletInternalTransactions extends WalletTransactionsBasicModel {
 
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @OneToOne
     @JoinColumn(name = "wallet_ex_trx_id", nullable = true)
-    @MapsId
+    // @MapsId
+    // @Column(nullable = true)
     private WalletExternalTransactions boundedExternalTrx;
 
     public WalletInternalTransactions() {
     }
 
-    public WalletInternalTransactions(Wallet wallet, String string) {
-        super(wallet, string);
+    public WalletInternalTransactions(Token token, Wallet fromWallet, Wallet toWallet, BigInteger amount) {
+        this();
+        this.fromWallet = fromWallet;
+        this.toWallet = toWallet;
+        this.toWallet = toWallet;
+        this.amount = amount;
+        this.token = token;
+        this.status = TransactionStatus.RECEIVED;
+        this.type = TransactionType.TRANSFER;
     }
 
     public WalletInternalTransactions(TransferRequest request, TokenRepository tknRepo, WalletRepository wltRepo) {
@@ -42,6 +52,7 @@ public class WalletInternalTransactions extends WalletTransactionsBasicModel {
         this.token = tknRepo.findById(request.tokenId);
         this.fromWallet = wltRepo.findByUserId(request.fromUID);
         this.toWallet = wltRepo.findByUserId(request.toUID);
+
     }
 
     @Override
@@ -89,11 +100,11 @@ public class WalletInternalTransactions extends WalletTransactionsBasicModel {
         WalletInternalTransactions internalTrx = new WalletInternalTransactions();
         internalTrx.fromWallet = externalTrx.fromWallet;
         internalTrx.status = TransactionStatus.FOUND;
-        internalTrx.boundedExternalTrx = externalTrx;
         internalTrx.toWallet = externalTrx.toWallet;
         internalTrx.amount = externalTrx.amount;
         internalTrx.token = externalTrx.token;
         internalTrx.type = transactionType;
+        internalTrx.boundedExternalTrx = externalTrx;
         return internalTrx;
     }
 }

@@ -59,6 +59,7 @@ public class ConfirmDepositsJob {
 
             wet.type = trxReceipt.trxType;
             wet.status = TransactionStatus.CONFIRMED;
+            wet.persist();
             trxReceipt.status = TransactionStatus.CONFIRMED;
             WalletInternalTransactions wit = null;
             if (wit != null) {

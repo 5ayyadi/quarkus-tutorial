@@ -1,19 +1,14 @@
 package com.core.network;
 
-import java.io.IOException;
 import java.math.BigInteger;
 
-import com.core.customTypes.Address;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.Transaction;
-import org.web3j.protocol.core.methods.response.EthBlockNumber;
-import org.web3j.protocol.core.methods.response.EthGasPrice;
-import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.utils.Strings;
 
+import com.core.customTypes.Address;
 import com.core.models.Token;
 
 public class TransactionGeneration {
@@ -104,13 +99,19 @@ public class TransactionGeneration {
                 BigInteger nonce = w3.ethGetTransactionCount(
                                 fromWallet, DefaultBlockParameterName.LATEST).send().getTransactionCount();
 
+                Transaction trx = new Transaction(fromWallet, nonce, gasPrice, currentGasLimit, toWallet,
+                                amount, "");
+                BigInteger estimatedGas = w3.ethEstimateGas(trx).send().getAmountUsed();
+                // . add(new BigInteger("1000")),
                 RawTransaction transaction = RawTransaction
                                 .createEtherTransaction(
                                                 nonce,
                                                 gasPrice,
-                                                currentGasLimit,
+                                                estimatedGas,
                                                 toWallet,
                                                 amount);
+                // System.out.println(eInteger);
+
                 String trx_obj = String.format(
                                 "Generated transferETH Trx :{'value':%s,'data':'%s','from':'%s'" +
                                                 ",'to':'%s','nonce':%s,'gasPrice':%s,'gas':%s,'requestedBlockNumber':}",

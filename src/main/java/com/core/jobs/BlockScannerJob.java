@@ -220,7 +220,7 @@ public final class BlockScannerJob {
 
         Web3j w3 = network.value.w3;
         Long lastBlockNumber = (w3.ethBlockNumber().send().getBlockNumber().longValue()) - pendingBlocks;
-        Long lastScannedBlocknumber = ScannedBlocks.lastScannedBlock();
+        Long lastScannedBlocknumber = ScannedBlocks.lastScannedBlock(network);
         Long lastBlockToScan = lastScannedBlocknumber
                 + (maxBlocksPerQuery < (lastBlockNumber - lastScannedBlocknumber) ? maxBlocksPerQuery
                         : lastBlockNumber - lastScannedBlocknumber);

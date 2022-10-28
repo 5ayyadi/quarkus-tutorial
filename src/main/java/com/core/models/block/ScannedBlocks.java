@@ -1,5 +1,6 @@
 package com.core.models.block;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,7 +48,7 @@ public class ScannedBlocks extends PanacheEntityWithTime {
 
     @Transient
     @ConfigProperty(name = "blockScanner.firstBlockNumber")
-    public static final long INITIAL_BLOCK_NUMBER = 23963100L; // NOTE - TESTNET - FTM
+    public static final long INITIAL_BLOCK_NUMBER = 24031997L;
 
     public ScannedBlocks() {
     }
@@ -71,6 +72,23 @@ public class ScannedBlocks extends PanacheEntityWithTime {
 
     public Set<TrxReceipt> getTrxs() {
         return trxs;
+    }
+
+    public static Long lastScannedBlock(Network network) {
+        Sort sort = Sort.by("blockNumber", Direction.Descending, null);
+
+        ScannedBlocks scannedBlock = findAll(sort).firstResult();
+        if (scannedBlock != null) {
+            return scannedBlock.blockNumber;
+        }
+        try {
+            return network.w3.ethBlockNumber().send().getBlockNumber().longValue() - 25;
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return INITIAL_BLOCK_NUMBER;
+
+        }
     }
 
     public static Long lastScannedBlock() {

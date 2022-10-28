@@ -1,19 +1,16 @@
 package com.core.network;
 
-import java.io.IOException;
 import java.math.BigInteger;
-import java.util.Optional;
 
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
-import org.web3j.tx.RawTransactionManager;
+import org.web3j.protocol.core.methods.response.EthChainId;
+import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.utils.Numeric;
-
-import com.arjuna.ats.jta.TransactionManager;
+import org.web3j.utils.Bytes;
 import com.core.models.TrxReceipt;
 import com.core.models.wallet.Wallet;
 import com.core.network.TransactionGeneration.RawTransactionAndExtraInfo;
@@ -25,6 +22,14 @@ public class SendTransaction {
             Wallet wallet)
             throws Exception {
         return SignAndSend(trx.network, trx.rawTransaction, wallet.getPrivateKey(), wallet.getPublicKey());
+    }
+
+    public static TrxReceipt SignAndSend(
+            RawTransactionAndExtraInfo trx,
+            String privateKey,
+            String publicKey)
+            throws Exception {
+        return SignAndSend(trx.network, trx.rawTransaction, privateKey, publicKey);
     }
 
     public static TrxReceipt SignAndSend(
@@ -54,35 +59,24 @@ public class SendTransaction {
             throws Exception {
         Web3j w3 = network.value.w3;
         Credentials credentials = Credentials.create(privateKey);
-        if (!credentials.getAddress().equals("0x" + publicKey)) {
+        if (!credentials.getAddress().equals(("0x" + publicKey).toLowerCase())) {
             // TODO - miss match privatekey wallet address
             throw new Exception();
         }
-
-        // String trx_obj = String.format(
-        // "{'value':%s,'data':'%s','from':'%s'
-        // ,'to':'%s','nonce':%s,'gasPrice':%s,'gas':%s}",
-        // rawTransaction.getValue(),
-        // rawTransaction.getData(),
-        // publicKey,
-        // rawTransaction.getTo(),
-        // rawTransaction.getNonce(),
-        // rawTransaction.getGasPrice(),
-        // rawTransaction.getGasLimit()
-
-        // );
-        // System.out.println(trx_obj);
-
-        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, network.value.chainId.byteValue() ,credentials);
+        // byte chainIdByteR = Numeric.asByte(4002, 0);
+        // byte chainIdByte = network.value.chainId.byteValue();
+        EthChainId chainId =  network.w3.ethChainId().send();
+        byte[] signedMessage = TransactionEncoder. signMessage(
+                rawTransaction,
+                chainId.getId(),
+                credentials);
         String hexValue = Numeric.toHexString(signedMessage);
         EthSendTransaction ethSendTransaction = w3.ethSendRawTransaction(hexValue).send();
+        System.out.println(ethSendTransaction.getError().getMessage());
+
         String trxHash = ethSendTransaction.getResult();
-        Optional<TransactionReceipt> trx = w3.ethGetTransactionReceipt(trxHash).send().getTransactionReceipt();
-        if (trx.isPresent()) {
-            return TrxReceipt.fromTransaction(trx.get());
-        } else {
-            return null;
-        }
+        EthGetTransactionReceipt trx = w3.ethGetTransactionReceipt(trxHash).send();
+        return TrxReceipt.fromTransaction(trx.getResult());
 
     }
 }

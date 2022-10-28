@@ -74,7 +74,7 @@ public class BlockScannerScheduler {
     }
 
     @Transactional
-    @Scheduled(every = "25s")
+    @Scheduled(every = "10s")
     void submitScannedBlocks() {
         if (!isConfirmDepositsJobRunning.get()) {
             try {

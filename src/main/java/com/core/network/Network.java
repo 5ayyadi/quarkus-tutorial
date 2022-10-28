@@ -32,14 +32,13 @@ public enum Network {
         Fantom(new NetworkDetail("Fantom Opera", "FTM", 60, 250, new NetworkConfig(
                         "0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6", "https://rpc.ankr.com/fantom/"),
                         "wrapped-fantom")),
-        FtmTestnet(new NetworkDetail("Fantom Testnet", "FTM", 60, 0xfa2, new NetworkConfig(
+        FtmTestnet(new NetworkDetail("Fantom Testnet", "FTM", 60, 4002, new NetworkConfig(
                         "0x07b9c47452c41e8e00f98ac4c075f5c443281d2a", "https://rpc.testnet.fantom.network/"),
                         "wrapped-fantom"));
 
         public final NetworkDetail value;
         public final Logger logger;
         public final Web3j w3;
-        // public Token nativeToken;
 
         Network(NetworkDetail value) {
                 this.value = value;

@@ -50,6 +50,9 @@ public class TransactionResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response depositAddress(@QueryParam("user_id") Long userId) {
         Wallet resWallet = walletRepository.findByUserId(userId);
+        if (resWallet == null) {
+            return Response.status(Status.NOT_FOUND).entity(null).build();
+        }
         return Response.status(Status.OK).entity(resWallet).build();
     }
 

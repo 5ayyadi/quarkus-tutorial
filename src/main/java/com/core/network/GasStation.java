@@ -1,8 +1,10 @@
 package com.core.network;
 
+import java.io.IOException;
 import java.math.BigInteger;
 
 import org.web3j.crypto.RawTransaction;
+import org.web3j.protocol.core.methods.request.Transaction;
 
 import com.core.models.TrxReceipt;
 import com.core.network.TransactionGeneration.RawTransactionAndExtraInfo;
@@ -48,6 +50,11 @@ public class GasStation {
 
     public BigInteger currentGasLimit() {
         // TODO this should become a bit more logical you know ...
-        return new BigInteger("9000000");
+        return new BigInteger("300000");
     }
+
+    public BigInteger currentGasLimit(Transaction trx) throws IOException {
+        return network.w3.ethEstimateGas(trx).send().getAmountUsed();
+    }
+
 }

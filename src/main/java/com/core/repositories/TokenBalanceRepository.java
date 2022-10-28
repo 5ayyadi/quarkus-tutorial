@@ -26,8 +26,8 @@ public class TokenBalanceRepository implements PanacheRepository<TokenBalances> 
     // "join wallet w on w.id = tb.wallet_id" +
     // " where w.id = %s and token.id = %s",
     // wallet_id, token_id)));
-
     // }
+
     public static void addTokenBalances(
             WithdrawDepositRequest request,
             TokenRepository tokenRepository,
@@ -166,21 +166,27 @@ public class TokenBalanceRepository implements PanacheRepository<TokenBalances> 
     }
 
     private TokenBalances updateTokenBalanceRelation(Wallet wallet, Token token) {
-
+        TokenBalances tb = find(String.format("wallet_id:=wallet and token")).firstResult();
         // TODO - Check if token balance record exist then create it
-        TokenBalances tb = new TokenBalances();
+        if (tb == null) {
 
-        tb.setBalance("0");
-        token.addTokenBalances(tb);
-        wallet.getTokenBalances().add(tb);
-        token.persist();
-        wallet.persist();
-        tb.setToken(token);
-        tb.setWallet(wallet);
-        tb.persist();
+            tb = new TokenBalances();
+            tb.setBalance("0");
+            token.addTokenBalances(tb);
+            wallet.getTokenBalances().add(tb);
+            token.persist();
+            wallet.persist();
+            tb.setToken(token);
+            tb.setWallet(wallet);
+            tb.persist();
+        }
 
         return tb;
 
+    }
+
+    public TokenBalances getTokenBalances(Wallet wallet, Token token) {
+        return updateTokenBalanceRelation(wallet, token);
     }
 
 }

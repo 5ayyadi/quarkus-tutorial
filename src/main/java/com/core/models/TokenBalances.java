@@ -50,6 +50,10 @@ public class TokenBalances extends PanacheEntityWithTime {
         Balance = balance;
     }
 
+    public void setBalance(BigInteger balance) {
+        Balance = balance.toString();
+    }
+
     public BigInteger getBalance() {
         // token.decimals
         return new BigInteger(Balance);
